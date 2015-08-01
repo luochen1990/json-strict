@@ -13,7 +13,7 @@
     "type",
     "json",
     "specification",
-    "haskell",
+    "haskell"
   ],
   "main": "./build/json-spec.js",
   "scripts": {
