@@ -1,7 +1,7 @@
 {
   "name": "json-spec",
   "version": "0.0.1",
-  "description": "typed json specification",
+  "description": "json format specification & dynamic type checking & document generation",
   "author": "luochen1990",
   "license": "MIT",
   "homepage": "http://github.com/luochen1990/json-spec",
