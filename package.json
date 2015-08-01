@@ -1,0 +1,29 @@
+{
+  "name": "json-spec",
+  "version": "0.0.1",
+  "description": "typed json specification",
+  "author": "luochen1990",
+  "license": "MIT",
+  "homepage": "http://github.com/luochen1990/json-spec",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:luochen1990/json-spec.git"
+  },
+  "keywords": [
+    "type",
+    "json",
+    "specification",
+    "haskell",
+  ],
+  "main": "./build/json-spec.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive"
+  },
+  "browserify": {
+    "transform": [
+      "coffeeify"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
