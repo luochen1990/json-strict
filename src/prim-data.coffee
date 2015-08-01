@@ -1,5 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
+{match, show} = require './typespec'
 
 Data = ({spec, samples, name, discription}) ->
 	if samples? and not all(match(spec)) samples

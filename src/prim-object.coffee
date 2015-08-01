@@ -1,5 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
+{match, show} = require './typespec'
 
 instance('TypeSpec')(Object).where
 	match: (specdict) -> (v) ->

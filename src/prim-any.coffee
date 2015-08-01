@@ -7,7 +7,7 @@ Any = do ->
 
 instance('TypeSpec')(Any).where
 	match: (specification) -> (v) ->
-		true
+		v?
 	show: (specification) ->
 		"Any"
 
