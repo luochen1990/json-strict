@@ -8,15 +8,6 @@ match = (specification) -> (v) ->
 		switch specification.constructor
 			when Function
 				v.constructor is specification
-				#switch specification
-				#	when Boolean
-				#		v in [true, false]
-				#	when Number
-				#		typeof v is 'number' or v.constructor is Number
-				#	when String
-				#		v.constructor is String
-				#	else
-				#		v.constructor is specification
 			when Enum
 				v in specification.enum
 			when Maybe

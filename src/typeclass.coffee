@@ -10,7 +10,7 @@ require 'coffee-mate/global'
 				ls = cls[funcname] ?= []
 				(arg) ->
 					for [type, funcbody] in ls
-						log -> type
+						#log -> type
 						if arg.constructor is type
 							return funcbody(arg)
 					throw TypeError "no instance of #{classname} for #{arg.constructor.name or 'UnnamedType'}"
@@ -19,14 +19,14 @@ require 'coffee-mate/global'
 	instance = (classname) ->
 		cls = reg[classname] ?= {}
 		(type) ->
-			log -> type
+			#log -> type
 			where: (funcdict) ->
 				foreach (enumerate funcdict), ([funcname, funcbody]) ->
 					(cls[funcname] ?= []).push [type, funcbody]
 
 	return {typeclass, instance}
 
-module.exports = {show}
+module.exports = {typeclass, instance}
 
 if module.parent is null
 	{show} = typeclass('Show') ['show']
