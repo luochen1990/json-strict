@@ -3,7 +3,7 @@ require 'coffee-mate/global'
 {match, show, samples, sample} = require './typespec'
 
 class Data
-	constructor: ({spec, samples, name, discription}) ->
+	constructor: ({spec, check, name, samples, discription}) ->
 		if not spec?
 			throw ReferenceError 'spec must be specified for a Data declaration'
 		if samples? and not all(match(spec))(take(100) samples)
@@ -15,14 +15,15 @@ class Data
 		return {
 			constructor: Data
 			spec
-			samples
+			check
 			name
+			samples
 			discription
 		}
 
 instance('TypeSpec')(Data).where
-	match: ({spec}) -> (v) ->
-		match(spec) v
+	match: ({spec, check}) -> (v) ->
+		match(spec)(v) and (if check? then check(v) else true)
 	show: ({name, spec}) ->
 		name or (show spec)
 	samples: ({spec, samples: ls}) ->
