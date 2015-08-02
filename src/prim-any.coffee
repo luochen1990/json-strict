@@ -10,5 +10,7 @@ instance('TypeSpec')(Any).where
 		v?
 	show: (specification) ->
 		"Any"
+	samples: (specification) ->
+		concat repeat ['a', 3, true, [1, 2], {x: 1}, NaN, '', {}, []]
 
 module.exports = {Any}

@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show} = require './typespec'
+{match, show, samples, sample} = require './typespec'
 
 Maybe = (spec) ->
 	constructor: Maybe
@@ -11,5 +11,8 @@ instance('TypeSpec')(Maybe).where
 		not v? or match(spec) v
 	show: ({spec}) ->
 		"Maybe #{show spec}"
+	samples: ({spec}) ->
+		ls = list take(2) samples spec
+		concat repeat [null, ls[0], undefined, ls[1]]
 
 module.exports = {Maybe}

@@ -7,9 +7,10 @@ require './prim-array'
 {Maybe} = require './prim-maybe'
 {Either} = require './prim-either'
 {Dict} = require './prim-dict'
+{Map} = require './prim-map'
 {Strict} = require './prim-strict'
 {Data} = require './prim-data'
-{match, show} = require './typespec'
+{match, show, sample, samples} = require './typespec'
 
 module.exports = {
 	Number, String,
@@ -43,4 +44,10 @@ if module.parent is null
 		}
 	}]
 	log -> show WideTable
+
+	#log -> json list take(20) samples Any
+	#log -> json list take(20) samples [Any]
+	#log -> json list take(20) samples Maybe String
+	#log -> json list take(20) samples Map(TableName, Number)
+	log -> json list take(20) samples Data spec: Strict {x: Number, y: String}
 
