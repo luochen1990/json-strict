@@ -55,4 +55,5 @@ if module.parent is null
 	log -> json sample Enum ['a', 'b']
 	log -> json list take(20) samples [{tableName: TableName, join: {op: Number}}]
 	log -> json sample WideTable
+	log -> json list(10) samples Either {a: Number, b: String}
 
