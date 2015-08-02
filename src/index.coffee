@@ -1,6 +1,6 @@
-require './prim-constructor'
 require './prim-object'
 require './prim-array'
+require './prim-constructor'
 {Bool} = require './prim-bool'
 {Any} = require './prim-any'
 {Enum} = require './prim-enum'
@@ -33,7 +33,7 @@ if module.parent is null
 
 	TableName = String
 	FieldName = String
-	Comparator = Enum ['<', '<=', '=', '>=', '>']
+	Comparator = Enum ['=', '<', '<=', '>=', '>']
 	WideTable = [{
 		tableName: TableName
 		join: {
@@ -45,9 +45,14 @@ if module.parent is null
 	}]
 	log -> show WideTable
 
-	#log -> json list take(20) samples Any
+	log -> list(10) samples Any
+	log -> json list take(20) samples Any
+	log -> json sample Any
 	#log -> json list take(20) samples [Any]
 	#log -> json list take(20) samples Maybe String
 	#log -> json list take(20) samples Map(TableName, Number)
-	log -> json list take(20) samples Data spec: Strict {x: Number, y: String}
+	#log -> json list take(20) samples Data spec: Strict {x: Number, y: String}
+	log -> json sample Enum ['a', 'b']
+	log -> json list take(20) samples [{tableName: TableName, join: {op: Number}}]
+	log -> json sample WideTable
 

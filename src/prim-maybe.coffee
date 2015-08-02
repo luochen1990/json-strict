@@ -2,9 +2,12 @@ require 'coffee-mate/global'
 {instance} = require './typeclass'
 {match, show, samples, sample} = require './typespec'
 
-Maybe = (spec) ->
-	constructor: Maybe
-	spec: spec
+class Maybe
+	constructor: (spec) ->
+		return {
+			constructor: Maybe
+			spec: spec
+		}
 
 instance('TypeSpec')(Maybe).where
 	match: ({spec}) -> (v) ->

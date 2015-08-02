@@ -2,9 +2,12 @@ require 'coffee-mate/global'
 {instance} = require './typeclass'
 {match, show} = require './typespec'
 
-Either = (specs) ->
-	constructor: Either
-	specs: specs
+class Either
+	constructor: (specs) ->
+		return {
+			constructor: Either
+			specs: specs
+		}
 
 instance('TypeSpec')(Either).where
 	match: ({specs}) -> (v) ->

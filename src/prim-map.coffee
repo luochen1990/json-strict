@@ -2,10 +2,13 @@ require 'coffee-mate/global'
 {instance} = require './typeclass'
 {match, show, samples, sample} = require './typespec'
 
-Map = (kspec, vspec) ->
-	constructor: Map
-	kspec: kspec
-	vspec: vspec
+class Map
+	constructor: (kspec, vspec) ->
+		return {
+			constructor: Map
+			kspec: kspec
+			vspec: vspec
+		}
 
 instance('TypeSpec')(Map).where
 	match: ({kspec, vspec}) -> (v) ->

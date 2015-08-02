@@ -2,9 +2,12 @@ require 'coffee-mate/global'
 {instance} = require './typeclass'
 {match, show, samples, sample} = require './typespec'
 
-Strict = (specdict) ->
-	constructor: Strict
-	specdict: specdict
+class Strict
+	constructor: (specdict) ->
+		return {
+			constructor: Strict
+			specdict: specdict
+		}
 
 instance('TypeSpec')(Strict).where
 	match: ({specdict}) -> (v) ->
