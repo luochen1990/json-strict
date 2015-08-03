@@ -1,21 +1,22 @@
 {
-  "name": "json-spec",
+  "name": "type-spec",
   "version": "0.0.1",
-  "description": "json format specification & dynamic type checking & document generation",
+  "description": "Type Specification for JavaScript/JSON & Dynamic Type Checking & Document Generation",
   "author": "luochen1990",
   "license": "MIT",
-  "homepage": "http://github.com/luochen1990/json-spec",
+  "homepage": "http://github.com/luochen1990/TypeSpec",
   "repository": {
     "type": "git",
-    "url": "git@github.com:luochen1990/json-spec.git"
+    "url": "git@github.com:luochen1990/TypeSpec.git"
   },
   "keywords": [
     "type",
-    "json",
     "specification",
+    "document generation",
+    "json",
     "haskell"
   ],
-  "main": "./build/json-spec.js",
+  "main": "./build/type-spec.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive"
   },
