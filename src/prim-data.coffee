@@ -1,9 +1,11 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show, samples, sample} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Data
-	constructor: ({spec, check, name, samples, discription}) ->
+	constructor: ({name, spec, check, samples, discription}) ->
+		if not name?
+			throw ReferenceError 'name must be specified for a Data declaration'
 		if not spec?
 			throw ReferenceError 'spec must be specified for a Data declaration'
 		if samples? and not all(match(spec))(take(100) samples)
@@ -28,5 +30,14 @@ instance('TypeSpec')(Data).where
 		name or (show spec)
 	samples: ({spec, samples: ls}) ->
 		if ls? then concat repeat ls else samples spec
+	htmlInline: ({name, spec}) ->
+		if name? then "<span class='type-name'>#{name}</span>" else htmlInline spec
+	htmlNode: ({name, spec}) ->
+		if not (node = htmlNode spec)?
+			null
+		else
+			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{node.head}</span>"
+			body: node.body
+			tail: node.tail
 
 module.exports = {Data}

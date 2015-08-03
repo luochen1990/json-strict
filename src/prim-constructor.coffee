@@ -1,5 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
+{match, show, samples, sample} = require './typespec'
 
 instance('TypeSpec')(Function).where
 	match: (spec) -> (v) ->
@@ -16,4 +17,8 @@ instance('TypeSpec')(Function).where
 				concat repeat ['abc', 'hello']
 			else
 				repeat (new spec)
+	htmlInline: (spec) ->
+		"<span class='type-maker'>#{show spec}</span>"
+	htmlNode: ->
+		null
 

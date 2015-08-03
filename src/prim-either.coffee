@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show, samples, sample} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Either
 	constructor: (specs) ->

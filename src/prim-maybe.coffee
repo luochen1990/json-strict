@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show, samples, sample} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Maybe
 	constructor: (spec) ->
@@ -17,5 +17,15 @@ instance('TypeSpec')(Maybe).where
 	samples: ({spec}) ->
 		ls = list take(2) samples spec
 		concat repeat [null, ls[0], undefined, ls[1]]
+	htmlInline: ({spec}) ->
+		"<span class='type-maker'>Maybe #{htmlInline spec}</span>"
+	htmlNode: ({spec}) ->
+		node = htmlNode spec
+		if not node?
+			null
+		else
+			head: "<span class='type-maker'>Maybe #{node.head}</span>"
+			body: node.body
+			tail: node.tail
 
 module.exports = {Maybe}

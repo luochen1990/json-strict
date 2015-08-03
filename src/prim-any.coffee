@@ -6,13 +6,17 @@ Any = do ->
 	return (r.constructor = r)
 
 instance('TypeSpec')(Any).where
-	match: (specification) -> (v) ->
+	match: () -> (v) ->
 		v?
-	show: (specification) ->
+	show: () ->
 		"Any"
-	samples: (specification) ->
+	samples: () ->
 		concat repeat ['a', 3, true, [1, 2], {x: 1}] #, NaN, '', {}, []
-	sample: ->
-		1
+	sample: () ->
+		'any'
+	htmlInline: () ->
+		"<span class='type-maker'>Any</span>"
+	htmlNode: () ->
+		null
 
 module.exports = {Any}
