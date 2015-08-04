@@ -6,7 +6,6 @@ require './prim-constructor'
 {Enum} = require './prim-enum'
 {Maybe} = require './prim-maybe'
 {Either} = require './prim-either'
-{Dict} = require './prim-dict'
 {Map} = require './prim-map'
 {Strict} = require './prim-strict'
 {Data} = require './prim-data'
@@ -14,7 +13,7 @@ require './prim-constructor'
 
 module.exports = {
 	Number, String,
-	Bool, Any, Enum, Maybe, Either, Dict, Strict, Data,
+	Bool, Any, Enum, Maybe, Either, Strict, Data,
 	match, show,
 }
 
