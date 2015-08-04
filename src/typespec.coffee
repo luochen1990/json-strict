@@ -14,12 +14,24 @@ TypeSpec = typeclass('TypeSpec').where
 			if not node?
 				@htmlInline t
 			else
-				"\t<div>\n" +
-				"\t\t<div class='head'>#{node.head}</div>\n" +
-				"\t\t<div class='body'>#{node.body}</div>\n" +
-				"\t\t<div class='tail'>#{node.tail}</div>\n" +
-				"\t</div>\n"
-		return "<div class='typespec'>\n" + content + "</div>"
+				"<div class='fold'><span class='spliter'>spec:</span>#{@htmlInline t}</div>" +
+				"<div class='unfold'>" +
+				"<span class='spliter'>spec:</span>#{node.head}" +
+				"#{node.body ? ''}" +
+				"#{node.tail ? ''}" +
+				"</div>"
+		sample = json(@sample(t), 4)
+		return "<div class='typespec'>" +
+		"<div class='spec'>" +
+		#(if t.name? then "<span class='type-name'>#{t.name}</span>" else '') +
+		#"<span class='spliter'>spec:</span>" +
+		content.replace(/(\t|\n)/g, '') +
+		"</div>\n" +
+		"<div class='sample'>\n" +
+		"<span class='spliter'>sample:</span>" +
+		(if /\n/.test sample then "<pre>#{sample}</pre>" else "<span>#{sample}</span>") +
+		"</div>" +
+		"</div>"
 
 module.exports = TypeSpec
 

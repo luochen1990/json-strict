@@ -34,7 +34,9 @@ instance('TypeSpec')(Data).where
 		if name? then "<span class='type-name'>#{name}</span>" else htmlInline spec
 	htmlNode: ({name, spec}) ->
 		if not (node = htmlNode spec)?
-			null
+			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{htmlInline spec}</span>"
+			body: null
+			tail: null
 		else
 			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{node.head}</span>"
 			body: node.body

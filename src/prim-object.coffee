@@ -18,12 +18,13 @@ instance('TypeSpec')(Object).where
 			if not node?
 				"<li>#{oneline}</li>"
 			else
-				"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
+				#"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
+				"<li>\n" +
 				"\t<div class='fold'>#{oneline}</div>\n" +
 				"\t<div class='unfold'>\n" +
-				"\t\t<span class='head'><span class='field-name'>#{k}</span>: #{node.head}</span>\n" +
-				"\t\t<div class='body'>#{node.body}</div>\n" +
-				"\t\t<span class='tail'>#{node.tail}</span>\n" +
+				"\t\t<span class='field-name'>#{k}</span>: #{node.head}\n" +
+				"\t\t#{node.body ? ''}\n" +
+				"\t\t#{node.tail ? ''}\n" +
 				"\t</div>\n" +
 				"</li>"
 		) enumerate(specdict)

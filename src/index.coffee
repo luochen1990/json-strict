@@ -62,50 +62,56 @@ if module.parent is null
 	log -> json (sample WideTable), 4
 
 	init = ->
+		$('ul').each (i, elm) ->
+			$(elm).closest('li').addClass('unfolded').removeClass('folded')
 		$('.type-name').each (i, elm) ->
+			$(elm).closest('li').addClass('folded').removeClass('unfolded')
 			$(elm).click ->
-				$(elm).closest('li').toggleClass('unfolded')
+				$(elm).closest('li').toggleClass('folded').toggleClass('unfolded')
 		$('li').each (i, elm) ->
-			$(elm).children('.unfold').children('.head').children('.field-name').click ->
-				$(elm).removeClass('unfolded')
+			$(elm).children('.unfold').children('.field-name').click ->
+				$(elm).addClass('folded').removeClass('unfolded')
 			$(elm).children('.fold').children('.field-name').click ->
-				$(elm).addClass('unfolded')
+				$(elm).addClass('unfolded').removeClass('folded')
 
 	showPage = (t) -> """
 		<style>
-		body {
+		.typespec {
 			//white-space: pre;
 			font-family: monospace;
 		}
-		.head, .tail {
-			display: inline-block
-		}
-		//.typespec>.fold, .typespec li>.fold {
-		//	display: none
-		//}
-		.typespec li.unfolded>.fold, .typespec li:not(.unfolded)>.unfold {
+		.typespec li.unfolded>.fold, .typespec li.folded>.unfold {
 			display: none
 		}
-		ul {
+		.typespec ul {
 			list-style-type: none;
 			padding: 0px;
 			margin: 0px 0px 0px 2em;
 		}
-		.field-name {
+		.typespec .field-name {
 			font-weight: bold;
 			color: #87BFB8
 		}
-		.type-name {
+		.typespec .fold>.field-name, .typespec .unfold>.field-name {
+			cursor: help
+		}
+		.typespec .type-name {
 			color: blue;
 			cursor: help
 		}
-		.type-maker {
+		.typespec .type-maker {
 			color: #223497
 		}
-		.spliter {
+		.typespec .spliter {
 			display: inline-block;
 			color: gray;
+		}
+		.typespec .type-name~.spliter {
 			padding: 0 0.5em
+		}
+		.typespec .sample pre {
+			margin: 0;
+			color: green
 		}
 		</style>
 		""" + (showHtml t) + """

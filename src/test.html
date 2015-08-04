@@ -1,0 +1,77 @@
+<style>.typespec {
+	font-family: monospace;
+	font-size: 16px;
+	border-width: 4px;
+	border-color: rgba(165, 230, 229, 0.24);
+	border-style: ridge;
+}
+.typespec>div, .typespec>pre {
+	margin: 0.6em
+}
+.typespec .unfolded>.fold, .typespec .folded>.unfold {
+	display: none
+}
+.typespec ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px 0px 0px 2em;
+}
+.typespec .field-name {
+	font-weight: bold;
+	color: #87BFB8
+}
+.typespec .fold>.field-name, .typespec .unfold>.field-name {
+	cursor: help
+}
+.typespec .type-name {
+	color: blue;
+	cursor: help
+}
+.typespec .type-maker {
+	color: #223497
+}
+.typespec .spliter {
+	display: inline-block;
+	color: gray;
+	padding: 0 0.5em 0 0
+}
+.typespec .type-name~.spliter {
+	padding: 0 0.5em
+}
+.typespec .sample pre {
+	margin: 0;
+	color: green
+}</style><div class='typespec'><div class='spec'><div class='fold'><span class='spliter'>spec:</span><span class='type-maker'>[<span>{...}</span>]</span></div><div class='unfold'><span class='spliter'>spec:</span><span class='type-maker'>[<span class='type-maker'>{</span></span><ul><li><div class='fold'><span class='field-name'>tableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>tableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><div class='fold'><span class='field-name'>join</span>: <span>{...}</span></div><div class='unfold'><span class='field-name'>join</span>: <span class='type-maker'>{</span><ul><li><div class='fold'><span class='field-name'>leftTableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>leftTableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><span class='field-name'>left</span>: <span class='type-maker'>String</span></li><li><span class='field-name'>right</span>: <span class='type-maker'>String</span></li><li><div class='fold'><span class='field-name'>test</span>: <span class='type-maker'>Maybe <span>{...}</span></span></div><div class='unfold'><span class='field-name'>test</span>: <span class='type-maker'>Maybe <span class='type-maker'>{</span></span><ul><li><span class='field-name'>x</span>: <span class='type-maker'>Number</span></li><li><span class='field-name'>y</span>: <span class='type-maker'>Number</span></li></ul><span class='type-maker'>}</span></div></li><li><div class='fold'><span class='field-name'>expr</span>: <span class='type-name'>Expr</span></div><div class='unfold'><span class='field-name'>expr</span>: <span><span class='type-name'>Expr</span><span class='spliter'>spec:</span><span class='type-maker'>Maybe <span class='type-maker'>{</span></span></span><ul><li><span class='field-name'>left</span>: <span class='type-maker'>String</span></li><li><span class='field-name'>op</span>: <span class='type-maker'>String</span></li><li><span class='field-name'>right</span>: <span class='type-maker'>String</span></li></ul><span class='type-maker'>}</span></div></li></ul><span class='type-maker'>}</span></div></li></ul><span class='type-maker'><span class='type-maker'>}</span>]</span></div></div>
+<div class='sample'>
+<span class='spliter'>sample:</span><pre>[
+    {
+        "tableName": "table1",
+        "join": {
+            "leftTableName": "table1",
+            "left": "abc",
+            "right": "abc",
+            "test": null,
+            "expr": null
+        }
+    }
+]</pre></div></div><script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script><script>(function ($) {
+    return function(rootSelection) {
+      rootSelection.find('ul').each(function(i, elm) {
+        return $(elm).closest('li,.spec').addClass('unfolded').removeClass('folded');
+      });
+      rootSelection.find('.type-name').each(function(i, elm) {
+        $(elm).closest('li,.spec').addClass('folded').removeClass('unfolded');
+        return $(elm).click(function() {
+          return $(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded');
+        });
+      });
+      return rootSelection.find('li').each(function(i, elm) {
+        $(elm).children('.unfold').children('.field-name').click(function() {
+          return $(elm).addClass('folded').removeClass('unfolded');
+        });
+        return $(elm).children('.fold').children('.field-name').click(function() {
+          return $(elm).addClass('unfolded').removeClass('folded');
+        });
+      });
+    };
+  })(jQuery)($('.typespec'))</script>
