@@ -22,5 +22,9 @@ instance('TypeSpec')(Enum).where
 		if vs.length > 1 then "Enum [#{json vs[0]} ...]" else "Enum [#{vs[0]}]"
 	samples: ({enum: vs}) ->
 		concat repeat vs
+	htmlInline: ({enum: vs}) ->
+		"<span class='type-maker'>Enum #{json vs}</span>"
+	htmlNode: ->
+		null
 
 module.exports = {Enum}

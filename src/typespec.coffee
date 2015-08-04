@@ -6,8 +6,9 @@ TypeSpec = typeclass('TypeSpec').where
 	show: null
 	samples: null
 	sample: (t) -> head @samples(t)
-	htmlInline: null
-	htmlNode: null
+	htmlInline: (t) ->
+		"<span class='type-maker'>#{@show t}</span>"
+	htmlNode: (t) -> null
 	showHtml: (t) ->
 		node = @htmlNode t
 		content =

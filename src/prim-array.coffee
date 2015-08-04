@@ -19,5 +19,5 @@ instance('TypeSpec')(Array).where
 		else
 			head: "<span class='type-maker'>[#{node.head}</span>"
 			body: node.body
-			tail: "<span class='type-maker'>#{node.tail}]</span>"
+			tail: "<span class='type-maker'>#{node.tail ? ''}]</span>"
 

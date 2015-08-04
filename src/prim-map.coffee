@@ -19,5 +19,27 @@ instance('TypeSpec')(Map).where
 		ks = list take(4) samples(kspec)
 		vs = list take(4) samples(vspec)
 		concat repeat [dict [[ks[0], vs[0]], [ks[1], vs[1]]], dict [[ks[2], vs[2]], [ks[3], vs[3]]]]
+	htmlInline: ({kspec, vspec}) ->
+		"<span class='type-maker'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
+	htmlNode: ({kspec, vspec}) ->
+		lis = map(([k, v]) ->
+			node = htmlNode v
+			oneline = "<span class='meta-field'>#{k}</span>: #{htmlInline v}"
+			if not node?
+				"<li>#{oneline}</li>"
+			else
+				#"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
+				"<li>\n" +
+				"\t<div class='fold'>#{oneline}</div>\n" +
+				"\t<div class='unfold'>\n" +
+				"\t\t<span class='meta-field'>#{k}</span>: #{node.head}\n" +
+				"\t\t#{node.body ? ''}\n" +
+				"\t\t#{node.tail ? ''}\n" +
+				"\t</div>\n" +
+				"</li>"
+		) enumerate({key: kspec, value: vspec})
+		head: "<span class='type-maker'>Map (</span>"
+		body: "<ul>" + (list lis).join('\n') + "</ul>"
+		tail: "<span class='type-maker'>)</span>"
 
 module.exports = {Map}

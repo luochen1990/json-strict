@@ -31,6 +31,10 @@ style = """
 		padding: 0px;
 		margin: 0px 0px 0px 2em;
 	}
+	.typespec .meta-field {
+		font-weight: bold;
+		color: gray
+	}
 	.typespec .field-name {
 		font-weight: bold;
 		color: #87BFB8
@@ -55,7 +59,9 @@ style = """
 	}
 	.typespec .sample pre {
 		margin: 0;
-		color: green
+		color: green;
+		max-height: 10em;
+		overflow: auto;
 	}
 """
 
@@ -83,11 +89,12 @@ init = ($) -> (bind, specs, style) ->
 		$(elm).append(specs[$(elm).attr('it')])
 	bind($('.typespec'))
 
-renderCode = (entries) ->
+genRenderCode = (entries) ->
 	specs = json dict list map(([k, v]) -> [k, (showHtml v)]) enumerate(entries)
 	"(#{init.toString()})(jQuery)((#{bind})(jQuery), #{specs}, #{json style})"
 
 module.exports = {
+	showPage, genRenderCode
 }
 
 if module.parent is null
@@ -107,31 +114,182 @@ if module.parent is null
 		name: 'TableName'
 		spec: String
 		samples: ['table1', 'table2']
-	FieldName = String
+	FieldName = Data
+		name: 'FieldName'
+		spec: String
+		samples: ['product_id', 'sale', 'amount']
 	Comparator = Enum ['=', '<', '<=', '>=', '>']
-	Expr = Data
-		name: "Expr"
-		spec: Maybe
-			left: String
-			op: String
-			right: String
 
 	WideTable = [{
 		tableName: TableName
 		join: {
 			leftTableName: TableName
 			left: FieldName
-			#op: Comparator
+			op: Comparator
 			right: FieldName
-			test: Maybe {
-				x: Number
-				y: Number
-			}
-			expr: Expr
 		}
 	}]
 
+	DimensionName = Data
+		name: 'DimensionName'
+		spec: String
+		samples: ['date', 'product_type', 'city']
+	MeasureName = Data
+		name: 'MeasureName'
+		spec: String
+		samples: ['sale', 'profit', 'amount']
+	Measure = Data
+		name: 'Measure'
+		spec: Strict {
+			name: MeasureName
+			aggregator: Enum ['sum', 'avg', 'max', 'min']
+		}
+	MemberName = Data
+		name: 'MemberName'
+		spec: String
+		samples: ['2013', '2014', '2015']
+	ValueExpr = Data
+		name: 'ValueExpr'
+		spec: String
+		samples: ['sum(sale)']
+	ConditionExpr = Data
+		name: 'ConditionExpr'
+		spec: String
+		samples: ['sum(sale) > 100']
+
+	DimensionFilter = Data
+		name: 'DimensionFilter'
+		spec: Strict {
+			select: [MemberName]
+			match: Either {
+				contains: String
+				startWith: String
+				endWith: String
+			}
+			condition: Either {
+				limit: Strict {
+					measure: Measure
+					comparator: Comparator
+					value: Number
+				}
+				expr: ConditionExpr
+			}
+			top: Strict {
+				count: Number
+				by: Either {
+					measure: Measure
+					expr: ValueExpr
+				}
+			}
+		}
+	InclusionCondition = Data
+		name: 'InclusionCondition'
+		spec: Strict {
+			via: [DimensionName]
+			positions: [[MemberName]]
+		}
+	ExclusionCondition = Data
+		name: 'ExclusionCondition'
+		spec: Strict {
+			via: [DimensionName]
+			positions: [[MemberName]]
+		}
+	SortCondition = Data
+		name: 'SortCondition'
+		spec: Strict {
+			asc: Bool
+			by: Either {
+				measure: Measure
+				expr: ValueExpr
+			}
+			where: Maybe ConditionExpr
+		}
+	Context =
+		filter: Strict
+			dimensions: Map DimensionName, DimensionFilter
+			measures: [Strict {
+				measure: Measure
+				limit:
+					minBound: Maybe Number
+					maxBound: Maybe Number
+			}]
+			inclusions: [InclusionCondition]
+			exclusions: [ExclusionCondition]
+		sort: Map DimensionName, SortCondition
+
+	#contextSample =
+	#	filter: {
+	#		dimensions: {
+	#			"product_name": {
+	#				select: ['mp3', 'mp4']
+	#				match: { #either {contains: ..} or {startWith: ..} or {endWith: ..}
+	#					contains: 'abc'
+	#					startWith: 'abc'
+	#					endWith: 'abc'
+	#				}
+	#				condition: {#either {limit: ...} or {expr: '...'}
+	#					limit: {
+	#						measure: 'sale'
+	#						aggregator: 'sum'
+	#						if: {
+	#							comparator: '>'
+	#							value: 100
+	#						}
+	#					}
+	#				}
+	#				top: {
+	#					count: 10
+	#					by: {#either {field: ...} or {formula: ...}
+	#						field: {
+	#							measure: 'sale'
+	#							aggregator: 'sum'
+	#						}
+	#					}
+	#				}
+	#			}
+	#		}
+	#		measures: [{
+	#			measure:
+	#				name: 'sale'
+	#				aggregator: 'sum'#aggregation type. e.g. 'sum', 'avg', 'item'
+	#			limit:
+	#				minBound: 10
+	#				maxBound: 100
+	#		}]
+	#		inclusions: [
+	#			{
+	#				field: ['product type', 'product name']
+	#				values: [
+	#					['electric appliance', 'mp3']
+	#					['electric appliance', 'mp4']
+	#				]
+	#			}
+	#		]
+	#		exclusions: [
+	#			{
+	#				field: ['product type', 'product name']
+	#				values: [
+	#					['electric appliance', 'mp3']
+	#					['electric appliance', 'mp4']
+	#				]
+	#			}
+	#		]
+	#	}
+	#	sort: {
+	#		"product_name": {
+	#			asc: true
+	#			by: {#either {field: ...} or {formula: ...}
+	#				field: {
+	#					measure: 'sale'
+	#					aggregator: 'sum'
+	#				}
+	#			}
+	#			where: ''
+	#		}
+	#	}
+
 	log -> json (sample WideTable), 4
+	log -> show Context
 
 	fs = require 'fs'
 	fs.writeFileSync('test.html', showPage WideTable)
@@ -139,7 +297,7 @@ if module.parent is null
 	entries = {
 		a: TableName
 		b: WideTable
-		c: Expr
+		c: Context
 	}
 
 	fs.writeFileSync 'test2.html', """
@@ -151,5 +309,5 @@ if module.parent is null
 		<script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script>
 		<script src='./test2.js'></script>
 	"""
-	fs.writeFileSync('test2.js', renderCode entries)
+	fs.writeFileSync('test2.js', genRenderCode entries)
 
