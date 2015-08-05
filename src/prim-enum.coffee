@@ -10,6 +10,7 @@ require 'coffee-mate/global'
 
 class Enum
 	constructor: (ls) ->
+		assert -> all((x) -> x?) ls
 		return {
 			constructor: Enum
 			enum: ls

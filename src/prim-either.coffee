@@ -12,7 +12,7 @@ class Either
 
 instance('TypeSpec')(Either).where
 	match: ({specs}) -> (v) ->
-		v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[ks[0]])? and match(spec) v
+		v? and v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[ks[0]])? and (match(spec) v)
 	show: ({specs}) ->
 		'Either {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ') + '}'
 	samples: ({specs}) ->

@@ -4,7 +4,7 @@ require 'coffee-mate/global'
 
 instance('TypeSpec')(Array).where
 	match: ([spec]) -> (v) ->
-		v? and v.constructor is Array and all(match spec) v
+		v? and v.constructor is Array and (all(match spec) v)
 	show: ([spec]) ->
 		"[#{show spec}]"
 	samples: ([spec]) ->
