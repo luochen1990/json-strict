@@ -8,7 +8,7 @@ instance('TypeSpec')(Array).where
 	show: ([spec]) ->
 		"[#{show spec}]"
 	samples: ([spec]) ->
-		concat repeat reverse map((n) -> list take(n) samples spec) range(4)
+		concat repeat reverse map((n) -> list take(n) samples spec) range(3)
 	sample: ([spec]) ->
 		[sample spec]
 	htmlInline: ([spec]) ->

@@ -18,7 +18,7 @@ instance('TypeSpec')(Map).where
 	samples: ({kspec, vspec}) ->
 		ks = list take(4) samples(kspec)
 		vs = list take(4) samples(vspec)
-		concat repeat [dict [[ks[0], vs[0]], [ks[1], vs[1]]], dict [[ks[2], vs[2]], [ks[3], vs[3]]]]
+		concat repeat [dict([[ks[0], vs[0]], [ks[1], vs[1]]]), dict([[ks[2], vs[2]], [ks[3], vs[3]]])]
 	htmlInline: ({kspec, vspec}) ->
 		"<span class='type-maker'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
 	htmlNode: ({kspec, vspec}) ->
