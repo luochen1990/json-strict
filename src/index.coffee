@@ -14,7 +14,7 @@ require './prim-constructor'
 module.exports = {
 	Number, String,
 	Bool, Any, Enum, Maybe, Either, Strict, Data,
-	match, show,
+	match, show, sample, samples, showHtml
 }
 
 if module.parent is null
