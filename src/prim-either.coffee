@@ -34,7 +34,7 @@ instance('TypeSpec')(Either).where
 				"\t</div>\n" +
 				"</li>"
 		) enumerate(specdict)
-		head: "<span class='type-maker'>Strict {</span>"
+		head: "<span class='type-maker'>Either {</span>"
 		body: "<ul>" + (list lis).join('\n') + "</ul>"
 		tail: "<span class='type-maker'>}</span>"
 
