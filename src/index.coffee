@@ -11,6 +11,7 @@ require './prim-constructor'
 {Data} = require './prim-data'
 {match, show, sample, samples, showHtml, htmlInline, htmlNode} = require './typespec'
 {genRenderCode} = require './render'
+{typeclass, instance} = require './typeclass'
 
 module.exports = {
 	Number, String,
