@@ -10,13 +10,13 @@
     "url": "git@github.com:luochen1990/TypeSpec.git"
   },
   "keywords": [
+    "json",
     "type",
     "specification",
     "document generation",
-    "json",
     "haskell"
   ],
-  "main": "./build/type-spec.js",
+  "main": "./src/index.coffee",
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive"
   },
@@ -25,6 +25,8 @@
       "coffeeify"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "coffee-mate": "^0.12.3"
+  },
   "devDependencies": {}
 }
