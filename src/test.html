@@ -44,7 +44,7 @@
 .typespec .sample pre {
 	margin: 0;
 	color: green;
-	max-height: 10em;
+	max-height: 20em;
 	overflow: auto;
 }
 .typespec .spec {
@@ -70,7 +70,7 @@
         return $(elm).closest('li,.spec').addClass('unfolded').removeClass('folded');
       });
       rootSelection.find('.type-name').each(function(i, elm) {
-        $(elm).closest('li,.spec').addClass('folded').removeClass('unfolded');
+        $(elm).closest('li').addClass('folded').removeClass('unfolded');
         return $(elm).click(function() {
           return $(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded');
         });

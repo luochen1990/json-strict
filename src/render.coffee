@@ -47,7 +47,7 @@ style = """
 	.typespec .sample pre {
 		margin: 0;
 		color: green;
-		max-height: 10em;
+		max-height: 20em;
 		overflow: auto;
 	}
 	.typespec .spec {
@@ -63,7 +63,7 @@ bind = ($) -> (rootSelection) ->
 	rootSelection.find('ul').each (i, elm) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
 	rootSelection.find('.type-name').each (i, elm) ->
-		$(elm).closest('li,.spec').addClass('folded').removeClass('unfolded')
+		$(elm).closest('li').addClass('folded').removeClass('unfolded')
 		$(elm).click ->
 			$(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded')
 	rootSelection.find('li').each (i, elm) ->
