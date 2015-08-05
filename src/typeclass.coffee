@@ -1,10 +1,13 @@
 require 'coffee-mate/global'
 
 {typeclass, instance} = do ->
+	instances = {}
 	reg = {}
 
 	typeclass = (classname) ->
 		cls = reg[classname] ?= {}
+		ins = instances[classname] ?= []
+		hasInstance: (t) -> ins.indexOf(t) >= 0
 		where: (funcs) ->
 			rst_funcs = {}
 			foreach enumerate(funcs), ([funcname, funcdefault]) ->
@@ -23,8 +26,10 @@ require 'coffee-mate/global'
 
 	instance = (classname) ->
 		cls = reg[classname] ?= {}
+		ins = instances[classname] ?= []
 		(type) ->
 			#log -> type
+			ins.push(type) if ins.indexOf(type) < 0
 			where: (funcdict) ->
 				foreach (enumerate funcdict), ([funcname, funcbody]) ->
 					(cls[funcname] ?= []).push [type, funcbody]
@@ -45,6 +50,9 @@ if module.parent is null
 
 	log -> show "hello"
 	log -> show 1
+	log -> typeclass('Show').hasInstance(String)
+	log -> typeclass('Show').hasInstance(Number)
+	log -> typeclass('Show').hasInstance(Object)
 	#log -> show null
 	#log -> show 0
 	#log -> show {x: 1}
