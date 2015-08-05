@@ -16,7 +16,7 @@ instance('TypeSpec')(Maybe).where
 		"Maybe #{show spec}"
 	samples: ({spec}) ->
 		ls = list take(2) samples spec
-		concat repeat [null, ls[0], undefined, ls[1]]
+		concat repeat [ls[0], null, ls[1], undefined]
 	htmlInline: ({spec}) ->
 		"<span class='type-maker'>Maybe #{htmlInline spec}</span>"
 	htmlNode: ({spec}) ->
