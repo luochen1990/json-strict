@@ -10,7 +10,7 @@ instance('TypeSpec')(Object).where
 	samples: (specdict) ->
 		repeat dict list map(([k, v]) -> [k, sample v]) enumerate(specdict)
 	htmlInline: (specdict) ->
-		"<span class='field-name'>{...}</span>"
+		"<span class='type-maker'>{...}</span>"
 	htmlNode: (specdict) ->
 		lis = map(([k, v]) ->
 			node = htmlNode v
