@@ -11,13 +11,15 @@ Features
 Working
 -------
 
-- Dynamic type checking (optional)
+- Better type specification for function
 
 Todo
 ----
 
+- Better Error Message
+- Unit Test
+- Recursive type definition
+- Dynamic type checking (optional)
 - Automatic input forms generation
 - Automatic smoke testing
-- Better type specification for function
-- Recursive type definition
 
