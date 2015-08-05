@@ -1,9 +1,10 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
+{typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Either
 	constructor: (specs) ->
+		assert -> all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specs)
 		return {
 			constructor: Either
 			specs: specs

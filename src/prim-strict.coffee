@@ -1,9 +1,10 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
+{typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Strict
 	constructor: (specdict) ->
+		assert -> all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specdict)
 		return {
 			constructor: Strict
 			specdict: specdict
@@ -11,7 +12,7 @@ class Strict
 
 instance('TypeSpec')(Strict).where
 	match: ({specdict}) -> (v) ->
-		v.constructor is Object and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
+		v? and v.constructor is Object and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
 	show: ({specdict}) ->
 		'Strict {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ') + '}'
 	samples: ({specdict}) ->

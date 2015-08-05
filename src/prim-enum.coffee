@@ -24,7 +24,5 @@ instance('TypeSpec')(Enum).where
 		concat repeat vs
 	htmlInline: ({enum: vs}) ->
 		"<span class='type-maker'>Enum #{json vs}</span>"
-	htmlNode: ->
-		null
 
 module.exports = {Enum}

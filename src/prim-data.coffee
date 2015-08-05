@@ -1,5 +1,5 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
+{typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Data
@@ -8,7 +8,9 @@ class Data
 			throw ReferenceError 'name must be specified for a Data declaration'
 		if not spec?
 			throw ReferenceError 'spec must be specified for a Data declaration'
+		assert -> typeclass('TypeSpec').hasInstance(spec.constructor)
 		if samples? and not all(match(spec))(take(100) samples)
+			log -> name
 			log -> spec
 			log -> samples
 			log -> match(spec) samples[0]
