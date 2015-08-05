@@ -8,6 +8,8 @@ require './prim-constructor'
 {Either} = require './prim-either'
 {Map} = require './prim-map'
 {Strict} = require './prim-strict'
+{Promise} = require './prim-promise'
+{Fn} = require './prim-fn'
 {Data} = require './prim-data'
 {match, show, sample, samples, showHtml, htmlInline, htmlNode} = require './typespec'
 {genRenderCode} = require './render'
@@ -15,7 +17,7 @@ require './prim-constructor'
 
 module.exports = {
 	Number, String,
-	Bool, Any, Enum, Maybe, Either, Map, Strict, Data,
+	Bool, Any, Enum, Maybe, Either, Map, Strict, Data, Promise, Fn
 	match, show, sample, samples, showHtml, genRenderCode
 }
 

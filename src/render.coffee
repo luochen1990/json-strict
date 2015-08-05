@@ -20,19 +20,18 @@ style = """
 		margin: 0px 0px 0px 2em;
 	}
 	.typespec .meta-field {
-		font-weight: bold;
 		color: gray
 	}
 	.typespec .field-name {
 		font-weight: bold;
 		color: #87BFB8
 	}
-	.typespec .fold>.field-name, .typespec .unfold>.field-name {
-		cursor: help
+	.typespec .fold>.field-name, .typespec .unfold>.field-name, .typespec .fold>.meta-field, .typespec .unfold>.meta-field {
+		cursor: pointer
 	}
 	.typespec .type-name {
 		color: blue;
-		cursor: help
+		cursor: pointer
 	}
 	.typespec .type-maker {
 		color: #223497
@@ -51,6 +50,12 @@ style = """
 		max-height: 10em;
 		overflow: auto;
 	}
+	.typespec .spec {
+		cursor: default
+	}
+	.typespec span:hover {
+		opacity: 0.6
+	}
 """
 
 bind = ($) -> (rootSelection) ->
@@ -62,9 +67,9 @@ bind = ($) -> (rootSelection) ->
 		$(elm).click ->
 			$(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded')
 	rootSelection.find('li').each (i, elm) ->
-		$(elm).children('.unfold').children('.field-name').click ->
+		$(elm).children('.unfold').children('.field-name,.meta-field').click ->
 			$(elm).addClass('folded').removeClass('unfolded')
-		$(elm).children('.fold').children('.field-name').click ->
+		$(elm).children('.fold').children('.field-name,.meta-field').click ->
 			$(elm).addClass('unfolded').removeClass('folded')
 
 showPage = (t) -> "<style>#{style}</style>" + (showHtml t) +
@@ -87,7 +92,7 @@ module.exports = {
 
 if module.parent is null
 	require 'coffee-mate/global'
-	{Bool, Any, Enum, Maybe, Either, Map, Strict, Data, match, show, sample, samples, showHtml} = require './index'
+	{Bool, Any, Enum, Maybe, Either, Map, Strict, Data, Promise, Fn, match, show, sample, samples, showHtml} = require './index'
 
 	TableName = Data
 		name: 'TableName'
@@ -270,11 +275,15 @@ if module.parent is null
 	log -> json (sample WideTable), 4
 	log -> show Context
 
+	FooSpec = Data
+		name: 'FooSpec'
+		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: String}
+
 	fs = require 'fs'
 	fs.writeFileSync('test.html', showPage WideTable)
 
 	entries = {
-		a: TableName
+		a: FooSpec
 		b: WideTable
 		c: Context
 	}
