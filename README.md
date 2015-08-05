@@ -4,7 +4,7 @@ TypeSpec
 Features
 --------
 
-- API Specification in code (instead of document)
+- API Specification via Coding (instead of document writing)
 - Automatic data sample generation
 - Automatic document generation
 
