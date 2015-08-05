@@ -10,11 +10,12 @@ require './prim-constructor'
 {Strict} = require './prim-strict'
 {Data} = require './prim-data'
 {match, show, sample, samples, showHtml, htmlInline, htmlNode} = require './typespec'
+{genRenderCode} = require './render'
 
 module.exports = {
 	Number, String,
 	Bool, Any, Enum, Maybe, Either, Map, Strict, Data,
-	match, show, sample, samples, showHtml
+	match, show, sample, samples, showHtml, genRenderCode
 }
 
 if module.parent is null
