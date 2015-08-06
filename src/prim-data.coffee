@@ -3,7 +3,7 @@ require 'coffee-mate/global'
 {match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
 
 class Data
-	constructor: ({name, spec, check, samples, discription}) ->
+	constructor: ({name, spec, check, samples, description}) ->
 		if not name?
 			throw ReferenceError 'name must be specified for a Data declaration'
 		if not spec?
@@ -22,7 +22,7 @@ class Data
 			check
 			name
 			samples
-			discription
+			description
 		}
 
 instance('TypeSpec')(Data).where

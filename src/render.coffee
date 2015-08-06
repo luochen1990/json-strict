@@ -20,7 +20,8 @@ style = """
 		margin: 0px 0px 0px 2em;
 	}
 	.typespec .meta-field {
-		color: gray
+		color: gray;
+		padding: 0 0.5em 0 0
 	}
 	.typespec .field-name {
 		font-weight: bold;
@@ -37,11 +38,7 @@ style = """
 		color: #223497
 	}
 	.typespec .spliter {
-		display: inline-block;
 		color: gray;
-		padding: 0 0.5em 0 0
-	}
-	.typespec .type-name~.spliter {
 		padding: 0 0.5em
 	}
 	.typespec .sample pre {
@@ -72,7 +69,9 @@ bind = ($) -> (rootSelection) ->
 		$(elm).children('.fold').children('.field-name,.meta-field').click ->
 			$(elm).addClass('unfolded').removeClass('folded')
 
-showPage = (t) -> "<style>#{style}</style>" + (showHtml t) +
+showPage = (t) ->
+	"<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />" +
+	"<style>#{style}</style>" + (showHtml t) +
 	"<script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script>" +
 	"<script>" + "(#{bind.toString()})(jQuery)($('.typespec'))" + "</script>"
 
@@ -278,6 +277,8 @@ if module.parent is null
 	FooSpec = Data
 		name: 'FooSpec'
 		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: String}
+		description: "hello"
+		check: (x) -> x > 1
 
 	fs = require 'fs'
 	fs.writeFileSync('test.html', showPage WideTable)
