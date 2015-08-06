@@ -4,7 +4,7 @@ require 'coffee-mate/global'
 
 instance('TypeSpec')(Object).where
 	match: (specdict) -> (v) ->
-		v? and v.constructor is Object and (all(([k, spec]) -> match(spec) v[k]) enumerate(specdict))
+		v? and v.constructor is Object and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
 	show: (specdict) ->
 		'{' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ') + '}'
 	samples: (specdict) ->

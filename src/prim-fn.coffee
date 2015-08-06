@@ -37,7 +37,7 @@ instance('TypeSpec')(Fn).where
 				"\t</div>\n" +
 				"</li>"
 		) enumerate({input: ispec, output: ospec})
-		head: "<span class='type-maker'>Fn (</span>"
+		head: "<span class='type-maker'>Function (</span>"
 		body: "<ul>" + (list lis).join('\n') + "</ul>"
 		tail: "<span class='type-maker'>)</span>"
 
