@@ -74,10 +74,10 @@ instance('TypeSpec')(Data).where
 			return r.replace(/(\t|\n)/g, '')
 
 		samplePart = do ->
-			sample = json(sample(t), 4)
+			s = json(sample(t), 4)
 			"<div class='sample'>\n" +
 			"<span class='meta-field'>sample</span>: " +
-			(if /\n/.test sample then "<pre>#{sample}</pre>" else "<span>#{sample}</span>") +
+			(if /\n/.test s then "<pre>#{s}</pre>" else "<span>#{s}</span>") +
 			"</div>"
 
 		checkPart = if not check? then '' else
