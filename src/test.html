@@ -18,7 +18,6 @@
 }
 .typespec .meta-field {
 	color: gray;
-	padding: 0 0.5em 0 0
 }
 .typespec .field-name {
 	font-weight: bold;
@@ -29,6 +28,8 @@
 }
 .typespec .type-name {
 	color: blue;
+}
+.typespec .spec .type-name {
 	cursor: pointer
 }
 .typespec .type-maker {
@@ -49,8 +50,8 @@
 }
 .typespec span:hover {
 	opacity: 0.6
-}</style><div class='typespec'><div class='spec'><div class='fold'><span class='meta-field'>specification:</span><span class='type-maker'>[<span class='type-maker'>{...}</span>]</span></div><div class='unfold'><span class='meta-field'>specification:</span><span class='type-maker'>[<span class='type-maker'>{</span></span><ul><li><div class='fold'><span class='field-name'>tableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>tableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><div class='fold'><span class='field-name'>join</span>: <span class='type-maker'>{...}</span></div><div class='unfold'><span class='field-name'>join</span>: <span class='type-maker'>{</span><ul><li><div class='fold'><span class='field-name'>leftTableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>leftTableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><div class='fold'><span class='field-name'>left</span>: <span class='type-name'>FieldName</span></div><div class='unfold'><span class='field-name'>left</span>: <span><span class='type-name'>FieldName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><span class='field-name'>op</span>: <span class='type-maker'>Enum ["=","<","<=",">=",">"]</span></li><li><div class='fold'><span class='field-name'>right</span>: <span class='type-name'>FieldName</span></div><div class='unfold'><span class='field-name'>right</span>: <span><span class='type-name'>FieldName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li></ul><span class='type-maker'>}</span></div></li></ul><span class='type-maker'><span class='type-maker'>}</span>]</span></div></div><div class='sample'>
-<span class='meta-field'>sample:</span><pre>[
+}</style><div class='typespec'><div class='spec'><div class='fold'><span class='meta-field'>spec</span>: <span class='type-maker'>[<span class='type-maker'>{...}</span>]</span></div><div class='unfold'><span class='meta-field'>spec</span>: <span class='type-maker'>[<span class='type-maker'>{</span></span><ul><li><div class='fold'><span class='field-name'>tableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>tableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><div class='fold'><span class='field-name'>join</span>: <span class='type-maker'>{...}</span></div><div class='unfold'><span class='field-name'>join</span>: <span class='type-maker'>{</span><ul><li><div class='fold'><span class='field-name'>leftTableName</span>: <span class='type-name'>TableName</span></div><div class='unfold'><span class='field-name'>leftTableName</span>: <span><span class='type-name'>TableName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><div class='fold'><span class='field-name'>left</span>: <span class='type-name'>FieldName</span></div><div class='unfold'><span class='field-name'>left</span>: <span><span class='type-name'>FieldName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li><li><span class='field-name'>op</span>: <span class='type-maker'>Enum ["=","<","<=",">=",">"]</span></li><li><div class='fold'><span class='field-name'>right</span>: <span class='type-name'>FieldName</span></div><div class='unfold'><span class='field-name'>right</span>: <span><span class='type-name'>FieldName</span><span class='spliter'>spec:</span><span class='type-maker'>String</span></span></div></li></ul><span class='type-maker'>}</span></div></li></ul><span class='type-maker'><span class='type-maker'>}</span>]</span></div></div><div class='sample'>
+<span class='meta-field'>sample</span>: <pre>[
     {
         "tableName": "table1",
         "join": {
@@ -60,23 +61,17 @@
             "right": "product_id"
         }
     }
-]</pre></div><script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script><script>(function ($) {
+]</pre></div></div><script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script><script>(function ($) {
     return function(rootSelection) {
       rootSelection.find('ul').each(function(i, elm) {
         return $(elm).closest('li,.spec').addClass('unfolded').removeClass('folded');
       });
       rootSelection.find('.type-name').each(function(i, elm) {
-        $(elm).closest('li').addClass('folded').removeClass('unfolded');
+        return $(elm).closest('li').addClass('folded').removeClass('unfolded');
+      });
+      return rootSelection.find('.type-name,.field-name,.meta-field').each(function(i, elm) {
         return $(elm).click(function() {
           return $(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded');
-        });
-      });
-      return rootSelection.find('li').each(function(i, elm) {
-        $(elm).children('.unfold').children('.field-name,.meta-field').click(function() {
-          return $(elm).addClass('folded').removeClass('unfolded');
-        });
-        return $(elm).children('.fold').children('.field-name,.meta-field').click(function() {
-          return $(elm).addClass('unfolded').removeClass('folded');
         });
       });
     };

@@ -21,7 +21,6 @@ style = """
 	}
 	.typespec .meta-field {
 		color: gray;
-		padding: 0 0.5em 0 0
 	}
 	.typespec .field-name {
 		font-weight: bold;
@@ -32,6 +31,8 @@ style = """
 	}
 	.typespec .type-name {
 		color: blue;
+	}
+	.typespec .spec .type-name {
 		cursor: pointer
 	}
 	.typespec .type-maker {
@@ -61,13 +62,14 @@ bind = ($) -> (rootSelection) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
 	rootSelection.find('.type-name').each (i, elm) ->
 		$(elm).closest('li').addClass('folded').removeClass('unfolded')
+	rootSelection.find('.type-name,.field-name,.meta-field').each (i, elm) ->
 		$(elm).click ->
 			$(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded')
-	rootSelection.find('li').each (i, elm) ->
-		$(elm).children('.unfold').children('.field-name,.meta-field').click ->
-			$(elm).addClass('folded').removeClass('unfolded')
-		$(elm).children('.fold').children('.field-name,.meta-field').click ->
-			$(elm).addClass('unfolded').removeClass('folded')
+	#rootSelection.find('li').each (i, elm) ->
+	#	$(elm).children('.unfold').children('.field-name,.meta-field').click ->
+	#		$(elm).addClass('folded').removeClass('unfolded')
+	#	$(elm).children('.fold').children('.field-name,.meta-field').click ->
+	#		$(elm).addClass('unfolded').removeClass('folded')
 
 showPage = (t) ->
 	"<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />" +

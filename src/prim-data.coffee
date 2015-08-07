@@ -43,5 +43,51 @@ instance('TypeSpec')(Data).where
 			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{node.head}</span>"
 			body: node.body
 			tail: node.tail
+	showHtml: (t) ->
+		{name, description, spec, check} = t
+
+		namePart = if not name? then '' else
+			"<div class='name'>" +
+			"<span class='meta-field'>name</span>: " +
+			"<span class='type-name'>#{name}</span>" +
+			"</div>"
+
+		descriptionPart = if not description? then '' else
+			"<div class='desc'>" +
+			"<span class='meta-field'>desc</span>: " +
+			(if /\n/.test description then "<pre>#{description}</pre>" else "<span>#{description}</span>") +
+			"</div>"
+
+		specPart = do ->
+			block = htmlNode spec
+			if not block?
+				r = htmlInline spec
+			else
+				r = "<div class='spec'>" +
+				"<div class='fold'><span class='meta-field'>spec</span>: #{htmlInline spec}</div>" +
+				"<div class='unfold'>" +
+				"<span class='meta-field'>spec</span>: #{block.head}" +
+				"#{block.body ? ''}" +
+				"#{block.tail ? ''}" +
+				"</div>" +
+				"</div>"
+			return r.replace(/(\t|\n)/g, '')
+
+		samplePart = do ->
+			sample = json(sample(t), 4)
+			"<div class='sample'>\n" +
+			"<span class='meta-field'>sample</span>: " +
+			(if /\n/.test sample then "<pre>#{sample}</pre>" else "<span>#{sample}</span>") +
+			"</div>"
+
+		checkPart = if not check? then '' else
+			"<div class='check'>" +
+			"<span class='meta-field'>constraint</span>: " +
+			(if /\n/.test check then "<pre>#{check}</pre>" else "<span>#{check}</span>") +
+			"</div>"
+
+		return "<div class='typespec'>" +
+			namePart + descriptionPart + specPart + samplePart + checkPart +
+			"</div>"
 
 module.exports = {Data}
