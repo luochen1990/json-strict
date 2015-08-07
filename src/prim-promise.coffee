@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 class Promise
 	constructor: (spec) ->
@@ -19,8 +19,8 @@ instance('TypeSpec')(Promise).where
 		samples spec
 	htmlInline: ({spec}) ->
 		"<span class='type-maker'>Promise #{htmlInline spec}</span>"
-	htmlNode: ({spec}) ->
-		node = htmlNode spec
+	htmlBlock: ({spec}) ->
+		node = htmlBlock spec
 		if not node?
 			null
 		else

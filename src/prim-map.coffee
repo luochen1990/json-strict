@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 class Map
 	constructor: (kspec, vspec) ->
@@ -21,11 +21,11 @@ instance('TypeSpec')(Map).where
 		concat repeat [dict([[ks[0], vs[0]], [ks[1], vs[1]]]), dict([[ks[2], vs[2]], [ks[3], vs[3]]])]
 	htmlInline: ({kspec, vspec}) ->
 		"<span class='type-maker'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
-	htmlNode: ({kspec, vspec}) ->
+	htmlBlock: ({kspec, vspec}) ->
 		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
 		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
 		lis = map(([k, v]) ->
-			node = htmlNode v
+			node = htmlBlock v
 			oneline = "<span class='meta-field'>#{k}</span>: #{htmlInline v}"
 			if not node?
 				"<li>#{oneline}</li>"

@@ -9,10 +9,10 @@ TypeSpec = typeclass('TypeSpec').where
 	sample: (t) -> head @samples(t)
 	htmlInline: (t) ->
 		"<span class='type-maker'>#{@show t}</span>"
-	htmlNode: (t) -> null
+	htmlBlock: (t) -> null
 	showHtml: (t) ->
 		specPart = do =>
-			block = @htmlNode t
+			block = @htmlBlock t
 			if not block?
 				r = @htmlInline t
 			else

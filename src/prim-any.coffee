@@ -14,9 +14,5 @@ instance('TypeSpec')(Any).where
 		concat repeat ['a', 3, true, [1, 2], {x: 1}] #, NaN, '', {}, []
 	sample: () ->
 		'any'
-	htmlInline: () ->
-		"<span class='type-maker'>Any</span>"
-	htmlNode: () ->
-		null
 
 module.exports = {Any}

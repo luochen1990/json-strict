@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 instance('TypeSpec')(Array).where
 	match: ([spec]) -> (v) ->
@@ -13,8 +13,8 @@ instance('TypeSpec')(Array).where
 		[sample spec]
 	htmlInline: ([spec]) ->
 		"<span class='type-maker'>[#{htmlInline spec}]</span>"
-	htmlNode: ([spec]) ->
-		if not (node = htmlNode spec)?
+	htmlBlock: ([spec]) ->
+		if not (node = htmlBlock spec)?
 			null
 		else
 			head: "<span class='type-maker'>[#{node.head}</span>"

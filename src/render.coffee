@@ -1,4 +1,4 @@
-{match, show, sample, samples, showHtml, htmlInline, htmlNode} = require './typespec'
+{match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 
 style = """
 	.typespec {

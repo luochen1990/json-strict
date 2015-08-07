@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 class Either
 	constructor: (specs) ->
@@ -17,9 +17,9 @@ instance('TypeSpec')(Either).where
 		'Either {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ') + '}'
 	samples: ({specs}) ->
 		concat repeat map(([k, v]) -> dict [[k, sample v]]) enumerate(specs)
-	htmlNode: ({specs: specdict}) ->
+	htmlBlock: ({specs: specdict}) ->
 		lis = map(([k, v]) ->
-			node = htmlNode v
+			node = htmlBlock v
 			oneline = "<span class='field-name'>#{k}</span>: #{htmlInline v}"
 			if not node?
 				"<li>#{oneline}</li>"

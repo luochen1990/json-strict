@@ -19,6 +19,4 @@ instance('TypeSpec')(Function).where
 				repeat (new spec)
 	htmlInline: (spec) ->
 		"<span class='type-maker'>#{show spec}</span>"
-	htmlNode: ->
-		null
 

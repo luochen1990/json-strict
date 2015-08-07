@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 instance('TypeSpec')(Object).where
 	match: (specdict) -> (v) ->
@@ -11,9 +11,9 @@ instance('TypeSpec')(Object).where
 		repeat dict list map(([k, v]) -> [k, sample v]) enumerate(specdict)
 	htmlInline: (specdict) ->
 		"<span class='type-maker'>{...}</span>"
-	htmlNode: (specdict) ->
+	htmlBlock: (specdict) ->
 		lis = map(([k, v]) ->
-			node = htmlNode v
+			node = htmlBlock v
 			oneline = "<span class='field-name'>#{k}</span>: #{htmlInline v}"
 			if not node?
 				"<li>#{oneline}</li>"

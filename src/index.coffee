@@ -11,7 +11,7 @@ require './prim-constructor'
 {Promise} = require './prim-promise'
 {Fn} = require './prim-fn'
 {Data} = require './prim-data'
-{match, show, sample, samples, showHtml, htmlInline, htmlNode} = require './typespec'
+{match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode} = require './render'
 {typeclass, instance} = require './typeclass'
 

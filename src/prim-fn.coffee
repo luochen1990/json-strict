@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlNode} = require './typespec'
+{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 
 class Fn
 	constructor: (ispec) ->
@@ -18,11 +18,11 @@ instance('TypeSpec')(Fn).where
 		repeat {"[input]": (sample ispec), "[output]": (sample ospec)}
 	htmlInline: ({ispec, ospec}) ->
 		"<span class='type-maker'>#{htmlInline ispec} -> #{htmlInline ospec}</span>"
-	htmlNode: ({ispec, ospec}) ->
+	htmlBlock: ({ispec, ospec}) ->
 		assert -> typeclass('TypeSpec').hasInstance(ispec.constructor)
 		assert -> typeclass('TypeSpec').hasInstance(ospec.constructor)
 		lis = map(([k, v]) ->
-			node = htmlNode v
+			node = htmlBlock v
 			oneline = "<span class='meta-field'>#{k}</span>: #{htmlInline v}"
 			if not node?
 				"<li>#{oneline}</li>"
