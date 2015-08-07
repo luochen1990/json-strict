@@ -1,6 +1,7 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{expandBlockHead} = require './helpers'
 
 class Promise
 	constructor: (spec) ->
@@ -20,12 +21,8 @@ instance('TypeSpec')(Promise).where
 	htmlInline: ({spec}) ->
 		"<span class='type-maker unwrapped'>Promise #{htmlInline spec}</span>"
 	htmlBlock: ({spec}) ->
-		node = htmlBlock spec
-		if not node?
-			null
-		else
-			head: "<span class='type-maker'>Promise #{node.head}</span>"
-			body: node.body
-			tail: node.tail
+		expandBlockHead((head) ->
+			"<span class='type-maker'>Promise #{head}</span>"
+		) spec
 
 module.exports = {Promise}

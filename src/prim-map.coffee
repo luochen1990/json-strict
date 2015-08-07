@@ -1,9 +1,12 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{genBlockBody} = require './helpers'
 
 class Map
 	constructor: (kspec, vspec) ->
+		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
+		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
 		return {
 			constructor: Map
 			kspec: kspec
@@ -22,26 +25,8 @@ instance('TypeSpec')(Map).where
 	htmlInline: ({kspec, vspec}) ->
 		"<span class='type-maker unwrapped'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
 	htmlBlock: ({kspec, vspec}) ->
-		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
-		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
-		lis = map(([k, v]) ->
-			node = htmlBlock v
-			oneline = "<span class='meta-field'>#{k}</span>: #{htmlInline v}"
-			if not node?
-				"<li>#{oneline}</li>"
-			else
-				#"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
-				"<li>\n" +
-				"\t<div class='fold'>#{oneline}</div>\n" +
-				"\t<div class='unfold'>\n" +
-				"\t\t<span class='meta-field'>#{k}</span>: #{node.head}\n" +
-				"\t\t#{node.body ? ''}\n" +
-				"\t\t#{node.tail ? ''}\n" +
-				"\t</div>\n" +
-				"</li>"
-		) enumerate({key: kspec, value: vspec})
 		head: "<span class='type-maker'>Map (</span>"
-		body: "<ul>" + (list lis).join('\n') + "</ul>"
+		body: genBlockBody('map', 'meta-field') {key: kspec, value: vspec}
 		tail: "<span class='type-maker'>)</span>"
 
 module.exports = {Map}

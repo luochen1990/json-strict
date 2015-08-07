@@ -1,6 +1,7 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{expandBlockHead} = require './helpers'
 
 class Data
 	constructor: ({name, spec, check, samples, description}) ->
@@ -35,14 +36,11 @@ instance('TypeSpec')(Data).where
 	htmlInline: ({name, spec}) ->
 		if name? then "<span class='type-name'>#{name}</span>" else htmlInline spec
 	htmlBlock: ({name, spec}) ->
-		if not (node = htmlBlock spec)?
+		expandBlockHead((head) ->
+			"<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{head}</span>"
+		)(spec) ? {
 			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{htmlInline spec}</span>"
-			body: null
-			tail: null
-		else
-			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{node.head}</span>"
-			body: node.body
-			tail: node.tail
+		}
 	showHtml: (t) ->
 		{name, description, spec, check} = t
 

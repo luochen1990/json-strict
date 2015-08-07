@@ -76,10 +76,13 @@ bind = ($) -> (rootSelection) ->
 	#		$(elm).addClass('unfolded').removeClass('folded')
 
 showPage = (t) ->
-	"<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />" +
-	"<style>#{style}</style>" + (showHtml t) +
-	"<script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script>" +
-	"<script>" + "(#{bind.toString()})(jQuery)($('.typespec'))" + "</script>"
+	"""
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+	<style>#{style}</style>
+	#{showHtml t}
+	<script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script>
+	<script>(#{bind.toString()})(jQuery)($('.typespec'))</script>
+	"""
 
 init = ($) -> (bind, specs, style) ->
 	$('head').append("<style>#{style}</style>")

@@ -1,6 +1,7 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{genBlockBody} = require './helpers'
 
 instance('TypeSpec')(Object).where
 	match: (specdict) -> (v) ->
@@ -12,23 +13,7 @@ instance('TypeSpec')(Object).where
 	htmlInline: (specdict) ->
 		"<span class='type-maker'>{<span class='folded-detail'>...</span>}</span>"
 	htmlBlock: (specdict) ->
-		lis = map(([k, v]) ->
-			node = htmlBlock v
-			oneline = "<span class='field-name'>#{k}</span>: #{htmlInline v}"
-			if not node?
-				"<li>#{oneline}</li>"
-			else
-				#"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
-				"<li>\n" +
-				"\t<div class='fold'>#{oneline}</div>\n" +
-				"\t<div class='unfold'>\n" +
-				"\t\t<span class='field-name'>#{k}</span>: #{node.head}\n" +
-				"\t\t#{node.body ? ''}\n" +
-				"\t\t#{node.tail ? ''}\n" +
-				"\t</div>\n" +
-				"</li>"
-		) enumerate(specdict)
 		head: "<span class='type-maker'>{</span>"
-		body: "<ul>" + (list lis).join('\n') + "</ul>"
+		body: genBlockBody('object', 'field-name') specdict
 		tail: "<span class='type-maker'>}</span>"
 

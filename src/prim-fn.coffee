@@ -1,10 +1,13 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{genBlockBody} = require './helpers'
 
 class Fn
 	constructor: (ispec) ->
+		assert -> typeclass('TypeSpec').hasInstance(ispec.constructor)
 		return (ospec) ->
+			assert -> typeclass('TypeSpec').hasInstance(ospec.constructor)
 			constructor: Fn
 			ispec: ispec
 			ospec: ospec
@@ -19,26 +22,8 @@ instance('TypeSpec')(Fn).where
 	htmlInline: ({ispec, ospec}) ->
 		"<span class='type-maker unwrapped'>#{htmlInline ispec} -> #{htmlInline ospec}</span>"
 	htmlBlock: ({ispec, ospec}) ->
-		assert -> typeclass('TypeSpec').hasInstance(ispec.constructor)
-		assert -> typeclass('TypeSpec').hasInstance(ospec.constructor)
-		lis = map(([k, v]) ->
-			node = htmlBlock v
-			oneline = "<span class='meta-field'>#{k}</span>: #{htmlInline v}"
-			if not node?
-				"<li>#{oneline}</li>"
-			else
-				#"<li class='#{if v.name? then 'folded' else 'unfolded'}'>\n" +
-				"<li>\n" +
-				"\t<div class='fold'>#{oneline}</div>\n" +
-				"\t<div class='unfold'>\n" +
-				"\t\t<span class='meta-field'>#{k}</span>: #{node.head}\n" +
-				"\t\t#{node.body ? ''}\n" +
-				"\t\t#{node.tail ? ''}\n" +
-				"\t</div>\n" +
-				"</li>"
-		) enumerate({input: ispec, output: ospec})
 		head: "<span class='type-maker'>Function (</span>"
-		body: "<ul>" + (list lis).join('\n') + "</ul>"
+		body: genBlockBody('function', 'meta-field') {input: ispec, output: ospec}
 		tail: "<span class='type-maker'>)</span>"
 
 module.exports = {Fn}
