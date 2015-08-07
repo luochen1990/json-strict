@@ -46,48 +46,59 @@ instance('TypeSpec')(Data).where
 	showHtml: (t) ->
 		{name, description, spec, check} = t
 
-		namePart = if not name? then '' else
-			"<div class='name'>" +
-			"<span class='meta-field'>name</span>: " +
-			"<span class='type-name'>#{name}</span>" +
-			"</div>"
+		namePart = if not name? then '' else """
+			<div class='name'>
+			<span class='meta-field'>name</span>: <span class='type-name'>#{name}</span>
+			</div>
+			"""
 
-		descriptionPart = if not description? then '' else
-			"<div class='desc'>" +
-			"<span class='meta-field'>desc</span>: " +
-			(if /\n/.test description then "<pre>#{description}</pre>" else "<span>#{description}</span>") +
-			"</div>"
+		descriptionPart = if not description? then '' else do ->
+			s = description
+			return """
+			<div class='desc'>
+			<span class='meta-field'>desc</span>: #{
+				if /\n/.test s then "<pre class='text'>#{s}</pre>" else "<span class='text'>#{s}</span>"
+			}
+			</div>
+			"""
 
 		specPart = do ->
 			block = htmlBlock spec
-			if not block?
-				r = htmlInline spec
-			else
-				r = "<div class='spec'>" +
-				"<div class='fold'><span class='meta-field'>spec</span>: #{htmlInline spec}</div>" +
-				"<div class='unfold'>" +
-				"<span class='meta-field'>spec</span>: #{block.head}" +
-				"#{block.body ? ''}" +
-				"#{block.tail ? ''}" +
-				"</div>"
-			r = "<div class='spec'>" + r + "</div>"
-			return r.replace(/(\t|\n)/g, '')
+			return """
+			<div class='spec'>
+			<div class='#{if block? then 'fold' else 'inline'}'><span class='meta-field'>spec</span>: #{htmlInline spec}</div>
+			#{if block? then (
+				"""
+				<div class='unfold'>
+					<span class='meta-field'>spec</span>: #{block.head}
+					#{block.body ? ''}
+					#{block.tail ? ''}
+				</div>
+				"""
+			) else ''}
+			</div>
+			""".replace(/(\t|\n)/g, '')
 
 		samplePart = do ->
 			s = json(sample(t), 4)
-			"<div class='sample'>\n" +
-			"<span class='meta-field'>sample</span>: " +
-			(if /\n/.test s then "<pre>#{s}</pre>" else "<span>#{s}</span>") +
-			"</div>"
+			return """
+			<div class='sample'>
+			<span class='meta-field'>sample</span>: #{
+				if /\n/.test s then "<pre class='code'>#{s}</pre>" else "<span class='code'>#{s}</span>"
+			}
+			</div>
+			"""
 
-		checkPart = if not check? then '' else
-			"<div class='check'>" +
-			"<span class='meta-field'>constraint</span>: " +
-			(if /\n/.test check then "<pre>#{check}</pre>" else "<span>#{check}</span>") +
-			"</div>"
+		checkPart = if not check? then '' else do ->
+			s = check.toString()
+			return """
+			<div class='check'>
+			<span class='meta-field'>constraint</span>: #{
+				if /\n/.test s then "<pre class='code'>#{s}</pre>" else "<span class='code'>#{s}</span>"
+			}
+			</div>
+			"""
 
-		return "<div class='typespec'>" +
-			namePart + descriptionPart + specPart + samplePart + checkPart +
-			"</div>"
+		return "<div class='typespec'>#{ namePart + descriptionPart + specPart + samplePart + checkPart }</div>"
 
 module.exports = {Data}

@@ -58,7 +58,7 @@ style = """
 
 bind = ($) -> (rootSelection) ->
 	#console.info rootSelection.find('ul')
-	rootSelection.find('ul').each (i, elm) ->
+	rootSelection.find('.unfold').each (i, elm) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
 	rootSelection.find('.type-name').each (i, elm) ->
 		$(elm).closest('li').addClass('folded').removeClass('unfolded')
@@ -289,16 +289,9 @@ if module.parent is null
 		a: FooSpec
 		b: WideTable
 		c: Context
+		d: FieldName
+		e: String
 	}
 
-	fs.writeFileSync 'test2.html', """
-		<div class='typespec-hook' it='a'></div>
-		haha
-		<div class='typespec-hook' it='b'></div>
-		haha
-		<div class='typespec-hook' it='c'></div>
-		<script src='http://libs.baidu.com/jquery/1.9.0/jquery.js'></script>
-		<script src='./test2.js'></script>
-	"""
 	fs.writeFileSync('test2.js', genRenderCode entries)
 
