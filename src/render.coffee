@@ -26,9 +26,6 @@ style = """
 		font-weight: bold;
 		color: #87BFB8
 	}
-	.typespec .fold>.field-name, .typespec .unfold>.field-name, .typespec .fold>.meta-field, .typespec .unfold>.meta-field {
-		cursor: pointer
-	}
 	.typespec .type-name {
 		color: blue;
 	}
@@ -51,7 +48,7 @@ style = """
 	.typespec .spec {
 		cursor: default
 	}
-	.typespec span:hover {
+	.typespec .fold>.field-name:hover, .typespec .unfold>.field-name:hover, .typespec .fold>.meta-field:hover, .typespec .unfold>.meta-field:hover, .typespec .spec .type-name:hover {
 		opacity: 0.6
 	}
 """
@@ -62,9 +59,10 @@ bind = ($) -> (rootSelection) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
 	rootSelection.find('.type-name').each (i, elm) ->
 		$(elm).closest('li').addClass('folded').removeClass('unfolded')
-	rootSelection.find('.type-name,.field-name,.meta-field').each (i, elm) ->
-		$(elm).click ->
-			$(elm).closest('li,.spec').toggleClass('folded').toggleClass('unfolded')
+	rootSelection.find('.type-name, .fold>.field-name, .unfold>.field-name, .fold>.meta-field, .unfold>.meta-field').each (i, elm) ->
+		if (e = $(elm).closest('li,.spec')).length > 0
+			$(elm).css(cursor: 'pointer').click ->
+				e.toggleClass('folded').toggleClass('unfolded')
 	#rootSelection.find('li').each (i, elm) ->
 	#	$(elm).children('.unfold').children('.field-name,.meta-field').click ->
 	#		$(elm).addClass('folded').removeClass('unfolded')
