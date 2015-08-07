@@ -69,8 +69,8 @@ instance('TypeSpec')(Data).where
 				"<span class='meta-field'>spec</span>: #{block.head}" +
 				"#{block.body ? ''}" +
 				"#{block.tail ? ''}" +
-				"</div>" +
 				"</div>"
+			r = "<div class='spec'>" + r + "</div>"
 			return r.replace(/(\t|\n)/g, '')
 
 		samplePart = do ->
