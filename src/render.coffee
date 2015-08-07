@@ -35,6 +35,12 @@ style = """
 	.typespec .type-maker {
 		color: #223497
 	}
+	.typespec .type-maker.unwrapped .unwrapped:before {
+		content: '('
+	}
+	.typespec .type-maker.unwrapped .unwrapped:after {
+		content: ')'
+	}
 	.typespec .spliter {
 		color: gray;
 		padding: 0 0.5em
@@ -48,7 +54,7 @@ style = """
 	.typespec .spec {
 		cursor: default
 	}
-	.typespec .fold>.field-name:hover, .typespec .unfold>.field-name:hover, .typespec .fold>.meta-field:hover, .typespec .unfold>.meta-field:hover, .typespec .spec .type-name:hover {
+	.typespec .spec .type-name:hover, .typespec .spec .folded-detail:hover, .typespec .fold>.field-name:hover, .typespec .unfold>.field-name:hover, .typespec .fold>.meta-field:hover, .typespec .unfold>.meta-field:hover {
 		opacity: 0.6
 	}
 """
@@ -59,7 +65,7 @@ bind = ($) -> (rootSelection) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
 	rootSelection.find('.type-name').each (i, elm) ->
 		$(elm).closest('li').addClass('folded').removeClass('unfolded')
-	rootSelection.find('.type-name, .fold>.field-name, .unfold>.field-name, .fold>.meta-field, .unfold>.meta-field').each (i, elm) ->
+	rootSelection.find('.type-name, .folded-detail, .fold>.field-name, .unfold>.field-name, .fold>.meta-field, .unfold>.meta-field').each (i, elm) ->
 		if (e = $(elm).closest('li,.spec')).length > 0
 			$(elm).css(cursor: 'pointer').click ->
 				e.toggleClass('folded').toggleClass('unfolded')
@@ -288,7 +294,8 @@ if module.parent is null
 		b: WideTable
 		c: Context
 		d: FieldName
-		e: String
+		e: Either {x: Number, y: String}
+		f: Fn(Number) Number
 	}
 
 	fs.writeFileSync('test2.js', genRenderCode entries)

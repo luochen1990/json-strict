@@ -20,7 +20,7 @@ instance('TypeSpec')(Map).where
 		vs = list take(4) samples(vspec)
 		concat repeat [dict([[ks[0], vs[0]], [ks[1], vs[1]]]), dict([[ks[2], vs[2]], [ks[3], vs[3]]])]
 	htmlInline: ({kspec, vspec}) ->
-		"<span class='type-maker'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
+		"<span class='type-maker unwrapped'>Map #{htmlInline kspec} #{htmlInline vspec}</span>"
 	htmlBlock: ({kspec, vspec}) ->
 		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
 		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)

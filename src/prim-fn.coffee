@@ -17,7 +17,7 @@ instance('TypeSpec')(Fn).where
 	samples: ({ispec, ospec}) ->
 		repeat {"[input]": (sample ispec), "[output]": (sample ospec)}
 	htmlInline: ({ispec, ospec}) ->
-		"<span class='type-maker'>#{htmlInline ispec} -> #{htmlInline ospec}</span>"
+		"<span class='type-maker unwrapped'>#{htmlInline ispec} -> #{htmlInline ospec}</span>"
 	htmlBlock: ({ispec, ospec}) ->
 		assert -> typeclass('TypeSpec').hasInstance(ispec.constructor)
 		assert -> typeclass('TypeSpec').hasInstance(ospec.constructor)

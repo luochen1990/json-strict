@@ -19,7 +19,7 @@ instance('TypeSpec')(Maybe).where
 		ls = list take(2) samples spec
 		concat repeat [ls[0], null, ls[1], undefined]
 	htmlInline: ({spec}) ->
-		"<span class='type-maker'>Maybe #{htmlInline spec}</span>"
+		"<span class='type-maker unwrapped'>Maybe #{htmlInline spec}</span>"
 	htmlBlock: ({spec}) ->
 		node = htmlBlock spec
 		if not node?

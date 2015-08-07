@@ -18,7 +18,7 @@ instance('TypeSpec')(Strict).where
 	samples: ({specdict}) ->
 		repeat dict list map(([k, v]) -> [k, sample v]) enumerate(specdict)
 	htmlInline: ({specdict}) ->
-		"<span class='type-maker'>{...}</span>"
+		"<span class='type-maker unwrapped'>{<span class='folded-detail'>...</span>}</span>"
 	htmlBlock: ({specdict}) ->
 		lis = map(([k, v]) ->
 			node = htmlBlock v

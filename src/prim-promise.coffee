@@ -18,7 +18,7 @@ instance('TypeSpec')(Promise).where
 	samples: ({spec}) ->
 		samples spec
 	htmlInline: ({spec}) ->
-		"<span class='type-maker'>Promise #{htmlInline spec}</span>"
+		"<span class='type-maker unwrapped'>Promise #{htmlInline spec}</span>"
 	htmlBlock: ({spec}) ->
 		node = htmlBlock spec
 		if not node?
