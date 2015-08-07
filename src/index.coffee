@@ -12,13 +12,13 @@ require './prim-constructor'
 {Fn} = require './prim-fn'
 {Data} = require './prim-data'
 {match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
-{genRenderCode} = require './render'
+{genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
 
 module.exports = {
 	Number, String,
 	Bool, Any, Enum, Maybe, Either, Map, Strict, Data, Promise, Fn
-	match, show, sample, samples, showHtml, genRenderCode
+	match, show, sample, samples, showHtml, genRenderCode, showPage
 }
 
 if module.parent is null

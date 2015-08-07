@@ -20,7 +20,7 @@ require 'coffee-mate/global'
 					if funcdefault?
 						return funcdefault.call(rst_funcs, arg)
 					else
-						throw TypeError "no instance of #{classname}(via #{funcname}) for #{arg.constructor.name or 'UnnamedType'}"
+						throw TypeError "no instance of #{classname}(via #{funcname}(#{arg})) for #{arg.constructor.name or 'UnnamedType'}"
 				rst_funcs[funcname] = f
 			return rst_funcs
 

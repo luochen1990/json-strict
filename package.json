@@ -1,6 +1,6 @@
 {
   "name": "type-spec",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Type Specification for JavaScript/JSON & Dynamic Type Checking & Document Generation",
   "author": "luochen1990",
   "license": "MIT",
@@ -26,7 +26,8 @@
     ]
   },
   "dependencies": {
-    "coffee-mate": "^0.12.3"
+    "coffee-mate": "^0.13.0",
+    "shelljs": "^0.5.1"
   },
   "devDependencies": {}
 }
