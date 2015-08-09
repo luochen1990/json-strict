@@ -7,11 +7,12 @@ Features
 - API Specification via Coding (instead of document writing)
 - Automatic data sample generation
 - Automatic document generation
+- Better type specification for functions
 
 Working
 -------
 
-- Better type specification for function
+- Automatic data mocking
 
 Todo
 ----
