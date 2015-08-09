@@ -3,22 +3,28 @@ require './prim-array'
 require './prim-constructor'
 {Bool} = require './prim-bool'
 {Any} = require './prim-any'
+{Int} = require './prim-int'
 {Enum} = require './prim-enum'
 {Maybe} = require './prim-maybe'
-{Either} = require './prim-either'
-{Map} = require './prim-map'
-{Strict} = require './prim-strict'
 {Promise} = require './prim-promise'
+{Tree} = require './prim-tree'
+{Map} = require './prim-map'
 {Fn} = require './prim-fn'
 {Data} = require './prim-data'
+{Strict} = require './prim-strict'
+{Loose} = require './prim-loose'
+{Either} = require './prim-either'
 {match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
 
 module.exports = {
 	Number, String,
-	Bool, Any, Enum, Maybe, Either, Map, Strict, Data, Promise, Fn
-	match, show, sample, samples, showHtml, genRenderCode, showPage
+	Bool, Any, Int, Enum,
+	Maybe, Promise, Tree,
+	Map, Fn,
+	Data, Strict, Loose, Either,
+	match, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 
 if module.parent is null

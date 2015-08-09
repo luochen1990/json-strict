@@ -100,7 +100,14 @@ module.exports = {
 
 if module.parent is null
 	require 'coffee-mate/global'
-	{Bool, Any, Enum, Maybe, Either, Map, Strict, Data, Promise, Fn, match, show, sample, samples, showHtml} = require './index'
+	{
+		Number, String,
+		Bool, Any, Int, Enum,
+		Maybe, Promise, Tree,
+		Map, Fn,
+		Data, Strict, Loose, Either,
+		match, show, sample, samples, showHtml, genRenderCode, showPage,
+	} = require './index'
 
 	TableName = Data
 		name: 'TableName'
@@ -298,7 +305,7 @@ if module.parent is null
 		c: Context
 		d: FieldName
 		e: Either {x: Number, y: String}
-		f: Fn(Number) Number
+		f: Fn(Tree Int) (Loose {x: Number, y: Number})
 	}
 
 	fs.writeFileSync('test2.js', genRenderCode entries)
