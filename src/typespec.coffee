@@ -4,7 +4,13 @@ require 'coffee-mate/global'
 
 TypeSpec = typeclass('TypeSpec').where
 	match: null
-	show: null
+	withSpec: (t) -> (v) ->
+		if not @match(t)(v)
+			throw TypeError {expected: @show(t), got: v}
+		else
+			return v
+	show: (t) ->
+		t.name or 'UnnamedType'
 	samples: null
 	sample: (t) -> head @samples(t)
 	htmlInline: (t) ->

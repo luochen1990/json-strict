@@ -13,7 +13,14 @@ class Promise
 
 instance('TypeSpec')(Promise).where
 	match: ({spec}) -> (v) ->
-		match(spec)(v)
+		v?.then?
+	withSpec: ({spec}) -> (v) ->
+		if not v?.then?
+			throw TypeError {expected: 'Promise', got: v}
+		else
+			return v.then (x) ->
+				withSpec(spec)(x)
+				return x
 	show: ({spec}) ->
 		"Promise #{show spec}"
 	samples: ({spec}) ->
