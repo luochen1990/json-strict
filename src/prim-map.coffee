@@ -15,7 +15,9 @@ class Map
 
 instance('TypeSpec')(Map).where
 	match: ({kspec, vspec}) -> (v) ->
-		v? and v.constructor is Object and (all(match spec) map(seek v) Object.keys(v))
+		mk = match(kspec)
+		mv = match(vspec)
+		v? and v.constructor is Object and all(mk)(ks = Object.keys(v)) and all(mv)(map(seek v) ks)
 	show: ({kspec, vspec}) ->
 		"Map #{show kspec} #{show vspec}"
 	samples: ({kspec, vspec}) ->
