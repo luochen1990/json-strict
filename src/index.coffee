@@ -9,6 +9,7 @@ require './prim-constructor'
 {Promise} = require './prim-promise'
 {Tree} = require './prim-tree'
 {Map} = require './prim-map'
+{TreeMap} = require './prim-treemap'
 {Fn} = require './prim-fn'
 {Data} = require './prim-data'
 {Strict} = require './prim-strict'
@@ -22,7 +23,7 @@ module.exports = {
 	Number, String,
 	Bool, Any, Int, Enum,
 	Maybe, Promise, Tree,
-	Map, Fn,
+	Map, TreeMap, Fn,
 	Data, Strict, Loose, Either,
 	match, show, sample, samples, showHtml, genRenderCode, showPage,
 }
