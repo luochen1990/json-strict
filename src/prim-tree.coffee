@@ -12,13 +12,17 @@ class Tree
 		}
 
 instance('TypeSpec')(Tree).where
-	match: ({labelSpec}) -> (v) ->
-		v? and typeof v is 'object' and match(labelSpec)(v.rootLabel) and all(match labelSpec)(map(pluck 'rootLabel') v.subForest)
+	match: (t) -> (v) ->
+		{labelSpec} = t
+		ml = match(labelSpec)
+		v? and typeof v is 'object' and ml(v.rootLabel) and all(ml)(map(pluck 'rootLabel') v.subForest)
 	show: ({labelSpec}) ->
 		"Tree #{show labelSpec}"
 	samples: ({labelSpec}) ->
 		ls = list take(2) samples labelSpec
-		repeat {rootLabel: ls[0], subForest: [ls[1]]}
+		s0 = {rootLabel: ls[0], subForest: []}
+		s1 = {rootLabel: ls[1], subForest: [s0]}
+		concat repeat [s0, s1]
 	htmlInline: ({labelSpec}) ->
 		"<span class='type-maker unwrapped'>Tree #{htmlInline labelSpec}</span>"
 	htmlBlock: ({labelSpec}) ->
