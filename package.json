@@ -1,6 +1,6 @@
 {
   "name": "type-spec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Type Specification for JSON/JS & Dynamic Type Checking & Document Generation",
   "author": "luochen1990",
   "license": "MIT",

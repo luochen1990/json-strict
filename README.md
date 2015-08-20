@@ -13,6 +13,8 @@ Working
 -------
 
 - Automatic data mocking
+- Dynamic type checking (optional)
+- Automatic smoke testing
 
 Todo
 ----
@@ -20,7 +22,5 @@ Todo
 - Better Error Message
 - Unit Test
 - Recursive type definition
-- Dynamic type checking (optional)
 - Automatic input forms generation
-- Automatic smoke testing
 
