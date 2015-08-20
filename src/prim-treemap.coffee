@@ -34,7 +34,7 @@ instance('TypeSpec')(TreeMap).where
 	samples: ({kspec, vspec}) ->
 		ks = list take(4) samples(kspec)
 		vs = list take(3) samples(vspec)
-		concat repeat [dict([[ks[0], dict([[ks[2], vs[0]], [ks[3], vs[1]]])], [ks[1], vs[2]]])]
+		concat repeat [{node: dict([[ks[0], {node: dict([[ks[2], {leaf: vs[0]}], [ks[3], {leaf: vs[1]}]])}], [ks[1], {leaf: vs[2]}]])}]
 	htmlInline: ({kspec, vspec}) ->
 		"<span class='type-maker unwrapped'>TreeMap #{htmlInline kspec} #{htmlInline vspec}</span>"
 	htmlBlock: ({kspec, vspec}) ->
