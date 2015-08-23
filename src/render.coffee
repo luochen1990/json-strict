@@ -102,10 +102,10 @@ if module.parent is null
 	require 'coffee-mate/global'
 	{
 		Number, String,
-		Bool, Any, Int, Enum,
+		Bool, Any, Int, Enum, Value,
 		Maybe, Promise, Tree,
-		Data, Strict, Loose, Select, Choose,
 		Map, Fn,
+		Data, Strict, Loose, Select, Choose,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
 	} = require './index'
 
@@ -292,7 +292,7 @@ if module.parent is null
 
 	FooSpec = Data
 		name: 'FooSpec'
-		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Int, String]}
+		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Int, String, Value 'unavailable']}
 		description: "hello"
 		check: (x) -> x > 1
 
