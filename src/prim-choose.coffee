@@ -24,7 +24,7 @@ instance('TypeSpec')(Choose).where
 	htmlBlock: ({specs}) ->
 		#log -> (list zip(repeat('-'), specs))
 		head: "<span class='type-maker'>Choose [</span>"
-		body: genBlockBody('choose', 'field-name')(dict list zip(naturals, specs))
+		body: genBlockBody('choose', 'meta-field')(dict list zip(naturals, specs))
 		tail: "<span class='type-maker'>]</span>"
 
 module.exports = {Choose}
