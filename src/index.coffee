@@ -15,6 +15,7 @@ require './prim-constructor'
 {Strict} = require './prim-strict'
 {Loose} = require './prim-loose'
 {Either} = require './prim-either'
+{Choose} = require './prim-choose'
 {match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
@@ -24,7 +25,7 @@ module.exports = {
 	Bool, Any, Int, Enum,
 	Maybe, Promise, Tree,
 	Map, TreeMap, Fn,
-	Data, Strict, Loose, Either,
+	Data, Strict, Loose, Either, Choose,
 	match, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 

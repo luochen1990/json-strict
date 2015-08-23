@@ -104,8 +104,8 @@ if module.parent is null
 		Number, String,
 		Bool, Any, Int, Enum,
 		Maybe, Promise, Tree,
+		Data, Strict, Loose, Either, Choose,
 		Map, Fn,
-		Data, Strict, Loose, Either,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
 	} = require './index'
 
@@ -292,7 +292,7 @@ if module.parent is null
 
 	FooSpec = Data
 		name: 'FooSpec'
-		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: String}
+		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Int, String]}
 		description: "hello"
 		check: (x) -> x > 1
 
