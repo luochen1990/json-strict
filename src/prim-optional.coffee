@@ -3,27 +3,27 @@ require 'coffee-mate/global'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 {expandBlockHead} = require './helpers'
 
-class Maybe
+class Optional
 	constructor: (spec) ->
 		assert -> typeclass('TypeSpec').hasInstance(spec.constructor)
 		return {
-			constructor: Maybe
+			constructor: Optional
 			spec: spec
 		}
 
-instance('TypeSpec')(Maybe).where
+instance('TypeSpec')(Optional).where
 	match: ({spec}) -> (v) ->
 		not v? or match(spec) v
 	show: ({spec}) ->
-		"Maybe #{show spec}"
+		"Optional #{show spec}"
 	samples: ({spec}) ->
 		ls = list take(2) samples spec
 		concat repeat [ls[0], null, ls[1], undefined]
 	htmlInline: ({spec}) ->
-		"<span class='type-maker unwrapped'>Maybe #{htmlInline spec}</span>"
+		"<span class='type-maker unwrapped'>Optional #{htmlInline spec}</span>"
 	htmlBlock: ({spec}) ->
 		expandBlockHead((head) ->
-			"<span class='type-maker'>Maybe #{head}</span>"
+			"<span class='type-maker'>Optional #{head}</span>"
 		) spec
 
-module.exports = {Maybe}
+module.exports = {Optional}

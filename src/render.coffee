@@ -107,7 +107,7 @@ if module.parent is null
 	{
 		Number, String,
 		Bool, Any, Int, Enum, Value,
-		Maybe, Promise, Tree,
+		Optional, Promise, Tree,
 		Map, Fn,
 		NamedType, Strict, Loose, Select, Choose,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
@@ -205,7 +205,7 @@ if module.parent is null
 				measure: Measure
 				expr: ValueExpr
 			}
-			where: Maybe ConditionExpr
+			where: Optional ConditionExpr
 		}
 	Context =
 		filter: Strict
@@ -213,8 +213,8 @@ if module.parent is null
 			measures: [Strict {
 				measure: Measure
 				limit:
-					minBound: Maybe Number
-					maxBound: Maybe Number
+					minBound: Optional Number
+					maxBound: Optional Number
 			}]
 			inclusions: [InclusionCondition]
 			exclusions: [ExclusionCondition]

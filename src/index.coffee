@@ -6,7 +6,7 @@ require './prim-constructor'
 {Int} = require './prim-int'
 {Enum} = require './prim-enum'
 {Value} = require './prim-value'
-{Maybe} = require './prim-maybe'
+{Optional} = require './prim-optional'
 {Promise} = require './prim-promise'
 {Tree} = require './prim-tree'
 {Map} = require './prim-map'
@@ -24,7 +24,7 @@ require './prim-constructor'
 module.exports = {
 	Number, String,
 	Bool, Any, Int, Enum, Value,
-	Maybe, Promise, Tree,
+	Optional, Promise, Tree,
 	Map, TreeMap, Fn,
 	NamedType, Strict, Loose, Select, Choose,
 	match, show, sample, samples, showHtml, genRenderCode, showPage,
@@ -32,7 +32,7 @@ module.exports = {
 
 if module.parent is null
 	require 'coffee-mate/global'
-	UserName = Maybe String
+	UserName = Optional String
 	UserInfo = {
 		name: UserName
 		position: String
@@ -48,7 +48,7 @@ if module.parent is null
 	#log -> json sample Any
 	#log -> sample Function
 	#log -> json list take(20) samples [Any]
-	#log -> json list take(20) samples Maybe String
+	#log -> json list take(20) samples Optional String
 	#log -> json list take(20) samples Map(TableName, Number)
 	#log -> json list take(20) samples NamedType spec: Strict {x: Number, y: String}
 	#log -> json sample Enum ['a', 'b']
