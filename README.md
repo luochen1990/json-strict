@@ -13,14 +13,17 @@ Working
 -------
 
 - Automatic data mocking
-- Dynamic type checking (optional)
+- Optional runtime type checking 
 - Automatic smoke testing
+- Generate more kinds of documents (text, markdown, static html etc.)
+- Better documents about how to use this tool
+- Make this an npm script
 
 Todo
 ----
 
 - Better Error Message
 - Unit Test
-- Recursive type definition
 - Automatic input forms generation
+- Recursive type definition
 
