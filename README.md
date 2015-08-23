@@ -9,6 +9,11 @@ Features
 - Automatic document generation
 - Better type specification for functions
 
+Documents
+---------
+
+- [Primitives](./Primitives-cn.md)
+
 Working
 -------
 
