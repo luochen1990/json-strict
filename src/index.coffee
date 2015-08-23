@@ -14,7 +14,7 @@ require './prim-constructor'
 {Data} = require './prim-data'
 {Strict} = require './prim-strict'
 {Loose} = require './prim-loose'
-{Either} = require './prim-either'
+{Select} = require './prim-select'
 {Choose} = require './prim-choose'
 {match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
@@ -25,7 +25,7 @@ module.exports = {
 	Bool, Any, Int, Enum,
 	Maybe, Promise, Tree,
 	Map, TreeMap, Fn,
-	Data, Strict, Loose, Either, Choose,
+	Data, Strict, Loose, Select, Choose,
 	match, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 
@@ -53,5 +53,5 @@ if module.parent is null
 	#log -> json sample Enum ['a', 'b']
 	#log -> json list take(20) samples [{tableName: TableName, join: {op: Number}}]
 	#log -> json sample WideTable
-	#log -> json list(10) samples Either {a: Number, b: String}
+	#log -> json list(10) samples Select {a: Number, b: String}
 

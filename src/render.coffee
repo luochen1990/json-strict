@@ -104,7 +104,7 @@ if module.parent is null
 		Number, String,
 		Bool, Any, Int, Enum,
 		Maybe, Promise, Tree,
-		Data, Strict, Loose, Either, Choose,
+		Data, Strict, Loose, Select, Choose,
 		Map, Fn,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
 	} = require './index'
@@ -160,12 +160,12 @@ if module.parent is null
 		name: 'DimensionFilter'
 		spec: Strict {
 			select: [MemberName]
-			match: Either {
+			match: Select {
 				contains: String
 				startWith: String
 				endWith: String
 			}
-			condition: Either {
+			condition: Select {
 				limit: Strict {
 					measure: Measure
 					comparator: Comparator
@@ -175,7 +175,7 @@ if module.parent is null
 			}
 			top: Strict {
 				count: Number
-				by: Either {
+				by: Select {
 					measure: Measure
 					expr: ValueExpr
 				}
@@ -197,7 +197,7 @@ if module.parent is null
 		name: 'SortCondition'
 		spec: Strict {
 			asc: Bool
-			by: Either {
+			by: Select {
 				measure: Measure
 				expr: ValueExpr
 			}
@@ -221,12 +221,12 @@ if module.parent is null
 	#		dimensions: {
 	#			"product_name": {
 	#				select: ['mp3', 'mp4']
-	#				match: { #either {contains: ..} or {startWith: ..} or {endWith: ..}
+	#				match: { # {contains: ..} or {startWith: ..} or {endWith: ..}
 	#					contains: 'abc'
 	#					startWith: 'abc'
 	#					endWith: 'abc'
 	#				}
-	#				condition: {#either {limit: ...} or {expr: '...'}
+	#				condition: {# {limit: ...} or {expr: '...'}
 	#					limit: {
 	#						measure: 'sale'
 	#						aggregator: 'sum'
@@ -238,7 +238,7 @@ if module.parent is null
 	#				}
 	#				top: {
 	#					count: 10
-	#					by: {#either {field: ...} or {formula: ...}
+	#					by: {# {field: ...} or {formula: ...}
 	#						field: {
 	#							measure: 'sale'
 	#							aggregator: 'sum'
@@ -277,7 +277,7 @@ if module.parent is null
 	#	sort: {
 	#		"product_name": {
 	#			asc: true
-	#			by: {#either {field: ...} or {formula: ...}
+	#			by: {# {field: ...} or {formula: ...}
 	#				field: {
 	#					measure: 'sale'
 	#					aggregator: 'sum'
@@ -304,7 +304,7 @@ if module.parent is null
 		b: WideTable
 		c: Context
 		d: FieldName
-		e: Either {x: Number, y: String}
+		e: Select {x: Number, y: String}
 		f: Fn(Tree Int) (Loose {x: Number, y: Number})
 	}
 
