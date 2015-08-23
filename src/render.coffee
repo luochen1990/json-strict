@@ -108,7 +108,7 @@ if module.parent is null
 		Number, String,
 		Bool, Any, Int, Nat, Enum, Value,
 		Optional, Promise, Tree,
-		Map, Fn,
+		Map, TreeMap, Fn,
 		NamedType, Strict, Loose, Select, Choose,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
 	} = require './index'
@@ -209,7 +209,7 @@ if module.parent is null
 		}
 	Context =
 		filter: Strict
-			dimensions: Map DimensionName, DimensionFilter
+			dimensions: Map(DimensionName)(DimensionFilter)
 			measures: [Strict {
 				measure: Measure
 				limit:
@@ -218,7 +218,7 @@ if module.parent is null
 			}]
 			inclusions: [InclusionCondition]
 			exclusions: [ExclusionCondition]
-		sort: Map DimensionName, SortCondition
+		sort: Map(DimensionName)(SortCondition)
 
 	#contextSample =
 	#	filter: {

@@ -4,14 +4,13 @@ require 'coffee-mate/global'
 {genBlockBody} = require './helpers'
 
 class Map
-	constructor: (kspec, vspec) ->
+	constructor: (kspec) ->
 		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
-		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
-		return {
+		return (vspec) ->
+			assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
 			constructor: Map
 			kspec: kspec
 			vspec: vspec
-		}
 
 instance('TypeSpec')(Map).where
 	match: ({kspec, vspec}) -> (v) ->

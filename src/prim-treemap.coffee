@@ -4,14 +4,13 @@ require 'coffee-mate/global'
 {genBlockBody} = require './helpers'
 
 class TreeMap
-	constructor: (kspec, vspec) ->
+	constructor: (kspec) ->
 		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
-		assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
-		return {
+		return (vspec) ->
+			assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
 			constructor: TreeMap
 			kspec: kspec
 			vspec: vspec
-		}
 
 instance('TypeSpec')(TreeMap).where
 	match: (t) -> (v) ->
