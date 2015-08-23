@@ -63,7 +63,7 @@ bind = ($) -> (rootSelection) ->
 	#console.info rootSelection.find('ul')
 	rootSelection.find('.unfold').each (i, elm) ->
 		$(elm).closest('li,.spec').addClass('unfolded').removeClass('folded')
-	rootSelection.find('.type-name').each (i, elm) ->
+	rootSelection.find('.type-name, .choose').each (i, elm) ->
 		$(elm).closest('li').addClass('folded').removeClass('unfolded')
 	rootSelection.find('.type-name, .folded-detail, .fold>.field-name, .unfold>.field-name, .fold>.meta-field, .unfold>.meta-field').each (i, elm) ->
 		if (e = $(elm).closest('li,.spec')).length > 0

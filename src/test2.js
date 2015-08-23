@@ -11,7 +11,7 @@
       rootSelection.find('.unfold').each(function(i, elm) {
         return $(elm).closest('li,.spec').addClass('unfolded').removeClass('folded');
       });
-      rootSelection.find('.type-name').each(function(i, elm) {
+      rootSelection.find('.type-name, .choose').each(function(i, elm) {
         return $(elm).closest('li').addClass('folded').removeClass('unfolded');
       });
       return rootSelection.find('.type-name, .folded-detail, .fold>.field-name, .unfold>.field-name, .fold>.meta-field, .unfold>.meta-field').each(function(i, elm) {
