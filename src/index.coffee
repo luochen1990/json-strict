@@ -4,6 +4,7 @@ require './prim-constructor'
 {Bool} = require './prim-bool'
 {Any} = require './prim-any'
 {Int} = require './prim-int'
+{Nat} = require './prim-nat'
 {Enum} = require './prim-enum'
 {Value} = require './prim-value'
 {Optional} = require './prim-optional'
@@ -23,7 +24,7 @@ require './prim-constructor'
 
 module.exports = {
 	Number, String,
-	Bool, Any, Int, Enum, Value,
+	Bool, Any, Int, Nat, Enum, Value,
 	Optional, Promise, Tree,
 	Map, TreeMap, Fn,
 	NamedType, Strict, Loose, Select, Choose,

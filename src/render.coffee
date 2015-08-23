@@ -106,7 +106,7 @@ if module.parent is null
 	require 'coffee-mate/global'
 	{
 		Number, String,
-		Bool, Any, Int, Enum, Value,
+		Bool, Any, Int, Nat, Enum, Value,
 		Optional, Promise, Tree,
 		Map, Fn,
 		NamedType, Strict, Loose, Select, Choose,
@@ -296,7 +296,7 @@ if module.parent is null
 
 	FooSpec = NamedType
 		name: 'FooSpec'
-		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Int, String, Value 'unavailable']}
+		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Nat, String, Value 'unavailable']}
 		desc: "hello"
 		check: (x) -> x > 1
 

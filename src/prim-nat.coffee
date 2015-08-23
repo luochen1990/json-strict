@@ -1,16 +1,16 @@
 require 'coffee-mate/global'
 {instance} = require './typeclass'
 
-Int = do ->
-	r = `function Int(){}`
+Nat = do ->
+	r = `function Nat(){}`
 	return (r.constructor = r)
 
-instance('TypeSpec')(Int).where
+instance('TypeSpec')(Nat).where
 	match: () -> (v) ->
-		v? and v.constructor is Number and not isNaN(v) and int(v)?
+		v? and v.constructor is Number and not isNaN(v) and v >= 0 and int(v)?
 	show: () ->
-		"Int"
+		"Nat"
 	samples: () ->
 		concat repeat [42, 1, 2]
 
-module.exports = {Int}
+module.exports = {Nat}
