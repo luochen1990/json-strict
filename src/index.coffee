@@ -12,7 +12,7 @@ require './prim-constructor'
 {Map} = require './prim-map'
 {TreeMap} = require './prim-treemap'
 {Fn} = require './prim-fn'
-{Data} = require './prim-data'
+{NamedType} = require './prim-namedtype'
 {Strict} = require './prim-strict'
 {Loose} = require './prim-loose'
 {Select} = require './prim-select'
@@ -26,7 +26,7 @@ module.exports = {
 	Bool, Any, Int, Enum, Value,
 	Maybe, Promise, Tree,
 	Map, TreeMap, Fn,
-	Data, Strict, Loose, Select, Choose,
+	NamedType, Strict, Loose, Select, Choose,
 	match, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 
@@ -50,7 +50,7 @@ if module.parent is null
 	#log -> json list take(20) samples [Any]
 	#log -> json list take(20) samples Maybe String
 	#log -> json list take(20) samples Map(TableName, Number)
-	#log -> json list take(20) samples Data spec: Strict {x: Number, y: String}
+	#log -> json list take(20) samples NamedType spec: Strict {x: Number, y: String}
 	#log -> json sample Enum ['a', 'b']
 	#log -> json list take(20) samples [{tableName: TableName, join: {op: Number}}]
 	#log -> json sample WideTable

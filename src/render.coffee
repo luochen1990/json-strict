@@ -105,15 +105,15 @@ if module.parent is null
 		Bool, Any, Int, Enum, Value,
 		Maybe, Promise, Tree,
 		Map, Fn,
-		Data, Strict, Loose, Select, Choose,
+		NamedType, Strict, Loose, Select, Choose,
 		match, show, sample, samples, showHtml, genRenderCode, showPage,
 	} = require './index'
 
-	TableName = Data
+	TableName = NamedType
 		name: 'TableName'
 		spec: String
 		samples: ['table1', 'table2']
-	FieldName = Data
+	FieldName = NamedType
 		name: 'FieldName'
 		spec: String
 		samples: ['product_id', 'sale', 'amount']
@@ -129,34 +129,34 @@ if module.parent is null
 		}
 	}]
 
-	DimensionName = Data
+	DimensionName = NamedType
 		name: 'DimensionName'
 		spec: String
 		samples: ['date', 'product_type', 'city']
-	MeasureName = Data
+	MeasureName = NamedType
 		name: 'MeasureName'
 		spec: String
 		samples: ['sale', 'profit', 'amount']
-	Measure = Data
+	Measure = NamedType
 		name: 'Measure'
 		spec: Strict {
 			name: MeasureName
 			aggregator: Enum ['sum', 'avg', 'max', 'min']
 		}
-	MemberName = Data
+	MemberName = NamedType
 		name: 'MemberName'
 		spec: String
 		samples: ['2013', '2014', '2015']
-	ValueExpr = Data
+	ValueExpr = NamedType
 		name: 'ValueExpr'
 		spec: String
 		samples: ['sum(sale)']
-	ConditionExpr = Data
+	ConditionExpr = NamedType
 		name: 'ConditionExpr'
 		spec: String
 		samples: ['sum(sale) > 100']
 
-	DimensionFilter = Data
+	DimensionFilter = NamedType
 		name: 'DimensionFilter'
 		spec: Strict {
 			select: [MemberName]
@@ -181,19 +181,19 @@ if module.parent is null
 				}
 			}
 		}
-	InclusionCondition = Data
+	InclusionCondition = NamedType
 		name: 'InclusionCondition'
 		spec: Strict {
 			via: [DimensionName]
 			positions: [[MemberName]]
 		}
-	ExclusionCondition = Data
+	ExclusionCondition = NamedType
 		name: 'ExclusionCondition'
 		spec: Strict {
 			via: [DimensionName]
 			positions: [[MemberName]]
 		}
-	SortCondition = Data
+	SortCondition = NamedType
 		name: 'SortCondition'
 		spec: Strict {
 			asc: Bool
@@ -290,10 +290,10 @@ if module.parent is null
 	log -> json (sample WideTable), 4
 	log -> show Context
 
-	FooSpec = Data
+	FooSpec = NamedType
 		name: 'FooSpec'
 		spec: Fn(Number) Fn({x: Number, y: Number}) Promise {x: String, y: Choose [Int, String, Value 'unavailable']}
-		description: "hello"
+		desc: "hello"
 		check: (x) -> x > 1
 
 	fs = require 'fs'

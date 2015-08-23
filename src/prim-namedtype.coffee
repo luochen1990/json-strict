@@ -3,13 +3,12 @@ require 'coffee-mate/global'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
 {expandBlockHead} = require './helpers'
 
-class Data
-	constructor: ({name, spec, check, samples, description}) ->
-		if not name?
-			throw ReferenceError 'name must be specified for a Data declaration'
-		if not spec?
-			throw ReferenceError 'spec must be specified for a Data declaration'
+class NamedType
+	constructor: ({name, spec, desc, check, samples}) ->
+		if not name? or not spec?
+			throw Error 'name & spec must be specified for a NamedType declaration'
 		assert -> typeclass('TypeSpec').hasInstance(spec.constructor)
+
 		if samples? and not all(match(spec))(take(100) samples)
 			log -> name
 			log -> spec
@@ -18,15 +17,15 @@ class Data
 			throw TypeError 'bad samples'
 
 		return {
-			constructor: Data
-			spec
-			check
+			constructor: NamedType
 			name
+			spec
+			desc
+			check
 			samples
-			description
 		}
 
-instance('TypeSpec')(Data).where
+instance('TypeSpec')(NamedType).where
 	match: ({spec, check}) -> (v) ->
 		match(spec)(v) and (if check? then check(v) else true)
 	show: ({name, spec}) ->
@@ -42,7 +41,7 @@ instance('TypeSpec')(Data).where
 			head: "<span><span class='type-name'>#{name}</span><span class='spliter'>spec:</span>#{htmlInline spec}</span>"
 		}
 	showHtml: (t) ->
-		{name, description, spec, check} = t
+		{name, desc, spec, check} = t
 
 		namePart = if not name? then '' else """
 			<div class='name'>
@@ -50,8 +49,8 @@ instance('TypeSpec')(Data).where
 			</div>
 			"""
 
-		descriptionPart = if not description? then '' else do ->
-			s = description
+		descriptionPart = if not desc? then '' else do ->
+			s = desc
 			return """
 			<div class='desc'>
 			<span class='meta-field'>desc</span>: #{
@@ -99,4 +98,4 @@ instance('TypeSpec')(Data).where
 
 		return "<div class='typespec'>#{ namePart + descriptionPart + specPart + samplePart + checkPart }</div>"
 
-module.exports = {Data}
+module.exports = {NamedType}
