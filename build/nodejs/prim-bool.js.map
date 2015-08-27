@@ -1,0 +1,1 @@
+{"version":3,"sources":["prim-bool.coffee"],"names":[],"mappings":"AAAA;AAAA,MAAA;;EAAA,IAAA,GAAO;;EAEP,MAAM,CAAC,OAAP,GAAiB;IAAC,MAAA,IAAD;;AAFjB","file":"prim-bool.js","sourceRoot":"/source/","sourcesContent":["Bool = Boolean\n\nmodule.exports = {Bool}\n"]}

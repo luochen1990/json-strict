@@ -1,0 +1,1 @@
+{"version":3,"sources":["global.coffee"],"names":[],"mappings":"AAAA;AAAA,MAAA;;EAAA,KAAA,GAAQ,OAAA,CAAQ,SAAR;;AACR,OAAA,UAAA;;IAAA,MAAO,CAAA,CAAA,CAAP,GAAY;AAAZ;AADA","file":"global.js","sourceRoot":"/source/","sourcesContent":["index = require('./index')\nglobal[k] = v for k, v of index\n"]}
