@@ -34,7 +34,9 @@
       var specs;
       specs = arg.specs;
       return function(v) {
-        return (v != null) && all(match(spec)(v));
+        return (v != null) && any(function(spec) {
+          return match(spec)(v);
+        })(specs);
       };
     },
     show: function(arg) {

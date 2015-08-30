@@ -12,7 +12,7 @@
   Select = (function() {
     function Select(specs) {
       assert(function() {
-        return all(function(arg) {
+        return Object.keys(specs).length >= 1 && all(function(arg) {
           var k, spec;
           k = arg[0], spec = arg[1];
           return typeclass('TypeSpec').hasInstance(spec.constructor);
@@ -33,8 +33,8 @@
       var specs;
       specs = arg.specs;
       return function(v) {
-        var ks, spec;
-        return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[ks[0]]) != null) && (match(spec)(v));
+        var k, ks, spec;
+        return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
       };
     },
     show: function(arg) {

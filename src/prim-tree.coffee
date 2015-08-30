@@ -14,8 +14,7 @@ class Tree
 instance('TypeSpec')(Tree).where
 	match: (t) -> (v) ->
 		{labelSpec} = t
-		ml = match(labelSpec)
-		v? and typeof v is 'object' and ml(v.rootLabel) and all(ml)(map(pluck 'rootLabel') v.subForest)
+		v? and typeof v is 'object' and v.rootLabel? and v.subForest?.constructor is Array and match(labelSpec)(v.rootLabel) and all(match(t))(v.subForest)
 	show: ({labelSpec}) ->
 		"Tree #{show labelSpec}"
 	samples: ({labelSpec}) ->

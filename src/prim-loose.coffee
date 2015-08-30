@@ -12,7 +12,7 @@ class Loose
 		}
 
 instance('TypeSpec')(Loose).where
-	match: (specdict) -> (v) ->
+	match: ({specdict}) -> (v) ->
 		v? and v.constructor is Object and (all(([k, spec]) -> match(spec) v[k]) enumerate(specdict))
 	show: ({specdict}) ->
 		'Loose {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ') + '}'

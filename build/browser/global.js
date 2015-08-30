@@ -2038,7 +2038,9 @@ instance('TypeSpec')(Choose).where({
     var specs;
     specs = arg.specs;
     return function(v) {
-      return (v != null) && all(match(spec)(v));
+      return (v != null) && any(function(spec) {
+        return match(spec)(v);
+      })(specs);
     };
   },
   show: function(arg) {
@@ -2280,7 +2282,7 @@ Int = (function() {
 instance('TypeSpec')(Int).where({
   match: function() {
     return function(v) {
-      return (v != null) && v.constructor === Number && !isNaN(v) && (int(v) != null);
+      return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
     };
   },
   show: function() {
@@ -2327,11 +2329,13 @@ Loose = (function() {
 })();
 
 instance('TypeSpec')(Loose).where({
-  match: function(specdict) {
+  match: function(arg) {
+    var specdict;
+    specdict = arg.specdict;
     return function(v) {
-      return (v != null) && v.constructor === Object && (all(function(arg) {
+      return (v != null) && v.constructor === Object && (all(function(arg1) {
         var k, spec;
-        k = arg[0], spec = arg[1];
+        k = arg1[0], spec = arg1[1];
         return match(spec)(v[k]);
       })(enumerate(specdict)));
     };
@@ -2593,7 +2597,7 @@ Nat = (function() {
 instance('TypeSpec')(Nat).where({
   match: function() {
     return function(v) {
-      return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && (int(v) != null);
+      return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && v === parseInt(v);
     };
   },
   show: function() {
@@ -2817,7 +2821,7 @@ genBlockBody = require('./helpers').genBlockBody;
 Select = (function() {
   function Select(specs) {
     assert(function() {
-      return all(function(arg) {
+      return Object.keys(specs).length >= 1 && all(function(arg) {
         var k, spec;
         k = arg[0], spec = arg[1];
         return typeclass('TypeSpec').hasInstance(spec.constructor);
@@ -2838,8 +2842,8 @@ instance('TypeSpec')(Select).where({
     var specs;
     specs = arg.specs;
     return function(v) {
-      var ks, spec;
-      return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[ks[0]]) != null) && (match(spec)(v));
+      var k, ks, spec;
+      return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
     };
   },
   show: function(arg) {
@@ -2993,10 +2997,9 @@ Tree = (function() {
 instance('TypeSpec')(Tree).where({
   match: function(t) {
     return function(v) {
-      var labelSpec, ml;
+      var labelSpec, ref2;
       labelSpec = t.labelSpec;
-      ml = match(labelSpec);
-      return (v != null) && typeof v === 'object' && ml(v.rootLabel) && all(ml)(map(pluck('rootLabel'))(v.subForest));
+      return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref2 = v.subForest) != null ? ref2.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
     };
   },
   show: function(arg) {

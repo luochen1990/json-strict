@@ -29,11 +29,13 @@
   })();
 
   instance('TypeSpec')(Loose).where({
-    match: function(specdict) {
+    match: function(arg) {
+      var specdict;
+      specdict = arg.specdict;
       return function(v) {
-        return (v != null) && v.constructor === Object && (all(function(arg) {
+        return (v != null) && v.constructor === Object && (all(function(arg1) {
           var k, spec;
-          k = arg[0], spec = arg[1];
+          k = arg1[0], spec = arg1[1];
           return match(spec)(v[k]);
         })(enumerate(specdict)));
       };

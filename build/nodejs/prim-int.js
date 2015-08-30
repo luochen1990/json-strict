@@ -14,7 +14,7 @@
   instance('TypeSpec')(Int).where({
     match: function() {
       return function(v) {
-        return (v != null) && v.constructor === Number && !isNaN(v) && (int(v) != null);
+        return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
       };
     },
     show: function() {

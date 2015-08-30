@@ -7,7 +7,7 @@ Int = do ->
 
 instance('TypeSpec')(Int).where
 	match: () -> (v) ->
-		v? and v.constructor is Number and not isNaN(v) and int(v)?
+		v? and v.constructor is Number and not isNaN(v) and v == parseInt(v)
 	show: () ->
 		"Int"
 	samples: () ->

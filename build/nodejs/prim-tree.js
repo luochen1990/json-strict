@@ -27,10 +27,9 @@
   instance('TypeSpec')(Tree).where({
     match: function(t) {
       return function(v) {
-        var labelSpec, ml;
+        var labelSpec, ref2;
         labelSpec = t.labelSpec;
-        ml = match(labelSpec);
-        return (v != null) && typeof v === 'object' && ml(v.rootLabel) && all(ml)(map(pluck('rootLabel'))(v.subForest));
+        return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref2 = v.subForest) != null ? ref2.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
       };
     },
     show: function(arg) {

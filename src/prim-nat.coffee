@@ -7,7 +7,7 @@ Nat = do ->
 
 instance('TypeSpec')(Nat).where
 	match: () -> (v) ->
-		v? and v.constructor is Number and not isNaN(v) and v >= 0 and int(v)?
+		v? and v.constructor is Number and not isNaN(v) and v >= 0 and v == parseInt(v)
 	show: () ->
 		"Nat"
 	samples: () ->

@@ -5,7 +5,7 @@ require 'coffee-mate/global'
 
 class Select
 	constructor: (specs) ->
-		assert -> all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specs)
+		assert -> Object.keys(specs).length >= 1 and all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specs)
 		return {
 			constructor: Select
 			specs: specs
@@ -13,7 +13,7 @@ class Select
 
 instance('TypeSpec')(Select).where
 	match: ({specs}) -> (v) ->
-		v? and v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[ks[0]])? and (match(spec) v)
+		v? and v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[(k = ks[0])])? and (match(spec) v[k])
 	show: ({specs}) ->
 		'Select {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ') + '}'
 	samples: ({specs}) ->
