@@ -1801,7 +1801,7 @@ isTypeSpec = function(spec) {
 };
 
 isTypeSpecDict = function(specdict) {
-  return all(function(arg) {
+  return (specdict != null) && all(function(arg) {
     var k, v;
     k = arg[0], v = arg[1];
     return isTypeSpec(v);

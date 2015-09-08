@@ -36,7 +36,7 @@ isTypeSpec = (spec) ->
 	spec? and typeclass('TypeSpec').hasInstance(spec.constructor)
 
 isTypeSpecDict = (specdict) ->
-	all(([k, v]) -> isTypeSpec(v)) enumerate(specdict)
+	specdict? and all(([k, v]) -> isTypeSpec(v)) enumerate(specdict)
 
 module.exports = {expandBlockHead, genBlockBody, isTypeSpec, isTypeSpecDict}
 
