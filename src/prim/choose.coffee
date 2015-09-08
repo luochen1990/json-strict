@@ -1,14 +1,15 @@
 require 'coffee-mate/global'
-{typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{genBlockBody} = require './helpers'
+{instance} = require '../typeclass'
+{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{genBlockBody, isTypeSpec} = require '../helpers'
 
 class Choose
 	constructor: (specs) ->
-		if not (specs? and specs.constructor is Array)
+		unless specs? and specs.constructor is Array
 			throw Error "Bad Choose Type Definition: Array Expected, But Got #{specs}"
-		if not (all((x) -> x? and typeclass('TypeSpec').hasInstance(x.constructor))(specs))
+		unless all(isTypeSpec)(specs)
 			throw Error "Bad Choose Type Definition: Array of TypeSpec Expected, But Got #{specs}"
+
 		return {
 			constructor: Choose
 			specs: specs

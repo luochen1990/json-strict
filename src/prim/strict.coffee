@@ -1,7 +1,7 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{genBlockBody, isTypeSpecDict} = require './helpers'
+{instance} = require '../typeclass'
+{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{genBlockBody, isTypeSpecDict} = require '../helpers'
 
 class Strict
 	constructor: (specdict) ->

@@ -1,5 +1,5 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
+{instance} = require '../typeclass'
 
 #`function Value(ls){
 #	return {

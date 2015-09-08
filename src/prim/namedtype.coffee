@@ -1,7 +1,7 @@
 require 'coffee-mate/global'
-{typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{expandBlockHead} = require './helpers'
+{typeclass, instance} = require '../typeclass'
+{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{expandBlockHead} = require '../helpers'
 
 class NamedType
 	constructor: ({name, spec, desc, check, samples}) ->

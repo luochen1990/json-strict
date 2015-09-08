@@ -1,7 +1,7 @@
 require 'coffee-mate/global'
-{typeclass, instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{expandBlockHead, isTypeSpec} = require './helpers'
+{typeclass, instance} = require '../typeclass'
+{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{expandBlockHead, isTypeSpec} = require '../helpers'
 
 class Optional
 	constructor: (spec) ->

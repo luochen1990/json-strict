@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
+{instance} = require '../typeclass'
+{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 
 instance('TypeSpec')(Array).where
 	match: ([spec]) -> (v) ->

@@ -1,5 +1,5 @@
 require 'coffee-mate/global'
-{instance} = require './typeclass'
+{instance} = require '../typeclass'
 
 Nat = do ->
 	r = `function Nat(){}`
