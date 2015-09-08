@@ -10,7 +10,9 @@ require 'coffee-mate/global'
 
 class Value
 	constructor: (v) ->
-		assert -> v?
+		unless v?
+			throw Error "Bad Value Type Definition: Non-null Value Expected, But Got #{v}"
+
 		return {
 			constructor: Value
 			value: v

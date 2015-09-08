@@ -5,9 +5,11 @@ require 'coffee-mate/global'
 
 class Fn
 	constructor: (ispec) ->
-		assert -> typeclass('TypeSpec').hasInstance(ispec.constructor)
+		unless ispec? and typeclass('TypeSpec').hasInstance(ispec.constructor)
+			throw Error "Bad Fn Definition: TypeSpec as ispec Expected, But Got #{ispec}"
 		return (ospec) ->
-			assert -> typeclass('TypeSpec').hasInstance(ospec.constructor)
+			unless ospec? and typeclass('TypeSpec').hasInstance(ospec.constructor)
+				throw Error "Bad Fn Definition: TypeSpec as ospec Expected, But Got #{ospec}"
 			constructor: Fn
 			ispec: ispec
 			ospec: ospec

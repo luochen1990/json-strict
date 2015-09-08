@@ -20,10 +20,10 @@ Working
 
 - Automatic data mocking
 - Automatic smoke testing
-- Generate more kinds of documents (text, markdown, static html etc.)
 - Better documents about how to use this tool
 - Make this an npm script
 - Full Covered Unit Test
+- Generate more kinds of documents (text, markdown, static html etc.)
 
 Todo
 ----

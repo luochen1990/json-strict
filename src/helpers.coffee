@@ -1,4 +1,5 @@
 {htmlInline, htmlBlock} = require './typespec'
+{typeclass} = require './typeclass'
 
 expandBlockHead = (f) -> (spec) ->
 	block = htmlBlock spec
@@ -31,5 +32,11 @@ genBlockBody = (bodyClass, keyClass) -> (specdict) ->
 	) enumerate(specdict)
 	return "<ul class='#{bodyClass}'>" + (list lis).join('\n') + "</ul>"
 
-module.exports = {expandBlockHead, genBlockBody}
+isTypeSpec = (spec) ->
+	spec? and typeclass('TypeSpec').hasInstance(spec.constructor)
+
+isTypeSpecDict = (specdict) ->
+	all(([k, v]) -> isTypeSpec(v)) enumerate(specdict)
+
+module.exports = {expandBlockHead, genBlockBody, isTypeSpec, isTypeSpecDict}
 

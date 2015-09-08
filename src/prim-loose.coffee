@@ -1,11 +1,12 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{genBlockBody} = require './helpers'
+{genBlockBody, isTypeSpecDict} = require './helpers'
 
 class Loose
 	constructor: (specdict) ->
-		assert -> all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specdict)
+		unless isTypeSpecDict(specdict)
+			throw Error "Bad Loose Type Definition: Dict Of TypeSpec Expected, But Got #{specdict}"
 		return {
 			constructor: Loose
 			specdict: specdict

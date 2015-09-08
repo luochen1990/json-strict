@@ -1,11 +1,13 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{expandBlockHead} = require './helpers'
+{expandBlockHead, isTypeSpec} = require './helpers'
 
 class Promise
 	constructor: (spec) ->
-		assert -> typeclass('TypeSpec').hasInstance(spec.constructor)
+		unless isTypeSpec(spec)
+			throw Error "Bad Optional Type Definition: TypeSpec as spec Expected"
+
 		return {
 			constructor: Promise
 			spec: spec

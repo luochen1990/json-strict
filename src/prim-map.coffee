@@ -5,9 +5,11 @@ require 'coffee-mate/global'
 
 class Map
 	constructor: (kspec) ->
-		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
+		unless kspec? and typeclass('TypeSpec').hasInstance(kspec.constructor)
+			throw Error "Bad Fn Definition: TypeSpec as kspec Expected, But Got #{kspec}"
 		return (vspec) ->
-			assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
+			unless vspec? and typeclass('TypeSpec').hasInstance(vspec.constructor)
+				throw Error "Bad Fn Definition: TypeSpec as vspec Expected, But Got #{vspec}"
 			constructor: Map
 			kspec: kspec
 			vspec: vspec

@@ -10,7 +10,8 @@ require 'coffee-mate/global'
 
 class Enum
 	constructor: (ls) ->
-		assert -> all((x) -> x?) ls
+		if not (all((x) -> x?) ls)
+			throw Error "Bad Enum Type Definition: Array Of Non-null Values Expected, Bot Got #{ls}"
 		return {
 			constructor: Enum
 			enum: ls

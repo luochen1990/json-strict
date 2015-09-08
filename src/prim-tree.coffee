@@ -1,11 +1,13 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{expandBlockHead} = require './helpers'
+{expandBlockHead, isTypeSpec} = require './helpers'
 
 class Tree
 	constructor: (labelSpec) ->
-		assert -> typeclass('TypeSpec').hasInstance(labelSpec.constructor)
+		unless isTypeSpec(labelSpec)
+			throw Error "Bad Tree Type Definition: TypeSpec as labelSpec Expected"
+
 		return {
 			constructor: Tree
 			labelSpec: labelSpec

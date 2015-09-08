@@ -1,13 +1,17 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{genBlockBody} = require './helpers'
+{genBlockBody, isTypeSpec} = require './helpers'
 
 class TreeMap
 	constructor: (kspec) ->
-		assert -> typeclass('TypeSpec').hasInstance(kspec.constructor)
+		unless isTypeSpec(kspec)
+			throw Error "Bad TreeMap Type Definition: TypeSpec as kspec Expected"
+
 		return (vspec) ->
-			assert -> typeclass('TypeSpec').hasInstance(vspec.constructor)
+			unless isTypeSpec(vspec)
+				throw Error "Bad TreeMap Type Definition: TypeSpec as vspec Expected"
+
 			constructor: TreeMap
 			kspec: kspec
 			vspec: vspec

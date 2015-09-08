@@ -1,11 +1,15 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require './typeclass'
 {match, show, samples, sample, htmlInline, htmlBlock} = require './typespec'
-{genBlockBody} = require './helpers'
+{genBlockBody, isTypeSpecDict} = require './helpers'
 
 class Select
 	constructor: (specs) ->
-		assert -> Object.keys(specs).length >= 1 and all(([k, spec]) -> typeclass('TypeSpec').hasInstance(spec.constructor)) enumerate(specs)
+		unless isTypeSpecDict(specs)
+			throw Error "Bad Select Type Definition: TypeSpec as spec Expected"
+		unless Object.keys(specs).length >= 1
+			throw Error "Bad Select Type Definition: At Least One Selection Should Be Provided"
+
 		return {
 			constructor: Select
 			specs: specs

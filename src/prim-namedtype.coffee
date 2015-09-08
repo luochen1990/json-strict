@@ -5,16 +5,12 @@ require 'coffee-mate/global'
 
 class NamedType
 	constructor: ({name, spec, desc, check, samples}) ->
-		if not name? or not spec?
-			throw Error 'name & spec must be specified for a NamedType declaration'
-		assert -> typeclass('TypeSpec').hasInstance(spec.constructor)
-
-		if samples? and not all(match(spec))(take(100) samples)
-			log -> name
-			log -> spec
-			log -> samples
-			log -> match(spec) samples[0]
-			throw TypeError 'bad samples'
+		unless name? and spec?
+			throw Error "Bad NamedType Definition: name & spec Must Be Specified"
+		unless spec? and typeclass('TypeSpec').hasInstance(spec.constructor)
+			throw Error "Bad NamedType Definition: TypeSpec as spec Expected, But Got #{spec}\n\tname: #{name}"
+		unless not samples? or all(match(spec))(take(100) samples)
+			throw Error "Bad NamedType Definition: samples Should Match spec\n\tname: #{name}\n\tspec: #{spec}"
 
 		return {
 			constructor: NamedType
