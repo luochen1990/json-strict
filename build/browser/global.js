@@ -1761,9 +1761,11 @@ for (k in index) {
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"./index":14}],13:[function(require,module,exports){
-var expandBlockHead, genBlockBody, htmlBlock, htmlInline, ref;
+var expandBlockHead, genBlockBody, htmlBlock, htmlInline, isTypeSpec, isTypeSpecDict, ref, typeclass;
 
 ref = require('./typespec'), htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+
+typeclass = require('./typeclass').typeclass;
 
 expandBlockHead = function(f) {
   return function(spec) {
@@ -1794,54 +1796,68 @@ genBlockBody = function(bodyClass, keyClass) {
   };
 };
 
+isTypeSpec = function(spec) {
+  return (spec != null) && typeclass('TypeSpec').hasInstance(spec.constructor);
+};
+
+isTypeSpecDict = function(specdict) {
+  return all(function(arg) {
+    var k, v;
+    k = arg[0], v = arg[1];
+    return isTypeSpec(v);
+  })(enumerate(specdict));
+};
+
 module.exports = {
   expandBlockHead: expandBlockHead,
-  genBlockBody: genBlockBody
+  genBlockBody: genBlockBody,
+  isTypeSpec: isTypeSpec,
+  isTypeSpecDict: isTypeSpecDict
 };
 
 
-},{"./typespec":37}],14:[function(require,module,exports){
+},{"./typeclass":36,"./typespec":37}],14:[function(require,module,exports){
 var Any, Bool, Choose, Enum, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, Tree, TreeMap, UserInfo, UserName, Value, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass;
 
-require('./prim-object');
+require('./prim/object');
 
-require('./prim-array');
+require('./prim/array');
 
-require('./prim-constructor');
+require('./prim/constructor');
 
-Bool = require('./prim-bool').Bool;
+Bool = require('./prim/bool').Bool;
 
-Any = require('./prim-any').Any;
+Any = require('./prim/any').Any;
 
-Int = require('./prim-int').Int;
+Int = require('./prim/int').Int;
 
-Nat = require('./prim-nat').Nat;
+Nat = require('./prim/nat').Nat;
 
-Enum = require('./prim-enum').Enum;
+Enum = require('./prim/enum').Enum;
 
-Value = require('./prim-value').Value;
+Value = require('./prim/value').Value;
 
-Optional = require('./prim-optional').Optional;
+Optional = require('./prim/optional').Optional;
 
-Promise = require('./prim-promise').Promise;
+Promise = require('./prim/promise').Promise;
 
-Tree = require('./prim-tree').Tree;
+Tree = require('./prim/tree').Tree;
 
-Map = require('./prim-map').Map;
+Map = require('./prim/map').Map;
 
-TreeMap = require('./prim-treemap').TreeMap;
+TreeMap = require('./prim/treemap').TreeMap;
 
-Fn = require('./prim-fn').Fn;
+Fn = require('./prim/fn').Fn;
 
-NamedType = require('./prim-namedtype').NamedType;
+NamedType = require('./prim/namedtype').NamedType;
 
-Strict = require('./prim-strict').Strict;
+Strict = require('./prim/strict').Strict;
 
-Loose = require('./prim-loose').Loose;
+Loose = require('./prim/loose').Loose;
 
-Select = require('./prim-select').Select;
+Select = require('./prim/select').Select;
 
-Choose = require('./prim-choose').Choose;
+Choose = require('./prim/choose').Choose;
 
 ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
@@ -1898,12 +1914,12 @@ if (module.parent === null) {
 }
 
 
-},{"./prim-any":15,"./prim-array":16,"./prim-bool":17,"./prim-choose":18,"./prim-constructor":19,"./prim-enum":20,"./prim-fn":21,"./prim-int":22,"./prim-loose":23,"./prim-map":24,"./prim-namedtype":25,"./prim-nat":26,"./prim-object":27,"./prim-optional":28,"./prim-promise":29,"./prim-select":30,"./prim-strict":31,"./prim-tree":32,"./prim-treemap":33,"./prim-value":34,"./render":35,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],15:[function(require,module,exports){
+},{"./prim/any":15,"./prim/array":16,"./prim/bool":17,"./prim/choose":18,"./prim/constructor":19,"./prim/enum":20,"./prim/fn":21,"./prim/int":22,"./prim/loose":23,"./prim/map":24,"./prim/namedtype":25,"./prim/nat":26,"./prim/object":27,"./prim/optional":28,"./prim/promise":29,"./prim/select":30,"./prim/strict":31,"./prim/tree":32,"./prim/treemap":33,"./prim/value":34,"./render":35,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],15:[function(require,module,exports){
 var Any, instance;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
 Any = (function() {
   var r;
@@ -1937,14 +1953,14 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"coffee-mate/global":10}],16:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],16:[function(require,module,exports){
 var htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
-ref = require('./typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 instance('TypeSpec')(Array).where({
   match: function(arg) {
@@ -1992,7 +2008,7 @@ instance('TypeSpec')(Array).where({
 });
 
 
-},{"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],17:[function(require,module,exports){
+},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],17:[function(require,module,exports){
 var Bool;
 
 Bool = Boolean;
@@ -2003,26 +2019,24 @@ module.exports = {
 
 
 },{}],18:[function(require,module,exports){
-var Choose, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+var Choose, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+instance = require('../typeclass').instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
 
 Choose = (function() {
   function Choose(specs) {
-    assert(function() {
-      return (specs != null) && specs.constructor === Array;
-    });
-    assert(function() {
-      return all(function(x) {
-        return (x != null) && typeclass('TypeSpec').hasInstance(x.constructor);
-      })(specs);
-    });
+    if (!((specs != null) && specs.constructor === Array)) {
+      throw Error("Bad Choose Type Definition: Array Expected, But Got " + specs);
+    }
+    if (!all(isTypeSpec)(specs)) {
+      throw Error("Bad Choose Type Definition: Array of TypeSpec Expected, But Got " + specs);
+    }
     return {
       constructor: Choose,
       specs: specs
@@ -2074,14 +2088,14 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],19:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],19:[function(require,module,exports){
 var instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
-ref = require('./typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample;
+ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample;
 
 instance('TypeSpec')(Function).where({
   match: function(spec) {
@@ -2110,21 +2124,21 @@ instance('TypeSpec')(Function).where({
 });
 
 
-},{"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],20:[function(require,module,exports){
+},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],20:[function(require,module,exports){
 var Enum, instance,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
 Enum = (function() {
   function Enum(ls) {
-    assert(function() {
-      return all(function(x) {
-        return x != null;
-      })(ls);
-    });
+    if (!(all(function(x) {
+      return x != null;
+    })(ls))) {
+      throw Error("Bad Enum Type Definition: Array Of Non-null Values Expected, Bot Got " + ls);
+    }
     return {
       constructor: Enum,
       "enum": ls
@@ -2169,26 +2183,26 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"coffee-mate/global":10}],21:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],21:[function(require,module,exports){
 var Fn, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+genBlockBody = require('../helpers').genBlockBody;
 
 Fn = (function() {
   function Fn(ispec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(ispec.constructor);
-    });
+    if (!((ispec != null) && typeclass('TypeSpec').hasInstance(ispec.constructor))) {
+      throw Error("Bad Fn Definition: TypeSpec as ispec Expected, But Got " + ispec);
+    }
     return function(ospec) {
-      assert(function() {
-        return typeclass('TypeSpec').hasInstance(ospec.constructor);
-      });
+      if (!((ospec != null) && typeclass('TypeSpec').hasInstance(ospec.constructor))) {
+        throw Error("Bad Fn Definition: TypeSpec as ospec Expected, But Got " + ospec);
+      }
       return {
         constructor: Fn,
         ispec: ispec,
@@ -2266,12 +2280,12 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],22:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],22:[function(require,module,exports){
 var Int, instance;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
 Int = (function() {
   var r;
@@ -2298,26 +2312,22 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"coffee-mate/global":10}],23:[function(require,module,exports){
-var Loose, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../typeclass":36,"coffee-mate/global":10}],23:[function(require,module,exports){
+var Loose, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
 Loose = (function() {
   function Loose(specdict) {
-    assert(function() {
-      return all(function(arg) {
-        var k, spec;
-        k = arg[0], spec = arg[1];
-        return typeclass('TypeSpec').hasInstance(spec.constructor);
-      })(enumerate(specdict));
-    });
+    if (!isTypeSpecDict(specdict)) {
+      throw Error("Bad Loose Type Definition: Dict Of TypeSpec Expected, But Got " + specdict);
+    }
     return {
       constructor: Loose,
       specdict: specdict
@@ -2379,26 +2389,26 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],24:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],24:[function(require,module,exports){
 var Map, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+genBlockBody = require('../helpers').genBlockBody;
 
 Map = (function() {
   function Map(kspec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(kspec.constructor);
-    });
+    if (!((kspec != null) && typeclass('TypeSpec').hasInstance(kspec.constructor))) {
+      throw Error("Bad Fn Definition: TypeSpec as kspec Expected, But Got " + kspec);
+    }
     return function(vspec) {
-      assert(function() {
-        return typeclass('TypeSpec').hasInstance(vspec.constructor);
-      });
+      if (!((vspec != null) && typeclass('TypeSpec').hasInstance(vspec.constructor))) {
+        throw Error("Bad Fn Definition: TypeSpec as vspec Expected, But Got " + vspec);
+      }
       return {
         constructor: Map,
         kspec: kspec,
@@ -2458,41 +2468,29 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],25:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],25:[function(require,module,exports){
 var NamedType, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-expandBlockHead = require('./helpers').expandBlockHead;
+expandBlockHead = require('../helpers').expandBlockHead;
 
 NamedType = (function() {
   function NamedType(arg) {
     var check, desc, name, samples, spec;
     name = arg.name, spec = arg.spec, desc = arg.desc, check = arg.check, samples = arg.samples;
-    if ((name == null) || (spec == null)) {
-      throw Error('name & spec must be specified for a NamedType declaration');
+    if (!((name != null) && (spec != null))) {
+      throw Error("Bad NamedType Definition: name & spec Must Be Specified");
     }
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(spec.constructor);
-    });
-    if ((samples != null) && !all(match(spec))(take(100)(samples))) {
-      log(function() {
-        return name;
-      });
-      log(function() {
-        return spec;
-      });
-      log(function() {
-        return samples;
-      });
-      log(function() {
-        return match(spec)(samples[0]);
-      });
-      throw TypeError('bad samples');
+    if (!((spec != null) && typeclass('TypeSpec').hasInstance(spec.constructor))) {
+      throw Error("Bad NamedType Definition: TypeSpec as spec Expected, But Got " + spec + "\n\tname: " + name);
+    }
+    if (!((samples == null) || all(match(spec))(take(100)(samples)))) {
+      throw Error("Bad NamedType Definition: samples Should Match spec\n\tname: " + name + "\n\tspec: " + spec);
     }
     return {
       constructor: NamedType,
@@ -2581,12 +2579,12 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],26:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],26:[function(require,module,exports){
 var Nat, instance;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
 Nat = (function() {
   var r;
@@ -2613,19 +2611,28 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"coffee-mate/global":10}],27:[function(require,module,exports){
-var genBlockBody, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
+},{"../typeclass":36,"coffee-mate/global":10}],27:[function(require,module,exports){
+var genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
-ref = require('./typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
+
+specdictChecked = function(f) {
+  return function(specdict) {
+    if (!isTypeSpecDict(specdict)) {
+      throw Error("Bad Object Type Definition: Dict Of TypeSpec Expected, But Got " + specdict);
+    }
+    return f(specdict);
+  };
+};
 
 instance('TypeSpec')(Object).where({
-  match: function(specdict) {
+  match: specdictChecked(function(specdict) {
     return function(v) {
       return (v != null) && v.constructor === Object && (all(function(k) {
         return specdict[k] != null;
@@ -2635,50 +2642,50 @@ instance('TypeSpec')(Object).where({
         return match(spec)(v[k]);
       })(enumerate(specdict));
     };
-  },
-  show: function(specdict) {
+  }),
+  show: specdictChecked(function(specdict) {
     return '{' + (list(map(function(arg) {
       var k, spec;
       k = arg[0], spec = arg[1];
       return k + ": " + (show(spec));
     })(enumerate(specdict)))).join(', ') + '}';
-  },
-  samples: function(specdict) {
+  }),
+  samples: specdictChecked(function(specdict) {
     return repeat(dict(list(map(function(arg) {
       var k, v;
       k = arg[0], v = arg[1];
       return [k, sample(v)];
     })(enumerate(specdict)))));
-  },
-  htmlInline: function(specdict) {
+  }),
+  htmlInline: specdictChecked(function(specdict) {
     return "<span class='type-maker'>{<span class='folded-detail'>...</span>}</span>";
-  },
-  htmlBlock: function(specdict) {
+  }),
+  htmlBlock: specdictChecked(function(specdict) {
     return {
       head: "<span class='type-maker'>{</span>",
       body: genBlockBody('object', 'field-name')(specdict),
       tail: "<span class='type-maker'>}</span>"
     };
-  }
+  })
 });
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],28:[function(require,module,exports){
-var Optional, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],28:[function(require,module,exports){
+var Optional, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-expandBlockHead = require('./helpers').expandBlockHead;
+ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
 Optional = (function() {
   function Optional(spec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(spec.constructor);
-    });
+    if (!isTypeSpec(spec)) {
+      throw Error("Bad Optional Type Definition: TypeSpec as spec Expected");
+    }
     return {
       constructor: Optional,
       spec: spec
@@ -2727,22 +2734,22 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],29:[function(require,module,exports){
-var Promise, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],29:[function(require,module,exports){
+var Promise, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-expandBlockHead = require('./helpers').expandBlockHead;
+ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
 Promise = (function() {
   function Promise(spec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(spec.constructor);
-    });
+    if (!isTypeSpec(spec)) {
+      throw Error("Bad Optional Type Definition: TypeSpec as spec Expected");
+    }
     return {
       constructor: Promise,
       spec: spec
@@ -2807,26 +2814,25 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],30:[function(require,module,exports){
-var Select, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],30:[function(require,module,exports){
+var Select, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
 Select = (function() {
   function Select(specs) {
-    assert(function() {
-      return Object.keys(specs).length >= 1 && all(function(arg) {
-        var k, spec;
-        k = arg[0], spec = arg[1];
-        return typeclass('TypeSpec').hasInstance(spec.constructor);
-      })(enumerate(specs));
-    });
+    if (!isTypeSpecDict(specs)) {
+      throw Error("Bad Select Type Definition: TypeSpec as spec Expected");
+    }
+    if (!(Object.keys(specs).length >= 1)) {
+      throw Error("Bad Select Type Definition: At Least One Selection Should Be Provided");
+    }
     return {
       constructor: Select,
       specs: specs
@@ -2885,26 +2891,22 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],31:[function(require,module,exports){
-var Strict, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],31:[function(require,module,exports){
+var Strict, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+instance = require('../typeclass').instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
 Strict = (function() {
   function Strict(specdict) {
-    assert(function() {
-      return all(function(arg) {
-        var k, spec;
-        k = arg[0], spec = arg[1];
-        return typeclass('TypeSpec').hasInstance(spec.constructor);
-      })(enumerate(specdict));
-    });
+    if (!isTypeSpecDict(specdict)) {
+      throw Error("Bad Strict Type Definition: Dict Of TypeSpec Expected, But Got " + specdict);
+    }
     return {
       constructor: Strict,
       specdict: specdict
@@ -2968,22 +2970,22 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],32:[function(require,module,exports){
-var Tree, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],32:[function(require,module,exports){
+var Tree, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-expandBlockHead = require('./helpers').expandBlockHead;
+ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
 Tree = (function() {
   function Tree(labelSpec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(labelSpec.constructor);
-    });
+    if (!isTypeSpec(labelSpec)) {
+      throw Error("Bad Tree Type Definition: TypeSpec as labelSpec Expected");
+    }
     return {
       constructor: Tree,
       labelSpec: labelSpec
@@ -2997,9 +2999,9 @@ Tree = (function() {
 instance('TypeSpec')(Tree).where({
   match: function(t) {
     return function(v) {
-      var labelSpec, ref2;
+      var labelSpec, ref3;
       labelSpec = t.labelSpec;
-      return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref2 = v.subForest) != null ? ref2.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
+      return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref3 = v.subForest) != null ? ref3.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
     };
   },
   show: function(arg) {
@@ -3040,26 +3042,26 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],33:[function(require,module,exports){
-var TreeMap, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],33:[function(require,module,exports){
+var TreeMap, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
-ref = require('./typeclass'), typeclass = ref.typeclass, instance = ref.instance;
+ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('./typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
-genBlockBody = require('./helpers').genBlockBody;
+ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpec = ref2.isTypeSpec;
 
 TreeMap = (function() {
   function TreeMap(kspec) {
-    assert(function() {
-      return typeclass('TypeSpec').hasInstance(kspec.constructor);
-    });
+    if (!isTypeSpec(kspec)) {
+      throw Error("Bad TreeMap Type Definition: TypeSpec as kspec Expected");
+    }
     return function(vspec) {
-      assert(function() {
-        return typeclass('TypeSpec').hasInstance(vspec.constructor);
-      });
+      if (!isTypeSpec(vspec)) {
+        throw Error("Bad TreeMap Type Definition: TypeSpec as vspec Expected");
+      }
       return {
         constructor: TreeMap,
         kspec: kspec,
@@ -3142,18 +3144,18 @@ module.exports = {
 };
 
 
-},{"./helpers":13,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],34:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],34:[function(require,module,exports){
 var Value, instance;
 
 require('coffee-mate/global');
 
-instance = require('./typeclass').instance;
+instance = require('../typeclass').instance;
 
 Value = (function() {
   function Value(v) {
-    assert(function() {
-      return v != null;
-    });
+    if (v == null) {
+      throw Error("Bad Value Type Definition: Non-null Value Expected, But Got " + v);
+    }
     return {
       constructor: Value,
       value: v
@@ -3194,7 +3196,7 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"coffee-mate/global":10}],35:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],35:[function(require,module,exports){
 var Any, Bool, Choose, Comparator, ConditionExpr, Context, DimensionFilter, DimensionName, Enum, ExclusionCondition, FieldName, Fn, FooSpec, InclusionCondition, Int, Loose, Map, Measure, MeasureName, MemberName, NamedType, Nat, Number, Optional, Promise, Select, SortCondition, Strict, String, TableName, Tree, TreeMap, Value, ValueExpr, WideTable, bind, entries, fs, genRenderCode, htmlBlock, htmlInline, init, match, ref, ref1, sample, samples, show, showHtml, showPage, style;
 
 ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;

@@ -1,0 +1,61 @@
+(function() {
+  var genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
+
+  require('coffee-mate/global');
+
+  instance = require('../typeclass').instance;
+
+  ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+
+  ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
+
+  specdictChecked = function(f) {
+    return function(specdict) {
+      if (!isTypeSpecDict(specdict)) {
+        throw Error("Bad Object Type Definition: Dict Of TypeSpec Expected, But Got " + specdict);
+      }
+      return f(specdict);
+    };
+  };
+
+  instance('TypeSpec')(Object).where({
+    match: specdictChecked(function(specdict) {
+      return function(v) {
+        return (v != null) && v.constructor === Object && (all(function(k) {
+          return specdict[k] != null;
+        })(Object.keys(v))) && all(function(arg) {
+          var k, spec;
+          k = arg[0], spec = arg[1];
+          return match(spec)(v[k]);
+        })(enumerate(specdict));
+      };
+    }),
+    show: specdictChecked(function(specdict) {
+      return '{' + (list(map(function(arg) {
+        var k, spec;
+        k = arg[0], spec = arg[1];
+        return k + ": " + (show(spec));
+      })(enumerate(specdict)))).join(', ') + '}';
+    }),
+    samples: specdictChecked(function(specdict) {
+      return repeat(dict(list(map(function(arg) {
+        var k, v;
+        k = arg[0], v = arg[1];
+        return [k, sample(v)];
+      })(enumerate(specdict)))));
+    }),
+    htmlInline: specdictChecked(function(specdict) {
+      return "<span class='type-maker'>{<span class='folded-detail'>...</span>}</span>";
+    }),
+    htmlBlock: specdictChecked(function(specdict) {
+      return {
+        head: "<span class='type-maker'>{</span>",
+        body: genBlockBody('object', 'field-name')(specdict),
+        tail: "<span class='type-maker'>}</span>"
+      };
+    })
+  });
+
+}).call(this);
+
+//# sourceMappingURL=../prim/object.js.map

@@ -1,7 +1,9 @@
 (function() {
-  var expandBlockHead, genBlockBody, htmlBlock, htmlInline, ref;
+  var expandBlockHead, genBlockBody, htmlBlock, htmlInline, isTypeSpec, isTypeSpecDict, ref, typeclass;
 
   ref = require('./typespec'), htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+
+  typeclass = require('./typeclass').typeclass;
 
   expandBlockHead = function(f) {
     return function(spec) {
@@ -32,9 +34,23 @@
     };
   };
 
+  isTypeSpec = function(spec) {
+    return (spec != null) && typeclass('TypeSpec').hasInstance(spec.constructor);
+  };
+
+  isTypeSpecDict = function(specdict) {
+    return all(function(arg) {
+      var k, v;
+      k = arg[0], v = arg[1];
+      return isTypeSpec(v);
+    })(enumerate(specdict));
+  };
+
   module.exports = {
     expandBlockHead: expandBlockHead,
-    genBlockBody: genBlockBody
+    genBlockBody: genBlockBody,
+    isTypeSpec: isTypeSpec,
+    isTypeSpecDict: isTypeSpecDict
   };
 
 }).call(this);

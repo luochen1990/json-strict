@@ -1,45 +1,45 @@
 (function() {
   var Any, Bool, Choose, Enum, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, Tree, TreeMap, UserInfo, UserName, Value, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass;
 
-  require('./prim-object');
+  require('./prim/object');
 
-  require('./prim-array');
+  require('./prim/array');
 
-  require('./prim-constructor');
+  require('./prim/constructor');
 
-  Bool = require('./prim-bool').Bool;
+  Bool = require('./prim/bool').Bool;
 
-  Any = require('./prim-any').Any;
+  Any = require('./prim/any').Any;
 
-  Int = require('./prim-int').Int;
+  Int = require('./prim/int').Int;
 
-  Nat = require('./prim-nat').Nat;
+  Nat = require('./prim/nat').Nat;
 
-  Enum = require('./prim-enum').Enum;
+  Enum = require('./prim/enum').Enum;
 
-  Value = require('./prim-value').Value;
+  Value = require('./prim/value').Value;
 
-  Optional = require('./prim-optional').Optional;
+  Optional = require('./prim/optional').Optional;
 
-  Promise = require('./prim-promise').Promise;
+  Promise = require('./prim/promise').Promise;
 
-  Tree = require('./prim-tree').Tree;
+  Tree = require('./prim/tree').Tree;
 
-  Map = require('./prim-map').Map;
+  Map = require('./prim/map').Map;
 
-  TreeMap = require('./prim-treemap').TreeMap;
+  TreeMap = require('./prim/treemap').TreeMap;
 
-  Fn = require('./prim-fn').Fn;
+  Fn = require('./prim/fn').Fn;
 
-  NamedType = require('./prim-namedtype').NamedType;
+  NamedType = require('./prim/namedtype').NamedType;
 
-  Strict = require('./prim-strict').Strict;
+  Strict = require('./prim/strict').Strict;
 
-  Loose = require('./prim-loose').Loose;
+  Loose = require('./prim/loose').Loose;
 
-  Select = require('./prim-select').Select;
+  Select = require('./prim/select').Select;
 
-  Choose = require('./prim-choose').Choose;
+  Choose = require('./prim/choose').Choose;
 
   ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
