@@ -98,8 +98,8 @@ process.umask = function() { return 0; };
     slice = [].slice;
 
   this_module = function(arg) {
-    var abs, accept_multi_or_array, best, ceil, combine, curry2, curry3, equal, flip, floor, greaterEqual, greaterThan, lessEqual, lessThan, max, max_index, min, min_index, minus, notEqual, pack, pluck, plus, precise, seek, sum, uncurry2, uncurry3, unpack;
-    best = arg.best;
+    var abs, accept_multi_or_array, best, ceil, combine, curry2, curry3, equal, flip, floor, foldl, greaterEqual, greaterThan, lessEqual, lessThan, minus, notEqual, pack, pluck, plus, precise, seek, sum, uncurry2, uncurry3, unpack;
+    best = arg.best, foldl = arg.foldl;
     flip = function(f) {
       return function(x) {
         return function(y) {
@@ -217,48 +217,9 @@ process.umask = function() { return 0; };
         return f(arr.length === 1 && arr.first instanceof Array ? arr.first : arr);
       };
     };
-    sum = accept_multi_or_array(function(arr) {
-      var k, len, r, x;
-      if (arr.length === 1 && arr.first instanceof Array) {
-        arr = arr.first;
-      }
-      r = 0;
-      for (k = 0, len = arr.length; k < len; k++) {
-        x = arr[k];
-        r += x;
-      }
-      return r;
-    });
-    max = accept_multi_or_array(function(arr) {
-      return best(function(a, b) {
-        return a > b;
-      })(arr);
-    });
-    min = accept_multi_or_array(function(arr) {
-      return best(function(a, b) {
-        return a < b;
-      })(arr);
-    });
-    max_index = accept_multi_or_array(function(arr) {
-      var k, ref, results;
-      return best(function(i, j) {
-        return arr[i] > arr[j];
-      })((function() {
-        results = [];
-        for (var k = 0, ref = arr.length; 0 <= ref ? k < ref : k > ref; 0 <= ref ? k++ : k--){ results.push(k); }
-        return results;
-      }).apply(this));
-    });
-    min_index = accept_multi_or_array(function(arr) {
-      var k, ref, results;
-      return best(function(i, j) {
-        return arr[i] < arr[j];
-      })((function() {
-        results = [];
-        for (var k = 0, ref = arr.length; 0 <= ref ? k < ref : k > ref; 0 <= ref ? k++ : k--){ results.push(k); }
-        return results;
-      }).apply(this));
-    });
+    sum = foldl((function(a, b) {
+      return a + b;
+    }), 0);
     return {
       flip: flip,
       combine: combine,
@@ -282,16 +243,13 @@ process.umask = function() { return 0; };
       floor: floor,
       ceil: ceil,
       precise: precise,
-      sum: sum,
-      max: max,
-      min: min,
-      max_index: max_index,
-      min_index: min_index
+      sum: sum
     };
   };
 
   module.exports = this_module({
-    best: require('lazy-list').best
+    best: require('lazy-list').best,
+    foldl: require('lazy-list').foldl
   });
 
 }).call(this);
@@ -500,7 +458,9 @@ process.umask = function() { return 0; };
           results = [];
           for (k in obj) {
             v = obj[k];
-            results.push((encodeURIComponent(k)) + "=" + (encodeURIComponent(component_packer(v))));
+            if (v !== void 0) {
+              results.push((encodeURIComponent(k)) + "=" + (encodeURIComponent(component_packer(v))));
+            }
           }
           return results;
         })()).join('&');
