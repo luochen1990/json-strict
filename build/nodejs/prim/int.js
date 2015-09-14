@@ -18,7 +18,7 @@
       };
     },
     show: function() {
-      return "Int";
+      return "T.Int";
     },
     samples: function() {
       return concat(repeat([42, 1, 2]));

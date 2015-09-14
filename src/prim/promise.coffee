@@ -24,7 +24,7 @@ instance('TypeSpec')(Promise).where
 				withSpec(spec)(x)
 				return x
 	show: ({spec}) ->
-		"Promise #{show spec}"
+		"T.Promise(#{show spec})"
 	samples: ({spec}) ->
 		samples spec
 	htmlInline: ({spec}) ->

@@ -39,11 +39,11 @@
     show: function(arg) {
       var specs;
       specs = arg.specs;
-      return 'Select {' + (list(map(function(arg1) {
+      return "T.Select({" + ((list(map(function(arg1) {
         var k, spec;
         k = arg1[0], spec = arg1[1];
         return k + ": " + (show(spec));
-      })(enumerate(specs)))).join(', ') + '}';
+      })(enumerate(specs)))).join(', ')) + "})";
     },
     samples: function(arg) {
       var specs;

@@ -13,7 +13,7 @@ instance('TypeSpec')(Object).where
 	match: specdictChecked (specdict) -> (v) ->
 		v? and v.constructor is Object and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
 	show: specdictChecked (specdict) ->
-		'{' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ') + '}'
+		"{#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ')}}"
 	samples: specdictChecked (specdict) ->
 		repeat dict list map(([k, v]) -> [k, sample v]) enumerate(specdict)
 	htmlInline: specdictChecked (specdict) ->

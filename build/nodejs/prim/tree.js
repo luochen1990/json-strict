@@ -35,7 +35,7 @@
     show: function(arg) {
       var labelSpec;
       labelSpec = arg.labelSpec;
-      return "Tree " + (show(labelSpec));
+      return "T.Tree(" + (show(labelSpec)) + ")";
     },
     samples: function(arg) {
       var labelSpec, ls, s0, s1;

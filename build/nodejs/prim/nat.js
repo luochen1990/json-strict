@@ -18,7 +18,7 @@
       };
     },
     show: function() {
-      return "Nat";
+      return "T.Nat";
     },
     samples: function() {
       return concat(repeat([42, 1, 2]));

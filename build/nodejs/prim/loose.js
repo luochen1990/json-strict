@@ -39,11 +39,11 @@
     show: function(arg) {
       var specdict;
       specdict = arg.specdict;
-      return 'Loose {' + (list(map(function(arg1) {
+      return "T.Loose({" + ((list(map(function(arg1) {
         var k, spec;
         k = arg1[0], spec = arg1[1];
         return k + ": " + (show(spec));
-      })(enumerate(specdict)))).join(', ') + '}';
+      })(enumerate(specdict)))).join(', ')) + "})";
     },
     samples: function(arg) {
       var specdict;

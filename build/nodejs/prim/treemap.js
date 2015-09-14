@@ -43,7 +43,7 @@
     show: function(arg) {
       var kspec, vspec;
       kspec = arg.kspec, vspec = arg.vspec;
-      return "TreeMap " + (show(kspec)) + " " + (show(vspec));
+      return "T.TreeMap(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
     },
     samples: function(arg) {
       var ks, kspec, vs, vspec;

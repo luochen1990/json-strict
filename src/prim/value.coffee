@@ -22,7 +22,7 @@ instance('TypeSpec')(Value).where
 	match: ({value}) -> (v) ->
 		v is value
 	show: ({value}) ->
-		"Value #{json value}"
+		"T.Value(#{json value})"
 	samples: ({value}) ->
 		repeat value
 	htmlInline: ({value}) ->

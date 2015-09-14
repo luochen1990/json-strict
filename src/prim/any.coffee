@@ -9,7 +9,7 @@ instance('TypeSpec')(Any).where
 	match: () -> (v) ->
 		v?
 	show: () ->
-		"Any"
+		"T.Any"
 	samples: () ->
 		concat repeat ['a', 3, true, [1, 2], {x: 1}] #, NaN, '', {}, []
 	sample: () ->

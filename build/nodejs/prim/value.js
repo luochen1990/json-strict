@@ -31,7 +31,7 @@
     show: function(arg) {
       var value;
       value = arg.value;
-      return "Value " + (json(value));
+      return "T.Value(" + (json(value)) + ")";
     },
     samples: function(arg) {
       var value;

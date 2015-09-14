@@ -52,7 +52,7 @@
     show: function(arg) {
       var spec;
       spec = arg.spec;
-      return "Promise " + (show(spec));
+      return "T.Promise(" + (show(spec)) + ")";
     },
     samples: function(arg) {
       var spec;

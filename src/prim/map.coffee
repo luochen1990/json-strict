@@ -20,7 +20,7 @@ instance('TypeSpec')(Map).where
 		mv = match(vspec)
 		v? and v.constructor is Object and all(mk)(ks = Object.keys(v)) and all(mv)(map(seek v) ks)
 	show: ({kspec, vspec}) ->
-		"Map #{show kspec} #{show vspec}"
+		"T.Map(#{show kspec})(#{show vspec})"
 	samples: ({kspec, vspec}) ->
 		ks = list take(4) samples(kspec)
 		vs = list take(4) samples(vspec)

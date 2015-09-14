@@ -17,7 +17,7 @@ instance('TypeSpec')(Optional).where
 	match: ({spec}) -> (v) ->
 		not v? or match(spec) v
 	show: ({spec}) ->
-		"Optional #{show spec}"
+		"T.Optional(#{show spec})"
 	samples: ({spec}) ->
 		ls = list take(2) samples spec
 		concat repeat [ls[0], null, ls[1], undefined]

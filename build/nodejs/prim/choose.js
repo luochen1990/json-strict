@@ -40,7 +40,7 @@
     show: function(arg) {
       var specs;
       specs = arg.specs;
-      return (list(map(show)(specs))).join(' | ');
+      return "Choose([" + ((list(map(show)(specs))).join(', ')) + "])";
     },
     samples: function(arg) {
       var specs;

@@ -18,7 +18,7 @@ instance('TypeSpec')(Tree).where
 		{labelSpec} = t
 		v? and typeof v is 'object' and v.rootLabel? and v.subForest?.constructor is Array and match(labelSpec)(v.rootLabel) and all(match(t))(v.subForest)
 	show: ({labelSpec}) ->
-		"Tree #{show labelSpec}"
+		"T.Tree(#{show labelSpec})"
 	samples: ({labelSpec}) ->
 		ls = list take(2) samples labelSpec
 		s0 = {rootLabel: ls[0], subForest: []}

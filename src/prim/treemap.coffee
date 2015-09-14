@@ -33,7 +33,7 @@ instance('TypeSpec')(TreeMap).where
 			)
 		)
 	show: ({kspec, vspec}) ->
-		"TreeMap #{show kspec} #{show vspec}"
+		"T.TreeMap(#{show kspec})(#{show vspec})"
 	samples: ({kspec, vspec}) ->
 		ks = list take(4) samples(kspec)
 		vs = list take(3) samples(vspec)

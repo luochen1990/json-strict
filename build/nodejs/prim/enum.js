@@ -34,11 +34,7 @@
     show: function(arg) {
       var vs;
       vs = arg["enum"];
-      if (vs.length > 1) {
-        return "Enum [" + (json(vs[0])) + " ...]";
-      } else {
-        return "Enum [" + vs[0] + "]";
-      }
+      return "T.Enum(" + (json(vs)) + ")";
     },
     samples: function(arg) {
       var vs;

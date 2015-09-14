@@ -18,7 +18,7 @@
       };
     },
     show: function() {
-      return "Any";
+      return "T.Any";
     },
     samples: function() {
       return concat(repeat([

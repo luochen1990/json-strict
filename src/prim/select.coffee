@@ -19,7 +19,7 @@ instance('TypeSpec')(Select).where
 	match: ({specs}) -> (v) ->
 		v? and v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[(k = ks[0])])? and (match(spec) v[k])
 	show: ({specs}) ->
-		'Select {' + (list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ') + '}'
+		"T.Select({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ')}})"
 	samples: ({specs}) ->
 		concat repeat map(([k, v]) -> dict [[k, sample v]]) enumerate(specs)
 	htmlInline: ({specs: specdict}) ->

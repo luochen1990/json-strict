@@ -1880,7 +1880,7 @@ instance('TypeSpec')(Any).where({
     };
   },
   show: function() {
-    return "Any";
+    return "T.Any";
   },
   samples: function() {
     return concat(repeat([
@@ -2006,7 +2006,7 @@ instance('TypeSpec')(Choose).where({
   show: function(arg) {
     var specs;
     specs = arg.specs;
-    return (list(map(show)(specs))).join(' | ');
+    return "Choose([" + ((list(map(show)(specs))).join(', ')) + "])";
   },
   samples: function(arg) {
     var specs;
@@ -2106,11 +2106,7 @@ instance('TypeSpec')(Enum).where({
   show: function(arg) {
     var vs;
     vs = arg["enum"];
-    if (vs.length > 1) {
-      return "Enum [" + (json(vs[0])) + " ...]";
-    } else {
-      return "Enum [" + vs[0] + "]";
-    }
+    return "T.Enum(" + (json(vs)) + ")";
   },
   samples: function(arg) {
     var vs;
@@ -2192,7 +2188,7 @@ instance('TypeSpec')(Fn).where({
   show: function(arg) {
     var ispec, ospec;
     ispec = arg.ispec, ospec = arg.ospec;
-    return (show(ispec)) + " -> " + (show(ospec));
+    return "T.Fn(" + (show(ispec)) + ")(" + (show(ospec)) + ")";
   },
   samples: function(arg) {
     var ispec, ospec;
@@ -2246,7 +2242,7 @@ instance('TypeSpec')(Int).where({
     };
   },
   show: function() {
-    return "Int";
+    return "T.Int";
   },
   samples: function() {
     return concat(repeat([42, 1, 2]));
@@ -2299,11 +2295,11 @@ instance('TypeSpec')(Loose).where({
   show: function(arg) {
     var specdict;
     specdict = arg.specdict;
-    return 'Loose {' + (list(map(function(arg1) {
+    return "T.Loose({" + ((list(map(function(arg1) {
       var k, spec;
       k = arg1[0], spec = arg1[1];
       return k + ": " + (show(spec));
-    })(enumerate(specdict)))).join(', ') + '}';
+    })(enumerate(specdict)))).join(', ')) + "})";
   },
   samples: function(arg) {
     var specdict;
@@ -2381,7 +2377,7 @@ instance('TypeSpec')(Map).where({
   show: function(arg) {
     var kspec, vspec;
     kspec = arg.kspec, vspec = arg.vspec;
-    return "Map " + (show(kspec)) + " " + (show(vspec));
+    return "T.Map(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
   },
   samples: function(arg) {
     var ks, kspec, vs, vspec;
@@ -2545,7 +2541,7 @@ instance('TypeSpec')(Nat).where({
     };
   },
   show: function() {
-    return "Nat";
+    return "T.Nat";
   },
   samples: function() {
     return concat(repeat([42, 1, 2]));
@@ -2590,11 +2586,11 @@ instance('TypeSpec')(Object).where({
     };
   }),
   show: specdictChecked(function(specdict) {
-    return '{' + (list(map(function(arg) {
+    return "{" + ((list(map(function(arg) {
       var k, spec;
       k = arg[0], spec = arg[1];
       return k + ": " + (show(spec));
-    })(enumerate(specdict)))).join(', ') + '}';
+    })(enumerate(specdict)))).join(', ')) + "}";
   }),
   samples: specdictChecked(function(specdict) {
     return repeat(dict(list(map(function(arg) {
@@ -2653,7 +2649,7 @@ instance('TypeSpec')(Optional).where({
   show: function(arg) {
     var spec;
     spec = arg.spec;
-    return "Optional " + (show(spec));
+    return "T.Optional(" + (show(spec)) + ")";
   },
   samples: function(arg) {
     var ls, spec;
@@ -2734,7 +2730,7 @@ instance('TypeSpec')(Promise).where({
   show: function(arg) {
     var spec;
     spec = arg.spec;
-    return "Promise " + (show(spec));
+    return "T.Promise(" + (show(spec)) + ")";
   },
   samples: function(arg) {
     var spec;
@@ -2801,11 +2797,11 @@ instance('TypeSpec')(Select).where({
   show: function(arg) {
     var specs;
     specs = arg.specs;
-    return 'Select {' + (list(map(function(arg1) {
+    return "T.Select({" + ((list(map(function(arg1) {
       var k, spec;
       k = arg1[0], spec = arg1[1];
       return k + ": " + (show(spec));
-    })(enumerate(specs)))).join(', ') + '}';
+    })(enumerate(specs)))).join(', ')) + "})";
   },
   samples: function(arg) {
     var specs;
@@ -2880,11 +2876,11 @@ instance('TypeSpec')(Strict).where({
   show: function(arg) {
     var specdict;
     specdict = arg.specdict;
-    return '{' + (list(map(function(arg1) {
+    return "{" + ((list(map(function(arg1) {
       var k, spec;
       k = arg1[0], spec = arg1[1];
       return k + ": " + (show(spec));
-    })(enumerate(specdict)))).join(', ') + '}';
+    })(enumerate(specdict)))).join(', ')) + "})";
   },
   samples: function(arg) {
     var specdict;
@@ -2953,7 +2949,7 @@ instance('TypeSpec')(Tree).where({
   show: function(arg) {
     var labelSpec;
     labelSpec = arg.labelSpec;
-    return "Tree " + (show(labelSpec));
+    return "T.Tree(" + (show(labelSpec)) + ")";
   },
   samples: function(arg) {
     var labelSpec, ls, s0, s1;
@@ -3033,7 +3029,7 @@ instance('TypeSpec')(TreeMap).where({
   show: function(arg) {
     var kspec, vspec;
     kspec = arg.kspec, vspec = arg.vspec;
-    return "TreeMap " + (show(kspec)) + " " + (show(vspec));
+    return "T.TreeMap(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
   },
   samples: function(arg) {
     var ks, kspec, vs, vspec;
@@ -3123,7 +3119,7 @@ instance('TypeSpec')(Value).where({
   show: function(arg) {
     var value;
     value = arg.value;
-    return "Value " + (json(value));
+    return "T.Value(" + (json(value)) + ")";
   },
   samples: function(arg) {
     var value;

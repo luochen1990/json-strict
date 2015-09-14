@@ -9,7 +9,7 @@ instance('TypeSpec')(Nat).where
 	match: () -> (v) ->
 		v? and v.constructor is Number and not isNaN(v) and v >= 0 and v == parseInt(v)
 	show: () ->
-		"Nat"
+		"T.Nat"
 	samples: () ->
 		concat repeat [42, 1, 2]
 

@@ -19,7 +19,7 @@ instance('TypeSpec')(Choose).where
 	match: ({specs}) -> (v) ->
 		v? and any((spec) -> match(spec) v)(specs)
 	show: ({specs}) ->
-		(list map(show) specs).join(' | ')
+		"Choose([#{(list map(show) specs).join(', ')}])"
 	samples: ({specs}) ->
 		concat repeat map(sample)(specs)
 	htmlInline: ({specs}) ->

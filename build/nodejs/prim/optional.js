@@ -35,7 +35,7 @@
     show: function(arg) {
       var spec;
       spec = arg.spec;
-      return "Optional " + (show(spec));
+      return "T.Optional(" + (show(spec)) + ")";
     },
     samples: function(arg) {
       var ls, spec;

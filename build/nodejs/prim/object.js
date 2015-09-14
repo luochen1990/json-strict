@@ -31,11 +31,11 @@
       };
     }),
     show: specdictChecked(function(specdict) {
-      return '{' + (list(map(function(arg) {
+      return "{" + ((list(map(function(arg) {
         var k, spec;
         k = arg[0], spec = arg[1];
         return k + ": " + (show(spec));
-      })(enumerate(specdict)))).join(', ') + '}';
+      })(enumerate(specdict)))).join(', ')) + "}";
     }),
     samples: specdictChecked(function(specdict) {
       return repeat(dict(list(map(function(arg) {
