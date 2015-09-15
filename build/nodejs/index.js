@@ -1,5 +1,5 @@
 (function() {
-  var Any, Bool, Choose, Enum, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, Tree, TreeMap, UserInfo, UserName, Value, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass;
+  var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
   require('./prim/object');
 
@@ -41,7 +41,7 @@
 
   Choose = require('./prim/choose').Choose;
 
-  ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+  ref = require('./typespec'), match = ref.match, unmatchMessages = ref.unmatchMessages, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('./render'), genRenderCode = ref1.genRenderCode, showPage = ref1.showPage;
 
@@ -68,6 +68,7 @@
     Select: Select,
     Choose: Choose,
     match: match,
+    unmatchMessages: unmatchMessages,
     show: show,
     sample: sample,
     samples: samples,
@@ -92,6 +93,36 @@
     });
     log(function() {
       return show(UserName);
+    });
+    TableName = NamedType({
+      name: 'TableName',
+      spec: String,
+      samples: ['table1', 'table2']
+    });
+    FieldName = NamedType({
+      name: 'FieldName',
+      spec: String,
+      samples: ['product_id', 'sale', 'amount']
+    });
+    Comparator = Enum(['=', '<', '<=', '>=', '>']);
+    WideTable = [
+      {
+        tableName: TableName,
+        join: {
+          leftTableName: TableName,
+          left: FieldName,
+          op: Comparator,
+          right: FieldName
+        }
+      }
+    ];
+    log(function() {
+      return unmatchMessages(WideTable)([
+        {
+          tableName: 'a',
+          join: {}
+        }
+      ]);
     });
   }
 

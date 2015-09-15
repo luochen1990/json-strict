@@ -1,11 +1,11 @@
 (function() {
-  var Select, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
+  var Select, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
@@ -33,7 +33,40 @@
       specs = arg.specs;
       return function(v) {
         var k, ks, spec;
-        return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
+        return (v != null) && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
+      };
+    },
+    constraints: function(arg) {
+      var specs;
+      specs = arg.specs;
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return "Object Expected, But Got " + v;
+            },
+            flag: function() {
+              return v != null;
+            }
+          }, {
+            label: function() {
+              return "Selection Between " + (Object.keys(specs).join(',')) + " Expected, But Got " + (Object.keys(v).join(',')) + " Via " + (json(v));
+            },
+            flag: function() {
+              var k, ks, spec;
+              return (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null);
+            }
+          }, {
+            label: function() {
+              var k;
+              return "Selection Field " + (k = Object.keys(v)[0]) + " Expected to be " + (show(specs[k]));
+            },
+            sub: function() {
+              var k;
+              return constraints(specs[k = Object.keys(v)[0]])(v[k]);
+            }
+          }
+        ];
       };
     },
     show: function(arg) {

@@ -8,6 +8,12 @@ Nat = do ->
 instance('TypeSpec')(Nat).where
 	match: () -> (v) ->
 		v? and v.constructor is Number and not isNaN(v) and v >= 0 and v == parseInt(v)
+	constraints: () -> (v) -> [
+		{
+			label: -> "Nat Excepted, But Got #{json v}"
+			flag: -> v? and v.constructor is Number and not isNaN(v) and v >= 0 and v == parseInt(v)
+		}
+	]
 	show: () ->
 		"T.Nat"
 	samples: () ->

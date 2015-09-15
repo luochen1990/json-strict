@@ -4,6 +4,7 @@ require 'coffee-mate/global'
 
 TypeSpec = typeclass('TypeSpec').where
 	match: null
+	constraints: null
 	withSpec: (t) -> (v) ->
 		if not @match(t)(v)
 			throw TypeError {expected: @show(t), got: v}
@@ -46,5 +47,25 @@ TypeSpec = typeclass('TypeSpec').where
 
 		return "<div class='typespec'>#{specPart + samplePart}</div>"
 
-module.exports = TypeSpec
+constraints = TypeSpec.constraints
+unmatchMessages = (spec) -> (v) ->
+	r = []
+	rec = (ls) ->
+		rst = true
+		foreach ls, ({label, flag, sub}) ->
+			if flag?
+				if flag() is false
+					r.push label()
+					rst = false
+					foreach.break
+			else if sub?
+				if rec(sub()) is false
+					r.push label()
+					rst = false
+					foreach.break
+		return rst
+	rec(constraints(spec)(v))
+	return r
+
+module.exports = extend({unmatchMessages})(TypeSpec)
 

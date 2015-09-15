@@ -16,6 +16,12 @@ class Promise
 instance('TypeSpec')(Promise).where
 	match: ({spec}) -> (v) ->
 		v?.then?
+	constraints: (t) -> (v) -> [
+		{
+			label: -> "#{show t} Expected, But Got #{v}"
+			flag: -> v?.then?
+		}
+	]
 	withSpec: ({spec}) -> (v) ->
 		if not v?.then?
 			throw TypeError {expected: 'Promise', got: v}

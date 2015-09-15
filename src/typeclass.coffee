@@ -13,6 +13,8 @@ require 'coffee-mate/global'
 			foreach enumerate(funcs), ([funcname, funcdefault]) ->
 				ls = cls[funcname] ?= []
 				f = (arg) ->
+					unless arg?
+						throw TypeError "No Instance of #{classname}(via #{funcname}(#{arg})) For #{arg}"
 					for [type, funcbody] in ls
 						#log -> type
 						if arg.constructor is type
@@ -20,7 +22,7 @@ require 'coffee-mate/global'
 					if funcdefault?
 						return funcdefault.call(rst_funcs, arg)
 					else
-						throw TypeError "no instance of #{classname}(via #{funcname}(#{arg})) for #{arg.constructor.name or 'UnnamedType'}"
+						throw TypeError "No Instance of #{classname}(via #{funcname}(#{arg})) For #{arg.constructor.name or 'UnnamedType'}"
 				rst_funcs[funcname] = f
 			return rst_funcs
 
@@ -40,7 +42,7 @@ module.exports = {typeclass, instance}
 
 if module.parent is null
 	{show} = typeclass('Show').where
-		show: -> str @zero()
+		show: (x) -> str @zero(x)
 		zero: -> 0
 
 	instance('Show')(String).where

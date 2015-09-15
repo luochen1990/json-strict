@@ -1,11 +1,11 @@
 (function() {
-  var NamedType, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+  var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   expandBlockHead = require('../helpers').expandBlockHead;
 
@@ -42,6 +42,33 @@
       spec = arg.spec, check = arg.check;
       return function(v) {
         return match(spec)(v) && (check != null ? check(v) : true);
+      };
+    },
+    constraints: function(arg) {
+      var check, name, spec;
+      spec = arg.spec, check = arg.check, name = arg.name;
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return name + " Expected";
+            },
+            sub: function() {
+              return constraints(spec)(v);
+            }
+          }, {
+            label: function() {
+              return name + " Expected to Satisfy " + check + ", But Got " + (json(v));
+            },
+            flag: function() {
+              if (check != null) {
+                return check(v);
+              } else {
+                return true;
+              }
+            }
+          }
+        ];
       };
     },
     show: function(arg) {

@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpec} = require '../helpers'
 
 class Choose
@@ -18,6 +18,18 @@ class Choose
 instance('TypeSpec')(Choose).where
 	match: ({specs}) -> (v) ->
 		v? and any((spec) -> match(spec) v)(specs)
+	constraints: (t) ->
+		{specs} = t
+		(v) -> [
+			{
+				label: -> "Non-Null Value Expected, But Got #{v}"
+				flag: -> v?
+			}
+			{
+				label: -> "#{show t} Expected, But Got #{json v}"
+				flag: -> any((spec) -> match(spec)(v))(specs)
+			}
+		]
 	show: ({specs}) ->
 		"Choose([#{(list map(show) specs).join(', ')}])"
 	samples: ({specs}) ->

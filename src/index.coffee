@@ -18,7 +18,7 @@ require './prim/constructor'
 {Loose} = require './prim/loose'
 {Select} = require './prim/select'
 {Choose} = require './prim/choose'
-{match, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
+{match, unmatchMessages, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
 
@@ -28,7 +28,7 @@ module.exports = {
 	Optional, Promise, Tree,
 	Map, TreeMap, Fn,
 	NamedType, Strict, Loose, Select, Choose,
-	match, show, sample, samples, showHtml, genRenderCode, showPage,
+	match, unmatchMessages, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 
 if module.parent is null
@@ -44,6 +44,32 @@ if module.parent is null
 	log -> show UserName
 	#log -> show UserInfo
 
+	TableName = NamedType
+		name: 'TableName'
+		spec: String
+		samples: ['table1', 'table2']
+	FieldName = NamedType
+		name: 'FieldName'
+		spec: String
+		samples: ['product_id', 'sale', 'amount']
+	Comparator = Enum ['=', '<', '<=', '>=', '>']
+
+	WideTable = [{
+		tableName: TableName
+		join: {
+			leftTableName: TableName
+			left: FieldName
+			op: Comparator
+			right: FieldName
+		}
+	}]
+	log -> unmatchMessages(WideTable) [
+		{
+			tableName: 'a'
+			join: {
+			}
+		}
+	]
 	#log -> list(10) samples Any
 	#log -> json list take(20) samples Any
 	#log -> json sample Any

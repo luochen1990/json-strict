@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {expandBlockHead, isTypeSpec} = require '../helpers'
 
 class Optional
@@ -16,6 +16,12 @@ class Optional
 instance('TypeSpec')(Optional).where
 	match: ({spec}) -> (v) ->
 		not v? or match(spec) v
+	constraints: (t) -> (v) -> if not v? then [] else [
+		{
+			label: -> "#{show t} Expected"
+			sub: -> constraints(t.spec)(v)
+		}
+	]
 	show: ({spec}) ->
 		"T.Optional(#{show spec})"
 	samples: ({spec}) ->

@@ -1,5 +1,5 @@
 (function() {
-  var TypeSpec, typeclass;
+  var TypeSpec, constraints, typeclass, unmatchMessages;
 
   require('coffee-mate/global');
 
@@ -7,6 +7,7 @@
 
   TypeSpec = typeclass('TypeSpec').where({
     match: null,
+    constraints: null,
     withSpec: function(t) {
       return function(v) {
         if (!this.match(t)(v)) {
@@ -52,7 +53,42 @@
     }
   });
 
-  module.exports = TypeSpec;
+  constraints = TypeSpec.constraints;
+
+  unmatchMessages = function(spec) {
+    return function(v) {
+      var r, rec;
+      r = [];
+      rec = function(ls) {
+        var rst;
+        rst = true;
+        foreach(ls, function(arg) {
+          var flag, label, sub;
+          label = arg.label, flag = arg.flag, sub = arg.sub;
+          if (flag != null) {
+            if (flag() === false) {
+              r.push(label());
+              rst = false;
+              return foreach["break"];
+            }
+          } else if (sub != null) {
+            if (rec(sub()) === false) {
+              r.push(label());
+              rst = false;
+              return foreach["break"];
+            }
+          }
+        });
+        return rst;
+      };
+      rec(constraints(spec)(v));
+      return r;
+    };
+  };
+
+  module.exports = extend({
+    unmatchMessages: unmatchMessages
+  })(TypeSpec);
 
 }).call(this);
 

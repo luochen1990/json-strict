@@ -1763,7 +1763,7 @@ module.exports = {
 
 
 },{"./typeclass":35,"./typespec":36}],13:[function(require,module,exports){
-var Any, Bool, Choose, Enum, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, Tree, TreeMap, UserInfo, UserName, Value, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass;
+var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
 require('./prim/object');
 
@@ -1805,7 +1805,7 @@ Select = require('./prim/select').Select;
 
 Choose = require('./prim/choose').Choose;
 
-ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('./typespec'), match = ref.match, unmatchMessages = ref.unmatchMessages, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('./render'), genRenderCode = ref1.genRenderCode, showPage = ref1.showPage;
 
@@ -1832,6 +1832,7 @@ module.exports = {
   Select: Select,
   Choose: Choose,
   match: match,
+  unmatchMessages: unmatchMessages,
   show: show,
   sample: sample,
   samples: samples,
@@ -1857,6 +1858,36 @@ if (module.parent === null) {
   log(function() {
     return show(UserName);
   });
+  TableName = NamedType({
+    name: 'TableName',
+    spec: String,
+    samples: ['table1', 'table2']
+  });
+  FieldName = NamedType({
+    name: 'FieldName',
+    spec: String,
+    samples: ['product_id', 'sale', 'amount']
+  });
+  Comparator = Enum(['=', '<', '<=', '>=', '>']);
+  WideTable = [
+    {
+      tableName: TableName,
+      join: {
+        leftTableName: TableName,
+        left: FieldName,
+        op: Comparator,
+        right: FieldName
+      }
+    }
+  ];
+  log(function() {
+    return unmatchMessages(WideTable)([
+      {
+        tableName: 'a',
+        join: {}
+      }
+    ]);
+  });
 }
 
 
@@ -1877,6 +1908,20 @@ instance('TypeSpec')(Any).where({
   match: function() {
     return function(v) {
       return v != null;
+    };
+  },
+  constraints: function() {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Any Non-Null Value Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        }
+      ];
     };
   },
   show: function() {
@@ -1900,20 +1945,45 @@ module.exports = {
 
 
 },{"../typeclass":35,"coffee-mate/global":10}],15:[function(require,module,exports){
-var htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
+var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 instance('TypeSpec')(Array).where({
   match: function(arg) {
     var spec;
     spec = arg[0];
     return function(v) {
-      return (v != null) && v.constructor === Array && (all(match(spec))(v));
+      return (v != null) && v instanceof Array && (all(match(spec))(v));
+    };
+  },
+  constraints: function(arg) {
+    var spec;
+    spec = arg[0];
+    return function(v) {
+      return cons({
+        label: function() {
+          return "Array Expected, But Got " + v;
+        },
+        flag: function() {
+          return (v != null) && v instanceof Array;
+        }
+      })(map(function(arg1) {
+        var i, x;
+        i = arg1[0], x = arg1[1];
+        return {
+          label: function() {
+            return "Element " + i + " Expected to be " + (show(spec));
+          },
+          sub: function() {
+            return constraints(spec)(x);
+          }
+        };
+      })(enumerate(v != null ? v : [])));
     };
   },
   show: function(arg) {
@@ -1965,13 +2035,13 @@ module.exports = {
 
 
 },{}],17:[function(require,module,exports){
-var Choose, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
+var Choose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
 
@@ -2001,6 +2071,31 @@ instance('TypeSpec')(Choose).where({
       return (v != null) && any(function(spec) {
         return match(spec)(v);
       })(specs);
+    };
+  },
+  constraints: function(t) {
+    var specs;
+    specs = t.specs;
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Non-Null Value Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        }, {
+          label: function() {
+            return (show(t)) + " Expected, But Got " + (json(v));
+          },
+          flag: function() {
+            return any(function(spec) {
+              return match(spec)(v);
+            })(specs);
+          }
+        }
+      ];
     };
   },
   show: function(arg) {
@@ -2049,6 +2144,28 @@ instance('TypeSpec')(Function).where({
       return (v != null) && v.constructor === spec;
     };
   },
+  constraints: function(spec) {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Non-Null Value Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        }, {
+          label: function() {
+            var ref1, ref2;
+            return "Value with Constructor " + ((ref1 = spec.name) != null ? ref1 : spec) + " Expected, But Got " + (json(v)) + " with Constructor " + ((ref2 = v.constructor.name) != null ? ref2 : v.constructor);
+          },
+          flag: function() {
+            return v.constructor === spec;
+          }
+        }
+      ];
+    };
+  },
   show: function(spec) {
     return spec.name || 'UnnamedType';
   },
@@ -2071,19 +2188,21 @@ instance('TypeSpec')(Function).where({
 
 
 },{"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],19:[function(require,module,exports){
-var Enum, instance,
+var Enum, instance, show,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
+show = require('../typespec').show;
+
 Enum = (function() {
   function Enum(ls) {
     if (!(all(function(x) {
       return x != null;
     })(ls))) {
-      throw Error("Bad Enum Type Definition: Array Of Non-null Values Expected, Bot Got " + ls);
+      throw Error("Bad Enum Type Definition: Array Of Non-Null Values Expected, Bot Got " + ls);
     }
     return {
       constructor: Enum,
@@ -2101,6 +2220,22 @@ instance('TypeSpec')(Enum).where({
     vs = arg["enum"];
     return function(v) {
       return indexOf.call(vs, v) >= 0;
+    };
+  },
+  constraints: function(t) {
+    var vs;
+    vs = t["enum"];
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return (show(t)) + " Expected, But Got " + (json(v));
+          },
+          flag: function() {
+            return indexOf.call(vs, v) >= 0;
+          }
+        }
+      ];
     };
   },
   show: function(arg) {
@@ -2125,7 +2260,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":35,"coffee-mate/global":10}],20:[function(require,module,exports){
+},{"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],20:[function(require,module,exports){
 var Fn, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2241,6 +2376,20 @@ instance('TypeSpec')(Int).where({
       return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
     };
   },
+  constraints: function() {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Int Excepted, But Got " + (json(v));
+          },
+          flag: function() {
+            return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
+          }
+        }
+      ];
+    };
+  },
   show: function() {
     return "T.Int";
   },
@@ -2255,13 +2404,13 @@ module.exports = {
 
 
 },{"../typeclass":35,"coffee-mate/global":10}],22:[function(require,module,exports){
-var Loose, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
+var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
@@ -2289,6 +2438,31 @@ instance('TypeSpec')(Loose).where({
         var k, spec;
         k = arg1[0], spec = arg1[1];
         return match(spec)(v[k]);
+      })(enumerate(specdict)));
+    };
+  },
+  constraints: function(arg) {
+    var specdict;
+    specdict = arg.specdict;
+    return function(v) {
+      return cons({
+        label: function() {
+          return "Object Expected, But Got " + v;
+        },
+        flag: function() {
+          return v != null;
+        }
+      })(map(function(arg1) {
+        var k, spec;
+        k = arg1[0], spec = arg1[1];
+        return {
+          label: function() {
+            return "Field " + k + " Expected to be " + (show(spec));
+          },
+          sub: function() {
+            return constraints(spec)(v[k]);
+          }
+        };
       })(enumerate(specdict)));
     };
   },
@@ -2332,13 +2506,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],23:[function(require,module,exports){
-var Map, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+var Map, constraints, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 genBlockBody = require('../helpers').genBlockBody;
 
@@ -2372,6 +2546,40 @@ instance('TypeSpec')(Map).where({
       mk = match(kspec);
       mv = match(vspec);
       return (v != null) && v.constructor === Object && all(mk)(ks = Object.keys(v)) && all(mv)(map(seek(v))(ks));
+    };
+  },
+  constraints: function(arg) {
+    var kspec, vspec;
+    kspec = arg.kspec, vspec = arg.vspec;
+    return function(v) {
+      return cons({
+        label: function() {
+          return "Object Expected, But Got " + v;
+        },
+        flag: function() {
+          return (v != null) && v.constructor === Object;
+        }
+      })(concat([
+        map(function(k) {
+          return {
+            label: function() {
+              return "Key Expected to be " + (show(kspec));
+            },
+            sub: function() {
+              return constraints(kspec)(k);
+            }
+          };
+        })(Object.keys(v != null ? v : [])), map(function(k) {
+          return {
+            label: function() {
+              return "Value Expected to be " + (show(vspec));
+            },
+            sub: function() {
+              return constraints(vspec)(v[k]);
+            }
+          };
+        })(Object.keys(v != null ? v : []))
+      ]));
     };
   },
   show: function(arg) {
@@ -2411,13 +2619,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],24:[function(require,module,exports){
-var NamedType, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 expandBlockHead = require('../helpers').expandBlockHead;
 
@@ -2454,6 +2662,33 @@ instance('TypeSpec')(NamedType).where({
     spec = arg.spec, check = arg.check;
     return function(v) {
       return match(spec)(v) && (check != null ? check(v) : true);
+    };
+  },
+  constraints: function(arg) {
+    var check, name, spec;
+    spec = arg.spec, check = arg.check, name = arg.name;
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return name + " Expected";
+          },
+          sub: function() {
+            return constraints(spec)(v);
+          }
+        }, {
+          label: function() {
+            return name + " Expected to Satisfy " + check + ", But Got " + (json(v));
+          },
+          flag: function() {
+            if (check != null) {
+              return check(v);
+            } else {
+              return true;
+            }
+          }
+        }
+      ];
     };
   },
   show: function(arg) {
@@ -2540,6 +2775,20 @@ instance('TypeSpec')(Nat).where({
       return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && v === parseInt(v);
     };
   },
+  constraints: function() {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Nat Excepted, But Got " + (json(v));
+          },
+          flag: function() {
+            return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && v === parseInt(v);
+          }
+        }
+      ];
+    };
+  },
   show: function() {
     return "T.Nat";
   },
@@ -2554,13 +2803,13 @@ module.exports = {
 
 
 },{"../typeclass":35,"coffee-mate/global":10}],26:[function(require,module,exports){
-var genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
+var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -2576,7 +2825,7 @@ specdictChecked = function(f) {
 instance('TypeSpec')(Object).where({
   match: specdictChecked(function(specdict) {
     return function(v) {
-      return (v != null) && v.constructor === Object && (all(function(k) {
+      return (v != null) && (all(function(k) {
         return specdict[k] != null;
       })(Object.keys(v))) && all(function(arg) {
         var k, spec;
@@ -2585,6 +2834,40 @@ instance('TypeSpec')(Object).where({
       })(enumerate(specdict));
     };
   }),
+  constraints: function(specdict) {
+    return function(v) {
+      return cons({
+        label: function() {
+          return "Object Expected, But Got " + v;
+        },
+        flag: function() {
+          return v != null;
+        }
+      })(cons({
+        label: function() {
+          return "Redundant Keys: " + (list(filter(function(k) {
+            return specdict[k] == null;
+          })(Object.keys(v))));
+        },
+        flag: function() {
+          return all(function(k) {
+            return specdict[k] != null;
+          })(Object.keys(v));
+        }
+      })(map(function(arg) {
+        var k, spec;
+        k = arg[0], spec = arg[1];
+        return {
+          label: function() {
+            return "Field " + k + " Expected to be " + (show(spec));
+          },
+          sub: function() {
+            return constraints(spec)(v[k]);
+          }
+        };
+      })(enumerate(specdict))));
+    };
+  },
   show: specdictChecked(function(specdict) {
     return "{" + ((list(map(function(arg) {
       var k, spec;
@@ -2613,13 +2896,13 @@ instance('TypeSpec')(Object).where({
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],27:[function(require,module,exports){
-var Optional, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
+var Optional, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
@@ -2644,6 +2927,24 @@ instance('TypeSpec')(Optional).where({
     spec = arg.spec;
     return function(v) {
       return (v == null) || match(spec)(v);
+    };
+  },
+  constraints: function(t) {
+    return function(v) {
+      if (v == null) {
+        return [];
+      } else {
+        return [
+          {
+            label: function() {
+              return (show(t)) + " Expected";
+            },
+            sub: function() {
+              return constraints(t.spec)(v);
+            }
+          }
+        ];
+      }
     };
   },
   show: function(arg) {
@@ -2710,6 +3011,20 @@ instance('TypeSpec')(Promise).where({
       return (v != null ? v.then : void 0) != null;
     };
   },
+  constraints: function(t) {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return (show(t)) + " Expected, But Got " + v;
+          },
+          flag: function() {
+            return (v != null ? v.then : void 0) != null;
+          }
+        }
+      ];
+    };
+  },
   withSpec: function(arg) {
     var spec;
     spec = arg.spec;
@@ -2757,13 +3072,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],29:[function(require,module,exports){
-var Select, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
+var Select, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
@@ -2791,7 +3106,40 @@ instance('TypeSpec')(Select).where({
     specs = arg.specs;
     return function(v) {
       var k, ks, spec;
-      return (v != null) && v.constructor === Object && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
+      return (v != null) && (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null) && (match(spec)(v[k]));
+    };
+  },
+  constraints: function(arg) {
+    var specs;
+    specs = arg.specs;
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Object Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        }, {
+          label: function() {
+            return "Selection Between " + (Object.keys(specs).join(',')) + " Expected, But Got " + (Object.keys(v).join(',')) + " Via " + (json(v));
+          },
+          flag: function() {
+            var k, ks, spec;
+            return (ks = Object.keys(v)).length === 1 && ((spec = specs[(k = ks[0])]) != null);
+          }
+        }, {
+          label: function() {
+            var k;
+            return "Selection Field " + (k = Object.keys(v)[0]) + " Expected to be " + (show(specs[k]));
+          },
+          sub: function() {
+            var k;
+            return constraints(specs[k = Object.keys(v)[0]])(v[k]);
+          }
+        }
+      ];
     };
   },
   show: function(arg) {
@@ -2834,13 +3182,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],30:[function(require,module,exports){
-var Strict, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
+var Strict, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -2871,6 +3219,42 @@ instance('TypeSpec')(Strict).where({
         k = arg1[0], spec = arg1[1];
         return match(spec)(v[k]);
       })(enumerate(specdict));
+    };
+  },
+  constraints: function(arg) {
+    var specdict;
+    specdict = arg.specdict;
+    return function(v) {
+      return cons({
+        label: function() {
+          return "Object Expected, But Got " + v;
+        },
+        flag: function() {
+          return v != null;
+        }
+      })(cons({
+        label: function() {
+          return "Redundant Keys: " + (list(filter(function(k) {
+            return specdict[k] == null;
+          })(Object.keys(v))));
+        },
+        flag: function() {
+          return all(function(k) {
+            return specdict[k] != null;
+          })(Object.keys(v));
+        }
+      })(map(function(arg1) {
+        var k, spec;
+        k = arg1[0], spec = arg1[1];
+        return {
+          label: function() {
+            return "Field " + k + " Expected to be " + (show(spec));
+          },
+          sub: function() {
+            return constraints(spec)(v[k]);
+          }
+        };
+      })(enumerate(specdict))));
     };
   },
   show: function(arg) {
@@ -2913,13 +3297,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],31:[function(require,module,exports){
-var Tree, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
+var Tree, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
@@ -2941,9 +3325,40 @@ Tree = (function() {
 instance('TypeSpec')(Tree).where({
   match: function(t) {
     return function(v) {
-      var labelSpec, ref3;
+      var labelSpec;
       labelSpec = t.labelSpec;
-      return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref3 = v.subForest) != null ? ref3.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
+      return (v != null) && (v.rootLabel != null) && (v.subForest != null) && v.subForest instanceof Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
+    };
+  },
+  constraints: function(t) {
+    var labelSpec;
+    labelSpec = t.labelSpec;
+    return function(v) {
+      var ref3;
+      return cons({
+        label: function() {
+          return (show(t)) + " Expected, But Got " + v;
+        },
+        flag: function() {
+          return (v != null) && (v.rootLabel != null) && (v.subForest != null) && v.subForest instanceof Array;
+        }
+      })(cons({
+        label: function() {
+          return "Label Expected to be " + (show(labelSpec));
+        },
+        sub: function() {
+          return constraints(labelSpec)(v.rootLabel);
+        }
+      })(map(function(x) {
+        return {
+          label: function() {
+            return (show(t)) + " Expected";
+          },
+          sub: function() {
+            return constraints(t)(x);
+          }
+        };
+      })((ref3 = v != null ? v.subForest : void 0) != null ? ref3 : [])));
     };
   },
   show: function(arg) {
@@ -2985,13 +3400,13 @@ module.exports = {
 
 
 },{"../helpers":12,"../typeclass":35,"../typespec":36,"coffee-mate/global":10}],32:[function(require,module,exports){
-var TreeMap, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
+var TreeMap, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpec = ref2.isTypeSpec;
 
@@ -3023,7 +3438,49 @@ instance('TypeSpec')(TreeMap).where({
       kspec = t.kspec, vspec = t.vspec;
       mk = match(kspec);
       mv = match(t);
-      return (v != null) && v.constructor === Object && ((((tag = Object.keys(v)[0]) === 'node') && (all(mk)(ks = Object.keys(v.node)) && all(mv)(map(seek(v.node))(ks)))) || (tag === 'leaf' && match(vspec)(v.leaf)));
+      return (v != null) && ((((tag = Object.keys(v)[0]) === 'node') && (all(mk)(ks = Object.keys(v.node)) && all(mv)(map(seek(v.node))(ks)))) || (tag === 'leaf' && match(vspec)(v.leaf)));
+    };
+  },
+  constraints: function(t) {
+    return function(v) {
+      return cons({
+        label: function() {
+          return (show(t)) + " Expected, But Got " + v;
+        },
+        flag: function() {
+          var ks, ref3, tag;
+          return (v != null) && (ks = Object.keys(v)).length === 1 && ((ref3 = (tag = ks[0])) === 'node' || ref3 === 'leaf');
+        }
+      })(v == null ? [] : v.node != null ? concat(map(function(arg) {
+        var k, v;
+        k = arg[0], v = arg[1];
+        return [
+          {
+            label: function() {
+              return "TreeMap Key Expected";
+            },
+            sub: function() {
+              return constraints(t.kspec)(k);
+            }
+          }, {
+            label: function() {
+              return (show(t)) + " Expected";
+            },
+            sub: function() {
+              return constraints(t)(v);
+            }
+          }
+        ];
+      })(enumerate(v.node))) : [
+        {
+          label: function() {
+            return "Leaf Expected to be " + (show(t.vspec));
+          },
+          sub: function() {
+            return constraints(t.vspec)(v.leaf);
+          }
+        }
+      ]);
     };
   },
   show: function(arg) {
@@ -3386,6 +3843,9 @@ ref = (function() {
           ls = cls[funcname] != null ? cls[funcname] : cls[funcname] = [];
           f = function(arg) {
             var funcbody, i, len, ref, type;
+            if (arg == null) {
+              throw TypeError("No Instance of " + classname + "(via " + funcname + "(" + arg + ")) For " + arg);
+            }
             for (i = 0, len = ls.length; i < len; i++) {
               ref = ls[i], type = ref[0], funcbody = ref[1];
               if (arg.constructor === type) {
@@ -3395,7 +3855,7 @@ ref = (function() {
             if (funcdefault != null) {
               return funcdefault.call(rst_funcs, arg);
             } else {
-              throw TypeError("no instance of " + classname + "(via " + funcname + "(" + arg + ")) for " + (arg.constructor.name || 'UnnamedType'));
+              throw TypeError("No Instance of " + classname + "(via " + funcname + "(" + arg + ")) For " + (arg.constructor.name || 'UnnamedType'));
             }
           };
           return rst_funcs[funcname] = f;
@@ -3436,8 +3896,8 @@ module.exports = {
 
 if (module.parent === null) {
   show = typeclass('Show').where({
-    show: function() {
-      return str(this.zero());
+    show: function(x) {
+      return str(this.zero(x));
     },
     zero: function() {
       return 0;
@@ -3468,7 +3928,7 @@ if (module.parent === null) {
 
 
 },{"coffee-mate/global":10}],36:[function(require,module,exports){
-var TypeSpec, typeclass;
+var TypeSpec, constraints, typeclass, unmatchMessages;
 
 require('coffee-mate/global');
 
@@ -3476,6 +3936,7 @@ typeclass = require('./typeclass').typeclass;
 
 TypeSpec = typeclass('TypeSpec').where({
   match: null,
+  constraints: null,
   withSpec: function(t) {
     return function(v) {
       if (!this.match(t)(v)) {
@@ -3521,7 +3982,42 @@ TypeSpec = typeclass('TypeSpec').where({
   }
 });
 
-module.exports = TypeSpec;
+constraints = TypeSpec.constraints;
+
+unmatchMessages = function(spec) {
+  return function(v) {
+    var r, rec;
+    r = [];
+    rec = function(ls) {
+      var rst;
+      rst = true;
+      foreach(ls, function(arg) {
+        var flag, label, sub;
+        label = arg.label, flag = arg.flag, sub = arg.sub;
+        if (flag != null) {
+          if (flag() === false) {
+            r.push(label());
+            rst = false;
+            return foreach["break"];
+          }
+        } else if (sub != null) {
+          if (rec(sub()) === false) {
+            r.push(label());
+            rst = false;
+            return foreach["break"];
+          }
+        }
+      });
+      return rst;
+    };
+    rec(constraints(spec)(v));
+    return r;
+  };
+};
+
+module.exports = extend({
+  unmatchMessages: unmatchMessages
+})(TypeSpec);
 
 
 },{"./typeclass":35,"coffee-mate/global":10}]},{},[13])(13)

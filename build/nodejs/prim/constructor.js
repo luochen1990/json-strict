@@ -13,6 +13,28 @@
         return (v != null) && v.constructor === spec;
       };
     },
+    constraints: function(spec) {
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return "Non-Null Value Expected, But Got " + v;
+            },
+            flag: function() {
+              return v != null;
+            }
+          }, {
+            label: function() {
+              var ref1, ref2;
+              return "Value with Constructor " + ((ref1 = spec.name) != null ? ref1 : spec) + " Expected, But Got " + (json(v)) + " with Constructor " + ((ref2 = v.constructor.name) != null ? ref2 : v.constructor);
+            },
+            flag: function() {
+              return v.constructor === spec;
+            }
+          }
+        ];
+      };
+    },
     show: function(spec) {
       return spec.name || 'UnnamedType';
     },

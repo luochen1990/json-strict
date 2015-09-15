@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpecDict} = require '../helpers'
 
 class Select
@@ -17,7 +17,21 @@ class Select
 
 instance('TypeSpec')(Select).where
 	match: ({specs}) -> (v) ->
-		v? and v.constructor is Object and (ks = Object.keys(v)).length is 1 and (spec = specs[(k = ks[0])])? and (match(spec) v[k])
+		v? and (ks = Object.keys(v)).length is 1 and (spec = specs[(k = ks[0])])? and (match(spec) v[k])
+	constraints: ({specs}) -> (v) -> [
+		{
+			label: -> "Object Expected, But Got #{v}"
+			flag: -> v?
+		}
+		{
+			label: -> "Selection Between #{Object.keys(specs).join(',')} Expected, But Got #{Object.keys(v).join(',')} Via #{json v}"
+			flag: -> (ks = Object.keys(v)).length is 1 and (spec = specs[(k = ks[0])])?
+		}
+		{
+			label: -> "Selection Field #{k = Object.keys(v)[0]} Expected to be #{show specs[k]}" #, But Got #{json v}"
+			sub: -> constraints(specs[k = Object.keys(v)[0]])(v[k])
+		}
+	]
 	show: ({specs}) ->
 		"T.Select({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ')}})"
 	samples: ({specs}) ->

@@ -1,27 +1,32 @@
-{Nat, match, show} = require '../../src/'
+{Nat} = require '../../src/'
 
-describe 'prim/Nat', ->
-	describe 'match', ->
-		it 'doesnt match undefined/null/NaN', ->
-			assert -> match(Nat)(undefined) is no
-			assert -> match(Nat)(null) is no
-			assert -> match(Nat)(NaN) is no
-		it 'doesnt match true/false', ->
-			assert -> match(Nat)(true) is no
-			assert -> match(Nat)(false) is no
-		it 'doesnt match any other types', ->
-			assert -> match(Nat)(1.23) is no
-			assert -> match(Nat)(-0.0001) is no
-			assert -> match(Nat)('a') is no
-			assert -> match(Nat)({}) is no
-			assert -> match(Nat)([]) is no
-		it 'doesnt match negatives', ->
-			assert -> match(Nat)(-1) is no
-			assert -> match(Nat)(-1.1) is no
-			assert -> match(Nat)(-1e9) is no
-		it 'matches positive integers', ->
-			assert -> match(Nat)(0) is yes
-			assert -> match(Nat)(1) is yes
-			assert -> match(Nat)(2) is yes
-			assert -> match(Nat)(1e9) is yes
+matchCases =
+	'doesnt match undefined/null/NaN': [
+		[Nat, undefined, no]
+		[Nat, null, no]
+		[Nat, NaN, no]
+	]
+	'doesnt match true/false': [
+		[Nat, true, no]
+		[Nat, false, no]
+	]
+	'doesnt match any other types': [
+		[Nat, 1.23, no]
+		[Nat, -0.0001, no]
+		[Nat, 'a', no]
+		[Nat, {}, no]
+		[Nat, [], no]
+	]
+	'doesnt match negatives': [
+		[Nat, -1, no]
+		[Nat, -1.1, no]
+		[Nat, -1e9, no]
+	]
+	'matches positive integers': [
+		[Nat, 0, yes]
+		[Nat, 1, yes]
+		[Nat, 2, yes]
+		[Nat, 1e9, yes]
+	]
 
+module.exports = {matchCases}

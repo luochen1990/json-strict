@@ -1,11 +1,11 @@
 (function() {
-  var Strict, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
+  var Strict, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
 
   require('coffee-mate/global');
 
   instance = require('../typeclass').instance;
 
-  ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+  ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -36,6 +36,42 @@
           k = arg1[0], spec = arg1[1];
           return match(spec)(v[k]);
         })(enumerate(specdict));
+      };
+    },
+    constraints: function(arg) {
+      var specdict;
+      specdict = arg.specdict;
+      return function(v) {
+        return cons({
+          label: function() {
+            return "Object Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        })(cons({
+          label: function() {
+            return "Redundant Keys: " + (list(filter(function(k) {
+              return specdict[k] == null;
+            })(Object.keys(v))));
+          },
+          flag: function() {
+            return all(function(k) {
+              return specdict[k] != null;
+            })(Object.keys(v));
+          }
+        })(map(function(arg1) {
+          var k, spec;
+          k = arg1[0], spec = arg1[1];
+          return {
+            label: function() {
+              return "Field " + k + " Expected to be " + (show(spec));
+            },
+            sub: function() {
+              return constraints(spec)(v[k]);
+            }
+          };
+        })(enumerate(specdict))));
       };
     },
     show: function(arg) {

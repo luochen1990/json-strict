@@ -32,6 +32,20 @@
         return (v != null ? v.then : void 0) != null;
       };
     },
+    constraints: function(t) {
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return (show(t)) + " Expected, But Got " + v;
+            },
+            flag: function() {
+              return (v != null ? v.then : void 0) != null;
+            }
+          }
+        ];
+      };
+    },
     withSpec: function(arg) {
       var spec;
       spec = arg.spec;

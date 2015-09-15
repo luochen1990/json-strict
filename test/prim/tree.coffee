@@ -1,27 +1,41 @@
-{Tree, match, show} = require '../../src/'
+{Tree} = require '../../src/'
 
-describe 'prim/Tree', ->
-	describe 'match', ->
-		it 'doesnt match undefined/null', ->
-			assert -> match(Tree(String))(undefined) is no
-			assert -> match(Tree(Number))(null) is no
-		it 'doesnt match values of any other types', ->
-			assert -> match(Tree(String))(true) is no
-			assert -> match(Tree(Number))(1) is no
-			assert -> match(Tree(Number))('c') is no
-		it 'doesnt match objects with wrong keys', ->
-			assert -> match(Tree(Number))({}) is no
-			assert -> match(Tree(Number))({a: 1, b: 2}) is no
-			assert -> match(Tree(Number))({rootLabel: 1}) is no
-			assert -> match(Tree(Number))({subForest: []}) is no
-		it 'doesnt match objects with correct keys but wrong values', ->
-			assert -> match(Tree(Number))({rootLabel: 'a', subForest: []}) is no
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: 'a'}) is no
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: {}}) is no
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: [{rootLabel: 'a', subForest: []}]}) is no
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: [{rootLabel: 2, subForest: 'a'}]}) is no
-		it 'matches objects with correct keys and values', ->
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: []}) is yes
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: [{rootLabel: 2, subForest: []}]}) is yes
-			assert -> match(Tree(Number))({rootLabel: 1, subForest: [{rootLabel: 2, subForest: [{rootLabel: 3, subForest: []}, {rootLabel: 4, subForest: [{rootLabel: 5, subForest: []}]}]}]}) is yes
+matchCases =
+	'doesnt match undefined/null': [
+		[Tree(String), undefined, no]
+		[Tree(String), null, no]
+		[Tree(Number), undefined, no]
+		[Tree(Number), null, no]
+	]
+	'doesnt match values of any other types': [
+		[Tree(String), true, no]
+		[Tree(String), 'c', no]
+		[Tree(Number), 1, no]
+	]
+	'doesnt match objects with wrong keys': [
+		[Tree(Number), {}, no]
+		[Tree(Number), {a: 1, b: 2}, no]
+		[Tree(Number), {rootLabel: 1}, no]
+		[Tree(Number), {subForest: []}, no]
+	]
+	'doesnt match objects with correct keys but wrong values': [
+		[Tree(Number), {rootLabel: 'a', subForest: []}, no]
+		[Tree(Number), {rootLabel: 1, subForest: 'a'}, no]
+		[Tree(Number), {rootLabel: 1, subForest: {}}, no]
+		[Tree(Number), {rootLabel: 1, subForest: [{rootLabel: 'a', subForest: []}]}, no]
+		[Tree(Number), {rootLabel: 1, subForest: [{rootLabel: 2, subForest: 'a'}]}, no]
+		[Tree(Number), {rootLabel: 1, subForest: [{rootLabel: 2, subForest: []}, {rootLabel: 'a', subForest: []}]}, no]
+		[Tree(Number), {rootLabel: 1, subForest: [{rootLabel: 2, subForest: []}, {rootLabel: 3, subForest: 'a'}]}, no]
+	]
+	'matches objects with correct keys and values': [
+		[Tree(Number), {rootLabel: 1, subForest: []}, yes]
+		[Tree(Number), {rootLabel: 1, subForest: [{rootLabel: 2, subForest: []}]}, yes]
+		[Tree(Number), {rootLabel: 1, subForest: [
+			{rootLabel: 2, subForest: [
+				{rootLabel: 3, subForest: []},
+				{rootLabel: 4, subForest: [{rootLabel: 5, subForest: []}]}
+			]}
+		]}, yes]
+	]
 
+module.exports = {matchCases}

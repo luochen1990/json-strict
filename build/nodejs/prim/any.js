@@ -17,6 +17,20 @@
         return v != null;
       };
     },
+    constraints: function() {
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return "Any Non-Null Value Expected, But Got " + v;
+            },
+            flag: function() {
+              return v != null;
+            }
+          }
+        ];
+      };
+    },
     show: function() {
       return "T.Any";
     },

@@ -24,6 +24,9 @@
             ls = cls[funcname] != null ? cls[funcname] : cls[funcname] = [];
             f = function(arg) {
               var funcbody, i, len, ref, type;
+              if (arg == null) {
+                throw TypeError("No Instance of " + classname + "(via " + funcname + "(" + arg + ")) For " + arg);
+              }
               for (i = 0, len = ls.length; i < len; i++) {
                 ref = ls[i], type = ref[0], funcbody = ref[1];
                 if (arg.constructor === type) {
@@ -33,7 +36,7 @@
               if (funcdefault != null) {
                 return funcdefault.call(rst_funcs, arg);
               } else {
-                throw TypeError("no instance of " + classname + "(via " + funcname + "(" + arg + ")) for " + (arg.constructor.name || 'UnnamedType'));
+                throw TypeError("No Instance of " + classname + "(via " + funcname + "(" + arg + ")) For " + (arg.constructor.name || 'UnnamedType'));
               }
             };
             return rst_funcs[funcname] = f;
@@ -74,8 +77,8 @@
 
   if (module.parent === null) {
     show = typeclass('Show').where({
-      show: function() {
-        return str(this.zero());
+      show: function(x) {
+        return str(this.zero(x));
       },
       zero: function() {
         return 0;

@@ -1,11 +1,11 @@
 (function() {
-  var Choose, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
+  var Choose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
 
   require('coffee-mate/global');
 
   instance = require('../typeclass').instance;
 
-  ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+  ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
 
@@ -35,6 +35,31 @@
         return (v != null) && any(function(spec) {
           return match(spec)(v);
         })(specs);
+      };
+    },
+    constraints: function(t) {
+      var specs;
+      specs = t.specs;
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return "Non-Null Value Expected, But Got " + v;
+            },
+            flag: function() {
+              return v != null;
+            }
+          }, {
+            label: function() {
+              return (show(t)) + " Expected, But Got " + (json(v));
+            },
+            flag: function() {
+              return any(function(spec) {
+                return match(spec)(v);
+              })(specs);
+            }
+          }
+        ];
       };
     },
     show: function(arg) {

@@ -17,6 +17,20 @@
         return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
       };
     },
+    constraints: function() {
+      return function(v) {
+        return [
+          {
+            label: function() {
+              return "Int Excepted, But Got " + (json(v));
+            },
+            flag: function() {
+              return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
+            }
+          }
+        ];
+      };
+    },
     show: function() {
       return "T.Int";
     },

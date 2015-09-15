@@ -1,26 +1,31 @@
-{Strict, match, show} = require '../../src/'
+{Strict} = require '../../src/'
 
-describe 'prim/Strict', ->
-	describe 'match', ->
-		it 'doesnt match undefined/null', ->
-			assert -> match(Strict {})(undefined) is no
-			assert -> match(Strict {})(null) is no
-			assert -> match(Strict {x: Number, y: String})(undefined) is no
-			assert -> match(Strict {x: Number, y: String})(null) is no
-		it 'doesnt match values of any other types', ->
-			assert -> match(Strict {x: Number, y: String})(true) is no
-			assert -> match(Strict {x: Number, y: String})(1) is no
-			assert -> match(Strict {x: Number, y: String})('c') is no
-		it 'doesnt match objects with wrong keys', ->
-			assert -> match(Strict {x: Number, y: String})({}) is no
-			assert -> match(Strict {x: Number, y: String})({x: 1}) is no
-			assert -> match(Strict {x: Number, y: String})({x: 1, z: 'a'}) is no
-			assert -> match(Strict {x: Number, y: String})({x: 1, y: 'abc', z: 2}) is no
-		it 'doesnt match objects with correct keys but wrong values', ->
-			assert -> match(Strict {x: Number, y: String})({x: 1, y: 2}) is no
-			assert -> match(Strict {x: Number, y: String})({x: 'abc', y: 'abc'}) is no
-		it 'matches objects with correct keys and values', ->
-			assert -> match(Strict {})({}) is yes
-			assert -> match(Strict {x: Number, y: String})({x: 1, y: ''}) is yes
-			assert -> match(Strict {x: Number, y: String})({x: 1.23, y: 'abc'}) is yes
+matchCases =
+	'doesnt match undefined/null': [
+		[Strict({}), undefined, no]
+		[Strict({}), null, no]
+		[Strict({x: Number, y: String}), undefined, no]
+		[Strict({x: Number, y: String}), null, no]
+	]
+	'doesnt match values of any other types': [
+		[Strict({x: Number, y: String}), true, no]
+		[Strict({x: Number, y: String}), 1, no]
+		[Strict({x: Number, y: String}), 'c', no]
+	]
+	'doesnt match objects with wrong keys': [
+		[Strict({x: Number, y: String}), {}, no]
+		[Strict({x: Number, y: String}), {x: 1}, no]
+		[Strict({x: Number, y: String}), {x: 1, z: 'a'}, no]
+		[Strict({x: Number, y: String}), {x: 1, y: 'abc', z: 2}, no]
+	]
+	'doesnt match objects with correct keys but wrong values': [
+		[Strict({x: Number, y: String}), {x: 1, y: 2}, no]
+		[Strict({x: Number, y: String}), {x: 'abc', y: 'abc'}, no]
+	]
+	'matches objects with correct keys and values': [
+		[Strict({}), {}, yes]
+		[Strict({x: Number, y: String}), {x: 1, y: ''}, yes]
+		[Strict({x: Number, y: String}), {x: 1.23, y: 'abc'}, yes]
+	]
 
+module.exports = {matchCases}

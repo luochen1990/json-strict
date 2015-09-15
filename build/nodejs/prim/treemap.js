@@ -1,11 +1,11 @@
 (function() {
-  var TreeMap, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
+  var TreeMap, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpec = ref2.isTypeSpec;
 
@@ -37,7 +37,49 @@
         kspec = t.kspec, vspec = t.vspec;
         mk = match(kspec);
         mv = match(t);
-        return (v != null) && v.constructor === Object && ((((tag = Object.keys(v)[0]) === 'node') && (all(mk)(ks = Object.keys(v.node)) && all(mv)(map(seek(v.node))(ks)))) || (tag === 'leaf' && match(vspec)(v.leaf)));
+        return (v != null) && ((((tag = Object.keys(v)[0]) === 'node') && (all(mk)(ks = Object.keys(v.node)) && all(mv)(map(seek(v.node))(ks)))) || (tag === 'leaf' && match(vspec)(v.leaf)));
+      };
+    },
+    constraints: function(t) {
+      return function(v) {
+        return cons({
+          label: function() {
+            return (show(t)) + " Expected, But Got " + v;
+          },
+          flag: function() {
+            var ks, ref3, tag;
+            return (v != null) && (ks = Object.keys(v)).length === 1 && ((ref3 = (tag = ks[0])) === 'node' || ref3 === 'leaf');
+          }
+        })(v == null ? [] : v.node != null ? concat(map(function(arg) {
+          var k, v;
+          k = arg[0], v = arg[1];
+          return [
+            {
+              label: function() {
+                return "TreeMap Key Expected";
+              },
+              sub: function() {
+                return constraints(t.kspec)(k);
+              }
+            }, {
+              label: function() {
+                return (show(t)) + " Expected";
+              },
+              sub: function() {
+                return constraints(t)(v);
+              }
+            }
+          ];
+        })(enumerate(v.node))) : [
+          {
+            label: function() {
+              return "Leaf Expected to be " + (show(t.vspec));
+            },
+            sub: function() {
+              return constraints(t.vspec)(v.leaf);
+            }
+          }
+        ]);
       };
     },
     show: function(arg) {

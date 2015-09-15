@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpec} = require '../helpers'
 
 class TreeMap
@@ -21,7 +21,7 @@ instance('TypeSpec')(TreeMap).where
 		{kspec, vspec} = t
 		mk = match(kspec)
 		mv = match(t)
-		v? and v.constructor is Object and (
+		v? and (
 			(
 				(
 					(tag = Object.keys(v)[0]) is 'node'
@@ -32,6 +32,32 @@ instance('TypeSpec')(TreeMap).where
 				tag is 'leaf' and match(vspec)(v.leaf)
 			)
 		)
+	constraints: (t) -> (v) -> cons(
+		{
+			label: -> "#{show t} Expected, But Got #{v}"
+			flag: -> v? and (ks = Object.keys(v)).length == 1 and (tag = ks[0]) in ['node', 'leaf']
+		}
+	)(
+		if not v?
+			[]
+		else if v.node?
+			concat map(([k, v]) -> [
+				{
+					label: -> "TreeMap Key Expected"
+					sub: -> constraints(t.kspec)(k)
+				}
+				{
+					label: -> "#{show t} Expected"
+					sub: -> constraints(t)(v)
+				}
+			]) enumerate(v.node)
+		else [
+			{
+				label: -> "Leaf Expected to be #{show t.vspec}"
+				sub: -> constraints(t.vspec)(v.leaf)
+			}
+		]
+	)
 	show: ({kspec, vspec}) ->
 		"T.TreeMap(#{show kspec})(#{show vspec})"
 	samples: ({kspec, vspec}) ->

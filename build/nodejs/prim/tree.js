@@ -1,11 +1,11 @@
 (function() {
-  var Tree, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
+  var Tree, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   ref2 = require('../helpers'), expandBlockHead = ref2.expandBlockHead, isTypeSpec = ref2.isTypeSpec;
 
@@ -27,9 +27,40 @@
   instance('TypeSpec')(Tree).where({
     match: function(t) {
       return function(v) {
-        var labelSpec, ref3;
+        var labelSpec;
         labelSpec = t.labelSpec;
-        return (v != null) && typeof v === 'object' && (v.rootLabel != null) && ((ref3 = v.subForest) != null ? ref3.constructor : void 0) === Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
+        return (v != null) && (v.rootLabel != null) && (v.subForest != null) && v.subForest instanceof Array && match(labelSpec)(v.rootLabel) && all(match(t))(v.subForest);
+      };
+    },
+    constraints: function(t) {
+      var labelSpec;
+      labelSpec = t.labelSpec;
+      return function(v) {
+        var ref3;
+        return cons({
+          label: function() {
+            return (show(t)) + " Expected, But Got " + v;
+          },
+          flag: function() {
+            return (v != null) && (v.rootLabel != null) && (v.subForest != null) && v.subForest instanceof Array;
+          }
+        })(cons({
+          label: function() {
+            return "Label Expected to be " + (show(labelSpec));
+          },
+          sub: function() {
+            return constraints(labelSpec)(v.rootLabel);
+          }
+        })(map(function(x) {
+          return {
+            label: function() {
+              return (show(t)) + " Expected";
+            },
+            sub: function() {
+              return constraints(t)(x);
+            }
+          };
+        })((ref3 = v != null ? v.subForest : void 0) != null ? ref3 : [])));
       };
     },
     show: function(arg) {

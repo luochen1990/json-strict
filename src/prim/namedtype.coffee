@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {expandBlockHead} = require '../helpers'
 
 class NamedType
@@ -24,6 +24,16 @@ class NamedType
 instance('TypeSpec')(NamedType).where
 	match: ({spec, check}) -> (v) ->
 		match(spec)(v) and (if check? then check(v) else true)
+	constraints: ({spec, check, name}) -> (v) -> [
+		{
+			label: -> "#{name} Expected" #, But Got #{v}"
+			sub: -> constraints(spec)(v)
+		}
+		{
+			label: -> "#{name} Expected to Satisfy #{check}, But Got #{json v}"
+			flag: -> if check? then check(v) else true
+		}
+	]
 	show: ({name, spec}) ->
 		name or (show spec)
 	samples: ({spec, samples: ls}) ->

@@ -1,18 +1,21 @@
-{Enum, match, show} = require '../../src/'
+{Enum} = require '../../src/'
 
-describe 'prim/Enum', ->
-	describe 'match', ->
-		it 'doesnt match undefined/null', ->
-			assert -> match(Enum ['a', 'b', 'c'])(undefined) is false
-			assert -> match(Enum ['a', 'b', 'c'])(null) is false
-		it 'matches enumerated values', ->
-			assert -> match(Enum ['a', 'b', 'c'])('a') is true
-			assert -> match(Enum ['a', 'b', 'c'])('b') is true
-			assert -> match(Enum ['a', 'b', 'c'])('c') is true
-		it 'doesnt match any other types', ->
-			assert -> match(Enum ['a', 'b', 'c'])(true) is false
-			assert -> match(Enum ['a', 'b', 'c'])(1) is false
-			assert -> match(Enum ['a', 'b', 'c'])('d') is false
-			assert -> match(Enum ['a', 'b', 'c'])({}) is false
-			assert -> match(Enum ['a', 'b', 'c'])([]) is false
+matchCases =
+	'doesnt match undefined/null': [
+		[Enum(['a', 'b', 'c']), undefined, no]
+		[Enum(['a', 'b', 'c']), null, no]
+	]
+	'matches enumerated values': [
+		[Enum(['a', 'b', 'c']), 'a', yes]
+		[Enum(['a', 'b', 'c']), 'b', yes]
+		[Enum(['a', 'b', 'c']), 'c', yes]
+	]
+	'doesnt match any other types': [
+		[Enum(['a', 'b', 'c']), true, no]
+		[Enum(['a', 'b', 'c']), 1, no]
+		[Enum(['a', 'b', 'c']), 'd', no]
+		[Enum(['a', 'b', 'c']), {}, no]
+		[Enum(['a', 'b', 'c']), [], no]
+	]
 
+module.exports = {matchCases}

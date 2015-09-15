@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody} = require '../helpers'
 
 class Map
@@ -19,6 +19,23 @@ instance('TypeSpec')(Map).where
 		mk = match(kspec)
 		mv = match(vspec)
 		v? and v.constructor is Object and all(mk)(ks = Object.keys(v)) and all(mv)(map(seek v) ks)
+	constraints: ({kspec, vspec}) ->
+		(v) -> cons(
+			{
+				label: -> "Object Expected, But Got #{v}"
+				flag: -> v? and v.constructor is Object
+			}
+		) concat [(
+			map((k) -> {
+				label: -> "Key Expected to be #{show kspec}"#, But Got #{json k}"
+				sub: -> constraints(kspec)(k)
+			}) Object.keys(v ? [])
+		), (
+			map((k) -> {
+				label: -> "Value Expected to be #{show vspec}" #, But Got #{json v}"
+				sub: -> constraints(vspec)(v[k])
+			}) Object.keys(v ? [])
+		)]
 	show: ({kspec, vspec}) ->
 		"T.Map(#{show kspec})(#{show vspec})"
 	samples: ({kspec, vspec}) ->

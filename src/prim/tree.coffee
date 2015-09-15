@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {expandBlockHead, isTypeSpec} = require '../helpers'
 
 class Tree
@@ -16,7 +16,27 @@ class Tree
 instance('TypeSpec')(Tree).where
 	match: (t) -> (v) ->
 		{labelSpec} = t
-		v? and typeof v is 'object' and v.rootLabel? and v.subForest?.constructor is Array and match(labelSpec)(v.rootLabel) and all(match(t))(v.subForest)
+		v? and v.rootLabel? and v.subForest? and v.subForest instanceof Array and match(labelSpec)(v.rootLabel) and all(match(t))(v.subForest)
+	constraints: (t) ->
+		{labelSpec} = t
+		(v) -> cons(
+			{
+				label: -> "#{show t} Expected, But Got #{v}"
+				flag: -> v? and v.rootLabel? and v.subForest? and v.subForest instanceof Array
+			}
+		) cons(
+			{
+				label: -> "Label Expected to be #{show labelSpec}"
+				sub: -> constraints(labelSpec)(v.rootLabel)
+			}
+		)(
+			map((x) ->
+				{
+					label: -> "#{show t} Expected"
+					sub: -> constraints(t)(x)
+				}
+			) (v?.subForest ? [])
+		)
 	show: ({labelSpec}) ->
 		"T.Tree(#{show labelSpec})"
 	samples: ({labelSpec}) ->
