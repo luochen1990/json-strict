@@ -1,7 +1,7 @@
 {
-  "name": "type-spec",
+  "name": "json-scheme",
   "version": "0.4.0",
-  "description": "Type Specification for JSON & Dynamic Type Checking & Document Generation",
+  "description": "Format Specification for JSON & Dynamic Format Checking & Document Generation",
   "author": "luochen1990",
   "license": "MIT",
   "homepage": "http://github.com/luochen1990/TypeSpec",
