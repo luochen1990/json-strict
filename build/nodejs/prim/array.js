@@ -31,7 +31,7 @@
           i = arg1[0], x = arg1[1];
           return {
             label: function() {
-              return "Element " + i + " Expected to be " + (show(spec));
+              return "Element " + i;
             },
             sub: function() {
               return constraints(spec)(x);

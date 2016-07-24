@@ -39,8 +39,8 @@ instance('TypeSpec')(OneOf).where
 					flag: -> matchedCount < 2
 				}
 				{
-					label: -> "#{show(head(matchedShapes)[1])} Expected, But Got #{json v}"
-					flag: -> match(head(matchedShapes)[1])(v)
+					label: -> "Shape #{show(head(matchedShapes)[0])}"
+					sub: -> constraints(head(matchedShapes)[1])(v)
 				}
 			]
 	show: ({specs}) ->

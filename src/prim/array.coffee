@@ -13,7 +13,7 @@ instance('TypeSpec')(Array).where
 	)(
 		map(([i, x]) ->
 			{
-				label: -> "Element #{i} Expected to be #{show spec}" #, But Got #{json v}"
+				label: -> "Element #{i}" # Expected to be #{show spec}" #, But Got #{json v}"
 				sub: -> constraints(spec)(x)
 			}
 		) enumerate(v ? [])

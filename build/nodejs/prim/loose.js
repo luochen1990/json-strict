@@ -61,7 +61,7 @@
           k = arg1[0], spec = arg1[1];
           return {
             label: function() {
-              return "Field " + k + " Expected to be " + (show(spec));
+              return "Field " + k;
             },
             sub: function() {
               return constraints(spec)(v[k]);

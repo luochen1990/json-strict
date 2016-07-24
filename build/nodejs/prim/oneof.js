@@ -74,10 +74,10 @@
             }
           }, {
             label: function() {
-              return (show(head(matchedShapes)[1])) + " Expected, But Got " + (json(v));
+              return "Shape " + (show(head(matchedShapes)[0]));
             },
-            flag: function() {
-              return match(head(matchedShapes)[1])(v);
+            sub: function() {
+              return constraints(head(matchedShapes)[1])(v);
             }
           }
         ];

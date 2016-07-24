@@ -46,21 +46,23 @@
           }
         })(cons({
           label: function() {
-            return "Label Expected to be " + (show(labelSpec));
+            return "Tree Label";
           },
           sub: function() {
             return constraints(labelSpec)(v.rootLabel);
           }
-        })(map(function(x) {
+        })(map(function(arg) {
+          var i, x;
+          i = arg[0], x = arg[1];
           return {
             label: function() {
-              return (show(t)) + " Expected";
+              return "Tree Subforest " + i;
             },
             sub: function() {
               return constraints(t)(x);
             }
           };
-        })((ref3 = v != null ? v.subForest : void 0) != null ? ref3 : [])));
+        })(zip(naturals, (ref3 = v != null ? v.subForest : void 0) != null ? ref3 : []))));
       };
     },
     show: function(arg) {

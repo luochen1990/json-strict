@@ -2047,7 +2047,7 @@ instance('TypeSpec')(Array).where({
         i = arg1[0], x = arg1[1];
         return {
           label: function() {
-            return "Element " + i + " Expected to be " + (show(spec));
+            return "Element " + i;
           },
           sub: function() {
             return constraints(spec)(x);
@@ -2539,7 +2539,7 @@ instance('TypeSpec')(Loose).where({
         k = arg1[0], spec = arg1[1];
         return {
           label: function() {
-            return "Field " + k + " Expected to be " + (show(spec));
+            return "Field " + k;
           },
           sub: function() {
             return constraints(spec)(v[k]);
@@ -2645,7 +2645,7 @@ instance('TypeSpec')(Map).where({
         map(function(k) {
           return {
             label: function() {
-              return "Key Expected to be " + (show(kspec));
+              return "Key " + (json(k));
             },
             sub: function() {
               return constraints(kspec)(k);
@@ -2654,7 +2654,7 @@ instance('TypeSpec')(Map).where({
         })(Object.keys(v != null ? v : [])), map(function(k) {
           return {
             label: function() {
-              return "Value Expected to be " + (show(vspec));
+              return "Key " + (json(k)) + " 's Value ";
             },
             sub: function() {
               return constraints(vspec)(v[k]);
@@ -2948,7 +2948,7 @@ instance('TypeSpec')(Object).where({
         k = arg[0], spec = arg[1];
         return {
           label: function() {
-            return "Field " + k + " Expected to be " + (show(spec));
+            return "Field " + k;
           },
           sub: function() {
             return constraints(spec)(v[k]);
@@ -3060,10 +3060,10 @@ instance('TypeSpec')(OneOf).where({
           }
         }, {
           label: function() {
-            return (show(head(matchedShapes)[1])) + " Expected, But Got " + (json(v));
+            return "Shape " + (show(head(matchedShapes)[0]));
           },
-          flag: function() {
-            return match(head(matchedShapes)[1])(v);
+          sub: function() {
+            return constraints(head(matchedShapes)[1])(v);
           }
         }
       ];
@@ -3467,7 +3467,7 @@ instance('TypeSpec')(Strict).where({
         k = arg1[0], spec = arg1[1];
         return {
           label: function() {
-            return "Field " + k + " Expected to be " + (show(spec));
+            return "Field " + k;
           },
           sub: function() {
             return constraints(spec)(v[k]);
@@ -3563,21 +3563,23 @@ instance('TypeSpec')(Tree).where({
         }
       })(cons({
         label: function() {
-          return "Label Expected to be " + (show(labelSpec));
+          return "Tree Label";
         },
         sub: function() {
           return constraints(labelSpec)(v.rootLabel);
         }
-      })(map(function(x) {
+      })(map(function(arg) {
+        var i, x;
+        i = arg[0], x = arg[1];
         return {
           label: function() {
-            return (show(t)) + " Expected";
+            return "Tree Subforest " + i;
           },
           sub: function() {
             return constraints(t)(x);
           }
         };
-      })((ref3 = v != null ? v.subForest : void 0) != null ? ref3 : [])));
+      })(zip(naturals, (ref3 = v != null ? v.subForest : void 0) != null ? ref3 : []))));
     };
   },
   show: function(arg) {

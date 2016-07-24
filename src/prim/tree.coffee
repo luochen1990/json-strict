@@ -26,16 +26,16 @@ instance('TypeSpec')(Tree).where
 			}
 		) cons(
 			{
-				label: -> "Label Expected to be #{show labelSpec}"
+				label: -> "Tree Label" # Expected to be #{show labelSpec}"
 				sub: -> constraints(labelSpec)(v.rootLabel)
 			}
 		)(
-			map((x) ->
+			map(([i, x]) ->
 				{
-					label: -> "#{show t} Expected"
+					label: -> "Tree Subforest #{i}" #{show t} Expected"
 					sub: -> constraints(t)(x)
 				}
-			) (v?.subForest ? [])
+			) zip(naturals, (v?.subForest ? []))
 		)
 	show: ({labelSpec}) ->
 		"Tree(#{show labelSpec})"

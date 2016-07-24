@@ -26,7 +26,7 @@ instance('TypeSpec')(Object).where
 	)(
 		map(([k, spec]) ->
 			{
-				label: -> "Field #{k} Expected to be #{show spec}" #, But Got #{json v}"
+				label: -> "Field #{k}"
 				sub: -> constraints(spec)(v[k])
 			}
 		) enumerate(specdict)

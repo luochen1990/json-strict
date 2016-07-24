@@ -56,7 +56,7 @@
           map(function(k) {
             return {
               label: function() {
-                return "Key Expected to be " + (show(kspec));
+                return "Key " + (json(k));
               },
               sub: function() {
                 return constraints(kspec)(k);
@@ -65,7 +65,7 @@
           })(Object.keys(v != null ? v : [])), map(function(k) {
             return {
               label: function() {
-                return "Value Expected to be " + (show(vspec));
+                return "Key " + (json(k)) + " 's Value ";
               },
               sub: function() {
                 return constraints(vspec)(v[k]);

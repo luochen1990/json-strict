@@ -27,12 +27,12 @@ instance('TypeSpec')(Map).where
 			}
 		) concat [(
 			map((k) -> {
-				label: -> "Key Expected to be #{show kspec}"#, But Got #{json k}"
+				label: -> "Key #{json k}" #Expected to be #{show kspec}"#, But Got #{json k}"
 				sub: -> constraints(kspec)(k)
 			}) Object.keys(v ? [])
 		), (
 			map((k) -> {
-				label: -> "Value Expected to be #{show vspec}" #, But Got #{json v}"
+				label: -> "Key #{json k} 's Value " #Expected to be #{show vspec}" #, But Got #{json v}"
 				sub: -> constraints(vspec)(v[k])
 			}) Object.keys(v ? [])
 		)]
