@@ -1776,8 +1776,8 @@ module.exports = {
 };
 
 
-},{"./typeclass":36,"./typespec":37}],14:[function(require,module,exports){
-var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
+},{"./typeclass":38,"./typespec":39}],14:[function(require,module,exports){
+var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, OneOf, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
 require('./prim/object');
 
@@ -1819,6 +1819,8 @@ Select = require('./prim/select').Select;
 
 Choose = require('./prim/choose').Choose;
 
+OneOf = require('./prim/oneof').OneOf;
+
 ref = require('./typespec'), match = ref.match, unmatchMessages = ref.unmatchMessages, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('./render'), genRenderCode = ref1.genRenderCode, showPage = ref1.showPage;
@@ -1845,6 +1847,7 @@ module.exports = {
   Loose: Loose,
   Select: Select,
   Choose: Choose,
+  OneOf: OneOf,
   match: match,
   unmatchMessages: unmatchMessages,
   show: show,
@@ -1905,7 +1908,7 @@ if (module.parent === null) {
 }
 
 
-},{"./prim/any":15,"./prim/array":16,"./prim/bool":17,"./prim/choose":18,"./prim/constructor":19,"./prim/enum":20,"./prim/fn":21,"./prim/int":22,"./prim/loose":23,"./prim/map":24,"./prim/namedtype":25,"./prim/nat":26,"./prim/object":27,"./prim/optional":28,"./prim/promise":29,"./prim/select":30,"./prim/strict":31,"./prim/tree":32,"./prim/treemap":33,"./prim/value":34,"./render":35,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],15:[function(require,module,exports){
+},{"./prim/any":16,"./prim/array":17,"./prim/bool":18,"./prim/choose":19,"./prim/constructor":20,"./prim/enum":21,"./prim/fn":22,"./prim/int":23,"./prim/loose":24,"./prim/map":25,"./prim/namedtype":26,"./prim/nat":27,"./prim/object":28,"./prim/oneof":29,"./prim/optional":30,"./prim/promise":31,"./prim/select":32,"./prim/strict":33,"./prim/tree":34,"./prim/treemap":35,"./prim/value":36,"./render":37,"./typeclass":38,"./typespec":39,"coffee-mate/global":10}],15:[function(require,module,exports){
 var Any, instance;
 
 require('coffee-mate/global');
@@ -1939,7 +1942,7 @@ instance('TypeSpec')(Any).where({
     };
   },
   show: function() {
-    return "T.Any";
+    return "Any";
   },
   samples: function() {
     return concat(repeat([
@@ -1958,7 +1961,60 @@ module.exports = {
 };
 
 
-},{"../typeclass":36,"coffee-mate/global":10}],16:[function(require,module,exports){
+},{"../typeclass":38,"coffee-mate/global":10}],16:[function(require,module,exports){
+var Any, instance;
+
+require('coffee-mate/global');
+
+instance = require('../typeclass').instance;
+
+Any = (function() {
+  var r;
+  r = function Any(){};
+  return (r.constructor = r);
+})();
+
+instance('TypeSpec')(Any).where({
+  match: function() {
+    return function(v) {
+      return v != null;
+    };
+  },
+  constraints: function() {
+    return function(v) {
+      return [
+        {
+          label: function() {
+            return "Any Non-Null Value Expected, But Got " + v;
+          },
+          flag: function() {
+            return v != null;
+          }
+        }
+      ];
+    };
+  },
+  show: function() {
+    return "Any";
+  },
+  samples: function() {
+    return concat(repeat([
+      'a', 3, true, [1, 2], {
+        x: 1
+      }
+    ]));
+  },
+  sample: function() {
+    return 'any';
+  }
+});
+
+module.exports = {
+  Any: Any
+};
+
+
+},{"../typeclass":38,"coffee-mate/global":10}],17:[function(require,module,exports){
 var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2038,7 +2094,7 @@ instance('TypeSpec')(Array).where({
 });
 
 
-},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],17:[function(require,module,exports){
+},{"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],18:[function(require,module,exports){
 var Bool;
 
 Bool = Boolean;
@@ -2048,7 +2104,7 @@ module.exports = {
 };
 
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var Choose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2143,7 +2199,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],19:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],20:[function(require,module,exports){
 var instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2153,6 +2209,9 @@ instance = require('../typeclass').instance;
 ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample;
 
 instance('TypeSpec')(Function).where({
+  shape: function(spec) {
+    return spec;
+  },
   match: function(spec) {
     return function(v) {
       return (v != null) && v.constructor === spec;
@@ -2201,7 +2260,7 @@ instance('TypeSpec')(Function).where({
 });
 
 
-},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],20:[function(require,module,exports){
+},{"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],21:[function(require,module,exports){
 var Enum, instance, show,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -2255,7 +2314,7 @@ instance('TypeSpec')(Enum).where({
   show: function(arg) {
     var vs;
     vs = arg["enum"];
-    return "T.Enum(" + (json(vs)) + ")";
+    return "Enum(" + (json(vs)) + ")";
   },
   samples: function(arg) {
     var vs;
@@ -2274,7 +2333,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],21:[function(require,module,exports){
+},{"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],22:[function(require,module,exports){
 var Fn, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2337,7 +2396,7 @@ instance('TypeSpec')(Fn).where({
   show: function(arg) {
     var ispec, ospec;
     ispec = arg.ispec, ospec = arg.ospec;
-    return "T.Fn(" + (show(ispec)) + ")(" + (show(ospec)) + ")";
+    return "Fn(" + (show(ispec)) + ")(" + (show(ospec)) + ")";
   },
   samples: function(arg) {
     var ispec, ospec;
@@ -2371,7 +2430,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],22:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],23:[function(require,module,exports){
 var Int, instance;
 
 require('coffee-mate/global');
@@ -2405,7 +2464,7 @@ instance('TypeSpec')(Int).where({
     };
   },
   show: function() {
-    return "T.Int";
+    return "Int";
   },
   samples: function() {
     return concat(repeat([42, 1, 2]));
@@ -2417,14 +2476,14 @@ module.exports = {
 };
 
 
-},{"../typeclass":36,"coffee-mate/global":10}],23:[function(require,module,exports){
-var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
+},{"../typeclass":38,"coffee-mate/global":10}],24:[function(require,module,exports){
+var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, shape, show, typeclass;
 
 require('coffee-mate/global');
 
 ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+ref1 = require('../typespec'), shape = ref1.shape, match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
 ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
@@ -2444,6 +2503,15 @@ Loose = (function() {
 })();
 
 instance('TypeSpec')(Loose).where({
+  shape: function(arg) {
+    var specdict;
+    specdict = arg.specdict;
+    return Loose(fromList(map(function(arg1) {
+      var k, spec;
+      k = arg1[0], spec = arg1[1];
+      return [k, shape(spec)];
+    })(enumerate(specdict))));
+  },
   match: function(arg) {
     var specdict;
     specdict = arg.specdict;
@@ -2483,7 +2551,7 @@ instance('TypeSpec')(Loose).where({
   show: function(arg) {
     var specdict;
     specdict = arg.specdict;
-    return "T.Loose({" + ((list(map(function(arg1) {
+    return "Loose({" + ((list(map(function(arg1) {
       var k, spec;
       k = arg1[0], spec = arg1[1];
       return k + ": " + (show(spec));
@@ -2519,7 +2587,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],24:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],25:[function(require,module,exports){
 var Map, constraints, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2599,7 +2667,7 @@ instance('TypeSpec')(Map).where({
   show: function(arg) {
     var kspec, vspec;
     kspec = arg.kspec, vspec = arg.vspec;
-    return "T.Map(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
+    return "Map(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
   },
   samples: function(arg) {
     var ks, kspec, vs, vspec;
@@ -2632,7 +2700,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],25:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],26:[function(require,module,exports){
 var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2770,7 +2838,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],26:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],27:[function(require,module,exports){
 var Nat, instance;
 
 require('coffee-mate/global');
@@ -2804,7 +2872,7 @@ instance('TypeSpec')(Nat).where({
     };
   },
   show: function() {
-    return "T.Nat";
+    return "Nat";
   },
   samples: function() {
     return concat(repeat([42, 1, 2]));
@@ -2816,14 +2884,14 @@ module.exports = {
 };
 
 
-},{"../typeclass":36,"coffee-mate/global":10}],27:[function(require,module,exports){
-var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
+},{"../typeclass":38,"coffee-mate/global":10}],28:[function(require,module,exports){
+var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, shape, show, specdictChecked;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -2837,6 +2905,13 @@ specdictChecked = function(f) {
 };
 
 instance('TypeSpec')(Object).where({
+  shape: function(specdict) {
+    return fromList(map(function(arg) {
+      var k, spec;
+      k = arg[0], spec = arg[1];
+      return [k, shape(spec)];
+    })(enumerate(specdict)));
+  },
   match: specdictChecked(function(specdict) {
     return function(v) {
       return (v != null) && (all(function(k) {
@@ -2909,7 +2984,123 @@ instance('TypeSpec')(Object).where({
 });
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],28:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],29:[function(require,module,exports){
+var OneOf, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, shape, show;
+
+require('coffee-mate/global');
+
+instance = require('../typeclass').instance;
+
+ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+
+ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
+
+OneOf = (function() {
+  function OneOf(specs) {
+    if (!((specs != null) && specs.constructor === Array)) {
+      throw Error("Bad OneOf Type Definition: Array Expected, But Got " + specs);
+    }
+    if (!all(isTypeSpec)(specs)) {
+      throw Error("Bad OneOf Type Definition: Array of TypeSpec Expected, But Got " + specs);
+    }
+    log(function() {
+      return specs.map(show);
+    });
+    return {
+      constructor: OneOf,
+      specs: specs
+    };
+  }
+
+  return OneOf;
+
+})();
+
+instance('TypeSpec')(OneOf).where({
+  match: function(arg) {
+    var shaped, specs;
+    specs = arg.specs;
+    shaped = zip(map(shape)(specs), specs);
+    return function(v) {
+      var matchedShapes;
+      matchedShapes = filter(function(arg1) {
+        var _, sh;
+        sh = arg1[0], _ = arg1[1];
+        return match(sh)(v);
+      })(shaped);
+      return length(take(2)(matchedShapes)) === 1 && match(head(matchedShapes)[1])(v);
+    };
+  },
+  constraints: function(arg) {
+    var shaped, specs;
+    specs = arg.specs;
+    shaped = zip(map(shape)(specs), specs);
+    return function(v) {
+      var matchedCount, matchedShapes;
+      matchedShapes = filter(function(arg1) {
+        var _, sh;
+        sh = arg1[0], _ = arg1[1];
+        return match(sh)(v);
+      })(shaped);
+      matchedCount = length(take(2)(matchedShapes));
+      return [
+        {
+          label: function() {
+            return "Shape " + (list(map(show)(map(pluck(0))(shaped))).join(' | ')) + " Expected, But Got " + v;
+          },
+          flag: function() {
+            return matchedCount > 0;
+          }
+        }, {
+          label: function() {
+            return "Ambiguous Shape " + (list(map(show)(map(pluck(0))(matchedShapes))).join(' | ')) + " Matched, Got " + (json(v));
+          },
+          flag: function() {
+            return matchedCount < 2;
+          }
+        }, {
+          label: function() {
+            return (show(head(matchedShapes)[1])) + " Expected, But Got " + (json(v));
+          },
+          flag: function() {
+            return match(head(matchedShapes)[1])(v);
+          }
+        }
+      ];
+    };
+  },
+  show: function(arg) {
+    var specs;
+    specs = arg.specs;
+    return "(" + ((list(map(show)(specs))).join(' | ')) + ")";
+  },
+  samples: function(arg) {
+    var specs;
+    specs = arg.specs;
+    return concat(repeat(map(sample)(specs)));
+  },
+  htmlInline: function(arg) {
+    var specs;
+    specs = arg.specs;
+    return "<span class='type-maker unwrapped'>" + ((list(map(htmlInline)(specs))).join(' | ')) + "</span>";
+  },
+  htmlBlock: function(arg) {
+    var specs;
+    specs = arg.specs;
+    return {
+      head: "<span class='type-maker'>OneOf [</span>",
+      body: genBlockBody('OneOf', 'meta-field')(dict(list(zip(naturals, specs)))),
+      tail: "<span class='type-maker'>]</span>"
+    };
+  }
+});
+
+module.exports = {
+  OneOf: OneOf
+};
+
+
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],30:[function(require,module,exports){
 var Optional, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2936,6 +3127,11 @@ Optional = (function() {
 })();
 
 instance('TypeSpec')(Optional).where({
+  shape: function(arg) {
+    var spec;
+    spec = arg.spec;
+    return Optional(shape(spec));
+  },
   match: function(arg) {
     var spec;
     spec = arg.spec;
@@ -2964,7 +3160,7 @@ instance('TypeSpec')(Optional).where({
   show: function(arg) {
     var spec;
     spec = arg.spec;
-    return "T.Optional(" + (show(spec)) + ")";
+    return "Optional(" + (show(spec)) + ")";
   },
   samples: function(arg) {
     var ls, spec;
@@ -2991,7 +3187,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],29:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],31:[function(require,module,exports){
 var Promise, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3059,7 +3255,7 @@ instance('TypeSpec')(Promise).where({
   show: function(arg) {
     var spec;
     spec = arg.spec;
-    return "T.Promise(" + (show(spec)) + ")";
+    return "Promise(" + (show(spec)) + ")";
   },
   samples: function(arg) {
     var spec;
@@ -3085,7 +3281,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],30:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],32:[function(require,module,exports){
 var Select, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3159,7 +3355,7 @@ instance('TypeSpec')(Select).where({
   show: function(arg) {
     var specs;
     specs = arg.specs;
-    return "T.Select({" + ((list(map(function(arg1) {
+    return "Select({" + ((list(map(function(arg1) {
       var k, spec;
       k = arg1[0], spec = arg1[1];
       return k + ": " + (show(spec));
@@ -3195,14 +3391,14 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],31:[function(require,module,exports){
-var Strict, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show;
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],33:[function(require,module,exports){
+var Strict, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, shape, show;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -3222,6 +3418,15 @@ Strict = (function() {
 })();
 
 instance('TypeSpec')(Strict).where({
+  shape: function(arg) {
+    var specdict;
+    specdict = arg.specdict;
+    return Strict(fromList(map(function(arg1) {
+      var k, spec;
+      k = arg1[0], spec = arg1[1];
+      return [k, shape(spec)];
+    })(enumerate(specdict))));
+  },
   match: function(arg) {
     var specdict;
     specdict = arg.specdict;
@@ -3310,7 +3515,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],32:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],34:[function(require,module,exports){
 var Tree, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3378,7 +3583,7 @@ instance('TypeSpec')(Tree).where({
   show: function(arg) {
     var labelSpec;
     labelSpec = arg.labelSpec;
-    return "T.Tree(" + (show(labelSpec)) + ")";
+    return "Tree(" + (show(labelSpec)) + ")";
   },
   samples: function(arg) {
     var labelSpec, ls, s0, s1;
@@ -3413,7 +3618,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],33:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],35:[function(require,module,exports){
 var TreeMap, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3500,7 +3705,7 @@ instance('TypeSpec')(TreeMap).where({
   show: function(arg) {
     var kspec, vspec;
     kspec = arg.kspec, vspec = arg.vspec;
-    return "T.TreeMap(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
+    return "TreeMap(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
   },
   samples: function(arg) {
     var ks, kspec, vs, vspec;
@@ -3557,7 +3762,7 @@ module.exports = {
 };
 
 
-},{"../helpers":13,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],34:[function(require,module,exports){
+},{"../helpers":13,"../typeclass":38,"../typespec":39,"coffee-mate/global":10}],36:[function(require,module,exports){
 var Value, instance;
 
 require('coffee-mate/global');
@@ -3580,6 +3785,9 @@ Value = (function() {
 })();
 
 instance('TypeSpec')(Value).where({
+  shape: function(spec) {
+    return spec;
+  },
   match: function(arg) {
     var value;
     value = arg.value;
@@ -3590,7 +3798,7 @@ instance('TypeSpec')(Value).where({
   show: function(arg) {
     var value;
     value = arg.value;
-    return "T.Value(" + (json(value)) + ")";
+    return "" + (json(value));
   },
   samples: function(arg) {
     var value;
@@ -3609,7 +3817,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":36,"coffee-mate/global":10}],35:[function(require,module,exports){
+},{"../typeclass":38,"coffee-mate/global":10}],37:[function(require,module,exports){
 var Any, Bool, Choose, Comparator, ConditionExpr, Context, DimensionFilter, DimensionName, Enum, ExclusionCondition, FieldName, Fn, FooSpec, InclusionCondition, Int, Loose, Map, Measure, MeasureName, MemberName, NamedType, Nat, Number, Optional, Promise, Select, SortCondition, Strict, String, TableName, Tree, TreeMap, Value, ValueExpr, WideTable, bind, entries, fs, genRenderCode, htmlBlock, htmlInline, init, match, ref, ref1, sample, samples, show, showHtml, showPage, style;
 
 ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
@@ -3831,7 +4039,7 @@ if (module.parent === null) {
 }
 
 
-},{"./index":14,"./typespec":37,"coffee-mate/global":10,"fs":1}],36:[function(require,module,exports){
+},{"./index":14,"./typespec":39,"coffee-mate/global":10,"fs":1}],38:[function(require,module,exports){
 var instance, ref, show, typeclass;
 
 require('coffee-mate/global');
@@ -3941,15 +4149,20 @@ if (module.parent === null) {
 }
 
 
-},{"coffee-mate/global":10}],37:[function(require,module,exports){
-var TypeSpec, constraints, typeclass, unmatchMessages;
+},{"coffee-mate/global":10}],39:[function(require,module,exports){
+var Any, TypeSpec, constraints, typeclass, unmatchMessages;
 
 require('coffee-mate/global');
 
 typeclass = require('./typeclass').typeclass;
 
+Any = require('./prim/Any').Any;
+
 TypeSpec = typeclass('TypeSpec').where({
   match: null,
+  shape: function(t) {
+    return Any;
+  },
   constraints: null,
   withSpec: function(t) {
     return function(v) {
@@ -4034,7 +4247,7 @@ module.exports = extend({
 })(TypeSpec);
 
 
-},{"./typeclass":36,"coffee-mate/global":10}]},{},[12])(12)
+},{"./prim/Any":15,"./typeclass":38,"coffee-mate/global":10}]},{},[12])(12)
 });
 
 

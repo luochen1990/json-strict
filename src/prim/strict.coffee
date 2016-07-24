@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require '../typeclass'
-{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpecDict} = require '../helpers'
 
 class Strict
@@ -13,6 +13,7 @@ class Strict
 		}
 
 instance('TypeSpec')(Strict).where
+	shape: ({specdict}) -> Strict (fromList map(([k, spec]) -> [k, shape(spec)]) enumerate(specdict))
 	match: ({specdict}) -> (v) ->
 		v? and v.constructor is Object and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
 	constraints: ({specdict}) -> (v) -> cons(

@@ -19,3 +19,11 @@ each = (arr) ->
 plus = (x, y) -> x + y
 
 mate.extend((if window? then window else global)) helpers, {objectId, each, plus, expect}
+
+
+
+{unmatchMessages, match, show} = require '../src/'
+{OneOf} = require '../src/'
+t = OneOf([Number, String])
+log -> match(t)(true)
+

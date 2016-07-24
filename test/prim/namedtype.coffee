@@ -1,4 +1,4 @@
-{NamedType, Int} = require '../../src/'
+{match, NamedType, Int} = require '../../src/'
 {readDir} = require '../utils'
 
 requireDir = (path, opts) ->
@@ -12,9 +12,9 @@ flattened = list concat map(([k, v]) -> concat map(pluck 1) enumerate(v.matchCas
 
 matchCases =
 	'keep the same result when `check` function is not provided': flattened.map ([t, v, m]) ->
-		[NamedType({name: 'A', spec: t}), v, m]
+		[NamedType({name: 'A', spec: t}), v, match(t)(v)]
 	'keep the same result when `check` function is const true': flattened.map ([t, v, m]) ->
-		[NamedType({name: 'A', spec: t, check: (-> true)}), v, m]
+		[NamedType({name: 'A', spec: t, check: (-> true)}), v, match(t)(v)]
 	'always returns false when `check` function is const false': flattened.map ([t, v, m]) ->
 		[NamedType({name: 'A', spec: t, check: (-> false)}), v, no]
 	'defines even correctly': [

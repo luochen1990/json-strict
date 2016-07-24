@@ -30,7 +30,7 @@ instance('TypeSpec')(Enum).where
 			}
 		]
 	show: ({enum: vs}) ->
-		"T.Enum(#{json vs})"
+		"Enum(#{json vs})"
 	samples: ({enum: vs}) ->
 		concat repeat vs
 	htmlInline: ({enum: vs}) ->

@@ -33,7 +33,7 @@ instance('TypeSpec')(Select).where
 		}
 	]
 	show: ({specs}) ->
-		"T.Select({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ')}})"
+		"Select({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specs)).join(', ')}})"
 	samples: ({specs}) ->
 		concat repeat map(([k, v]) -> dict [[k, sample v]]) enumerate(specs)
 	htmlInline: ({specs: specdict}) ->

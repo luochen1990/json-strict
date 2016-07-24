@@ -25,6 +25,11 @@
   })();
 
   instance('TypeSpec')(Optional).where({
+    shape: function(arg) {
+      var spec;
+      spec = arg.spec;
+      return Optional(shape(spec));
+    },
     match: function(arg) {
       var spec;
       spec = arg.spec;
@@ -53,7 +58,7 @@
     show: function(arg) {
       var spec;
       spec = arg.spec;
-      return "T.Optional(" + (show(spec)) + ")";
+      return "Optional(" + (show(spec)) + ")";
     },
     samples: function(arg) {
       var ls, spec;

@@ -1,9 +1,11 @@
 require 'coffee-mate/global'
 {typeclass} = require './typeclass'
+{Any} = require './prim/Any'
 #{Data} = require './index'
 
 TypeSpec = typeclass('TypeSpec').where
 	match: null
+	shape: (t) -> Any
 	constraints: null
 	withSpec: (t) -> (v) ->
 		if not @match(t)(v)

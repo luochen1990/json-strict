@@ -15,7 +15,7 @@ instance('TypeSpec')(Nat).where
 		}
 	]
 	show: () ->
-		"T.Nat"
+		"Nat"
 	samples: () ->
 		concat repeat [42, 1, 2]
 

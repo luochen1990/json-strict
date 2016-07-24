@@ -8,6 +8,9 @@
   ref = require('../typespec'), match = ref.match, show = ref.show, samples = ref.samples, sample = ref.sample;
 
   instance('TypeSpec')(Function).where({
+    shape: function(spec) {
+      return spec;
+    },
     match: function(spec) {
       return function(v) {
         return (v != null) && v.constructor === spec;

@@ -32,7 +32,7 @@
       };
     },
     show: function() {
-      return "T.Int";
+      return "Int";
     },
     samples: function() {
       return concat(repeat([42, 1, 2]));

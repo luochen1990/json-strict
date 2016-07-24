@@ -66,7 +66,7 @@
     show: function(arg) {
       var spec;
       spec = arg.spec;
-      return "T.Promise(" + (show(spec)) + ")";
+      return "Promise(" + (show(spec)) + ")";
     },
     samples: function(arg) {
       var spec;

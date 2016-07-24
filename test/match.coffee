@@ -5,15 +5,15 @@ describe 'match()', ->
 	foreach enumerate(prim), ([primName, primContent]) ->
 		describe primName, ->
 			foreach enumerate(primContent.matchCases), ([k, cases]) ->
-				foreach enumerate(cases), ([i, [t, v, m]]) ->
+				foreach enumerate(cases), ([i, [t, v, expected]]) ->
 					it "#{k} [#{i}]", ->
-						assert -> match(t)(v) is m
+						assertEq (-> match(t)(v)), -> expected
 
 describe 'unmatchMessages()', ->
 	foreach enumerate(prim), ([primName, primContent]) ->
 		describe primName, ->
 			foreach enumerate(primContent.matchCases), ([k, cases]) ->
-				foreach enumerate(cases), ([i, [t, v, m]]) ->
+				foreach enumerate(cases), ([i, [t, v, expected]]) ->
 					it "#{k} [#{i}]", ->
-						assert -> (unmatchMessages(t)(v).length == 0) is m
+						assertEq (-> (unmatchMessages(t)(v).length == 0)), -> expected
 

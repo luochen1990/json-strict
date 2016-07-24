@@ -14,6 +14,7 @@ class Optional
 		}
 
 instance('TypeSpec')(Optional).where
+	shape: ({spec}) -> Optional shape(spec)
 	match: ({spec}) -> (v) ->
 		not v? or match(spec) v
 	constraints: (t) -> (v) -> if not v? then [] else [
@@ -23,7 +24,7 @@ instance('TypeSpec')(Optional).where
 		}
 	]
 	show: ({spec}) ->
-		"T.Optional(#{show spec})"
+		"Optional(#{show spec})"
 	samples: ({spec}) ->
 		ls = list take(2) samples spec
 		concat repeat [ls[0], null, ls[1], undefined]

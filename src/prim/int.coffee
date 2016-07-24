@@ -15,7 +15,7 @@ instance('TypeSpec')(Int).where
 		}
 	]
 	show: () ->
-		"T.Int"
+		"Int"
 	samples: () ->
 		concat repeat [42, 1, 2]
 

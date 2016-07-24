@@ -21,6 +21,9 @@
   })();
 
   instance('TypeSpec')(Value).where({
+    shape: function(spec) {
+      return spec;
+    },
     match: function(arg) {
       var value;
       value = arg.value;
@@ -31,7 +34,7 @@
     show: function(arg) {
       var value;
       value = arg.value;
-      return "T.Value(" + (json(value)) + ")";
+      return "" + (json(value));
     },
     samples: function(arg) {
       var value;

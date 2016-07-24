@@ -27,7 +27,7 @@ instance('TypeSpec')(Fn).where
 				withSpec(ospec)(y)
 				return y
 	show: ({ispec, ospec}) ->
-		"T.Fn(#{show ispec})(#{show ospec})"
+		"Fn(#{show ispec})(#{show ospec})"
 	samples: ({ispec, ospec}) ->
 		repeat {"[input]": (sample ispec), "[output]": (sample ospec)}
 	htmlInline: ({ispec, ospec}) ->

@@ -1,12 +1,17 @@
 (function() {
-  var TypeSpec, constraints, typeclass, unmatchMessages;
+  var Any, TypeSpec, constraints, typeclass, unmatchMessages;
 
   require('coffee-mate/global');
 
   typeclass = require('./typeclass').typeclass;
 
+  Any = require('./prim/Any').Any;
+
   TypeSpec = typeclass('TypeSpec').where({
     match: null,
+    shape: function(t) {
+      return Any;
+    },
     constraints: null,
     withSpec: function(t) {
       return function(v) {

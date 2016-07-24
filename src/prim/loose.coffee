@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {typeclass, instance} = require '../typeclass'
-{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpecDict} = require '../helpers'
 
 class Loose
@@ -13,6 +13,7 @@ class Loose
 		}
 
 instance('TypeSpec')(Loose).where
+	shape: ({specdict}) -> Loose (fromList map(([k, spec]) -> [k, shape(spec)]) enumerate(specdict))
 	match: ({specdict}) -> (v) ->
 		v? and v.constructor is Object and (all(([k, spec]) -> match(spec) v[k]) enumerate(specdict))
 	constraints: ({specdict}) -> (v) -> cons(
@@ -29,7 +30,7 @@ instance('TypeSpec')(Loose).where
 		) enumerate(specdict)
 	)
 	show: ({specdict}) ->
-		"T.Loose({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ')}})"
+		"Loose({#{(list map(([k, spec]) -> "#{k}: #{show spec}") enumerate(specdict)).join(', ')}})"
 	samples: ({specdict}) ->
 		repeat dict list map(([k, v]) -> [k, sample v]) enumerate(specdict)
 	htmlInline: ({specdict}) ->

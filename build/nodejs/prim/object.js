@@ -1,11 +1,11 @@
 (function() {
-  var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, show, specdictChecked;
+  var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, shape, show, specdictChecked;
 
   require('coffee-mate/global');
 
   instance = require('../typeclass').instance;
 
-  ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+  ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpecDict = ref1.isTypeSpecDict;
 
@@ -19,6 +19,13 @@
   };
 
   instance('TypeSpec')(Object).where({
+    shape: function(specdict) {
+      return fromList(map(function(arg) {
+        var k, spec;
+        k = arg[0], spec = arg[1];
+        return [k, shape(spec)];
+      })(enumerate(specdict)));
+    },
     match: specdictChecked(function(specdict) {
       return function(v) {
         return (v != null) && (all(function(k) {

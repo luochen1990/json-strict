@@ -15,7 +15,7 @@ instance('TypeSpec')(Any).where
 		}
 	]
 	show: () ->
-		"T.Any"
+		"Any"
 	samples: () ->
 		concat repeat ['a', 3, true, [1, 2], {x: 1}] #, NaN, '', {}, []
 	sample: () ->

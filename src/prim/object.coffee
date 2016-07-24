@@ -1,6 +1,6 @@
 require 'coffee-mate/global'
 {instance} = require '../typeclass'
-{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpecDict} = require '../helpers'
 
 specdictChecked = (f) ->
@@ -10,6 +10,7 @@ specdictChecked = (f) ->
 		return f(specdict)
 
 instance('TypeSpec')(Object).where
+	shape: (specdict) -> fromList map(([k, spec]) -> [k, shape(spec)]) enumerate(specdict)
 	match: specdictChecked (specdict) -> (v) ->
 		v? and (all((k) -> specdict[k]?) Object.keys(v)) and all(([k, spec]) -> match(spec) v[k]) enumerate(specdict)
 	constraints: (specdict) -> (v) -> cons(

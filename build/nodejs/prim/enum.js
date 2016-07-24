@@ -52,7 +52,7 @@
     show: function(arg) {
       var vs;
       vs = arg["enum"];
-      return "T.Enum(" + (json(vs)) + ")";
+      return "Enum(" + (json(vs)) + ")";
     },
     samples: function(arg) {
       var vs;

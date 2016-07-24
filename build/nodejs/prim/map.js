@@ -78,7 +78,7 @@
     show: function(arg) {
       var kspec, vspec;
       kspec = arg.kspec, vspec = arg.vspec;
-      return "T.Map(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
+      return "Map(" + (show(kspec)) + ")(" + (show(vspec)) + ")";
     },
     samples: function(arg) {
       var ks, kspec, vs, vspec;

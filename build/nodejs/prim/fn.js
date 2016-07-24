@@ -61,7 +61,7 @@
     show: function(arg) {
       var ispec, ospec;
       ispec = arg.ispec, ospec = arg.ospec;
-      return "T.Fn(" + (show(ispec)) + ")(" + (show(ospec)) + ")";
+      return "Fn(" + (show(ispec)) + ")(" + (show(ospec)) + ")";
     },
     samples: function(arg) {
       var ispec, ospec;

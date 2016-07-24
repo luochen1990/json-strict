@@ -1,5 +1,5 @@
 (function() {
-  var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
+  var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, OneOf, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
   require('./prim/object');
 
@@ -41,6 +41,8 @@
 
   Choose = require('./prim/choose').Choose;
 
+  OneOf = require('./prim/oneof').OneOf;
+
   ref = require('./typespec'), match = ref.match, unmatchMessages = ref.unmatchMessages, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('./render'), genRenderCode = ref1.genRenderCode, showPage = ref1.showPage;
@@ -67,6 +69,7 @@
     Loose: Loose,
     Select: Select,
     Choose: Choose,
+    OneOf: OneOf,
     match: match,
     unmatchMessages: unmatchMessages,
     show: show,

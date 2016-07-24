@@ -3,6 +3,7 @@ require 'coffee-mate/global'
 {match, show, samples, sample} = require '../typespec'
 
 instance('TypeSpec')(Function).where
+	shape: (spec) -> spec
 	match: (spec) -> (v) ->
 		v? and v.constructor is spec
 	constraints: (spec) -> (v) -> [

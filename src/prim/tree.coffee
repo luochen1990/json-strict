@@ -38,7 +38,7 @@ instance('TypeSpec')(Tree).where
 			) (v?.subForest ? [])
 		)
 	show: ({labelSpec}) ->
-		"T.Tree(#{show labelSpec})"
+		"Tree(#{show labelSpec})"
 	samples: ({labelSpec}) ->
 		ls = list take(2) samples labelSpec
 		s0 = {rootLabel: ls[0], subForest: []}

@@ -19,10 +19,10 @@ class Value
 		}
 
 instance('TypeSpec')(Value).where
-	match: ({value}) -> (v) ->
-		v is value
+	shape: (spec) -> spec
+	match: ({value}) -> (v) -> v is value
 	show: ({value}) ->
-		"T.Value(#{json value})"
+		"#{json value}"
 	samples: ({value}) ->
 		repeat value
 	htmlInline: ({value}) ->

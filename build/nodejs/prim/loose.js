@@ -1,11 +1,11 @@
 (function() {
-  var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
+  var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, shape, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), shape = ref1.shape, match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   ref2 = require('../helpers'), genBlockBody = ref2.genBlockBody, isTypeSpecDict = ref2.isTypeSpecDict;
 
@@ -25,6 +25,15 @@
   })();
 
   instance('TypeSpec')(Loose).where({
+    shape: function(arg) {
+      var specdict;
+      specdict = arg.specdict;
+      return Loose(fromList(map(function(arg1) {
+        var k, spec;
+        k = arg1[0], spec = arg1[1];
+        return [k, shape(spec)];
+      })(enumerate(specdict))));
+    },
     match: function(arg) {
       var specdict;
       specdict = arg.specdict;
@@ -64,7 +73,7 @@
     show: function(arg) {
       var specdict;
       specdict = arg.specdict;
-      return "T.Loose({" + ((list(map(function(arg1) {
+      return "Loose({" + ((list(map(function(arg1) {
         var k, spec;
         k = arg1[0], spec = arg1[1];
         return k + ": " + (show(spec));

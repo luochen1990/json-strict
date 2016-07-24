@@ -32,7 +32,7 @@
       };
     },
     show: function() {
-      return "T.Any";
+      return "Any";
     },
     samples: function() {
       return concat(repeat([

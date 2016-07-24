@@ -18,6 +18,7 @@ require './prim/constructor'
 {Loose} = require './prim/loose'
 {Select} = require './prim/select'
 {Choose} = require './prim/choose'
+{OneOf} = require './prim/oneof'
 {match, unmatchMessages, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
@@ -27,7 +28,7 @@ module.exports = {
 	Bool, Any, Int, Nat, Enum, Value,
 	Optional, Promise, Tree,
 	Map, TreeMap, Fn,
-	NamedType, Strict, Loose, Select, Choose,
+	NamedType, Strict, Loose, Select, Choose, OneOf
 	match, unmatchMessages, show, sample, samples, showHtml, genRenderCode, showPage,
 }
 
