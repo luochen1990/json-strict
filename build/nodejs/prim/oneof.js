@@ -9,7 +9,7 @@
 
   ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
 
-  Choose = require('./Choose').Choose;
+  Choose = require('./choose').Choose;
 
   OneOf = (function() {
     function OneOf(specs) {

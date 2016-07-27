@@ -1762,7 +1762,7 @@ module.exports = {
 };
 
 
-},{"./typeclass":37,"./typespec":38}],13:[function(require,module,exports){
+},{"./typeclass":36,"./typespec":37}],13:[function(require,module,exports){
 var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, OneOf, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
 require('./prim/object');
@@ -1894,102 +1894,7 @@ if (module.parent === null) {
 }
 
 
-},{"./prim/any":15,"./prim/array":16,"./prim/bool":17,"./prim/choose":18,"./prim/constructor":19,"./prim/enum":20,"./prim/fn":21,"./prim/int":22,"./prim/loose":23,"./prim/map":24,"./prim/namedtype":25,"./prim/nat":26,"./prim/object":27,"./prim/oneof":28,"./prim/optional":29,"./prim/promise":30,"./prim/select":31,"./prim/strict":32,"./prim/tree":33,"./prim/treemap":34,"./prim/value":35,"./render":36,"./typeclass":37,"./typespec":38,"coffee-mate/global":10}],14:[function(require,module,exports){
-var Choose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
-
-require('coffee-mate/global');
-
-instance = require('../typeclass').instance;
-
-ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
-
-ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
-
-Choose = (function() {
-  function Choose(specs) {
-    if (!((specs != null) && specs.constructor === Array)) {
-      throw Error("Bad Choose Type Definition: Array Expected, But Got " + specs);
-    }
-    if (!all(isTypeSpec)(specs)) {
-      throw Error("Bad Choose Type Definition: Array of TypeSpec Expected, But Got " + specs);
-    }
-    return {
-      constructor: Choose,
-      specs: specs
-    };
-  }
-
-  return Choose;
-
-})();
-
-instance('TypeSpec')(Choose).where({
-  match: function(arg) {
-    var specs;
-    specs = arg.specs;
-    return function(v) {
-      return (v != null) && any(function(spec) {
-        return match(spec)(v);
-      })(specs);
-    };
-  },
-  constraints: function(t) {
-    var specs;
-    specs = t.specs;
-    return function(v) {
-      return [
-        {
-          label: function() {
-            return "Non-Null Value Expected, But Got " + v;
-          },
-          flag: function() {
-            return v != null;
-          }
-        }, {
-          label: function() {
-            return (show(t)) + " Expected, But Got " + (json(v));
-          },
-          flag: function() {
-            return any(function(spec) {
-              return match(spec)(v);
-            })(specs);
-          }
-        }
-      ];
-    };
-  },
-  show: function(arg) {
-    var specs;
-    specs = arg.specs;
-    return "Choose([" + ((list(map(show)(specs))).join(', ')) + "])";
-  },
-  samples: function(arg) {
-    var specs;
-    specs = arg.specs;
-    return concat(repeat(map(sample)(specs)));
-  },
-  htmlInline: function(arg) {
-    var specs;
-    specs = arg.specs;
-    return "<span class='type-maker unwrapped'>" + ((list(map(htmlInline)(specs))).join(' | ')) + "</span>";
-  },
-  htmlBlock: function(arg) {
-    var specs;
-    specs = arg.specs;
-    return {
-      head: "<span class='type-maker'>Choose [</span>",
-      body: genBlockBody('choose', 'meta-field')(dict(list(zip(naturals, specs)))),
-      tail: "<span class='type-maker'>]</span>"
-    };
-  }
-});
-
-module.exports = {
-  Choose: Choose
-};
-
-
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],15:[function(require,module,exports){
+},{"./prim/any":14,"./prim/array":15,"./prim/bool":16,"./prim/choose":17,"./prim/constructor":18,"./prim/enum":19,"./prim/fn":20,"./prim/int":21,"./prim/loose":22,"./prim/map":23,"./prim/namedtype":24,"./prim/nat":25,"./prim/object":26,"./prim/oneof":27,"./prim/optional":28,"./prim/promise":29,"./prim/select":30,"./prim/strict":31,"./prim/tree":32,"./prim/treemap":33,"./prim/value":34,"./render":35,"./typeclass":36,"./typespec":37,"coffee-mate/global":10}],14:[function(require,module,exports){
 var Any, instance;
 
 require('coffee-mate/global');
@@ -2042,7 +1947,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":37,"coffee-mate/global":10}],16:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],15:[function(require,module,exports){
 var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2122,7 +2027,7 @@ instance('TypeSpec')(Array).where({
 });
 
 
-},{"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],17:[function(require,module,exports){
+},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],16:[function(require,module,exports){
 var Bool;
 
 Bool = Boolean;
@@ -2132,7 +2037,7 @@ module.exports = {
 };
 
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var Choose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2227,7 +2132,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],19:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],18:[function(require,module,exports){
 var instance, match, ref, sample, samples, show;
 
 require('coffee-mate/global');
@@ -2288,7 +2193,7 @@ instance('TypeSpec')(Function).where({
 });
 
 
-},{"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],20:[function(require,module,exports){
+},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],19:[function(require,module,exports){
 var Enum, instance, show,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -2361,7 +2266,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],21:[function(require,module,exports){
+},{"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],20:[function(require,module,exports){
 var Fn, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2458,7 +2363,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],22:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],21:[function(require,module,exports){
 var Int, instance;
 
 require('coffee-mate/global');
@@ -2504,7 +2409,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":37,"coffee-mate/global":10}],23:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],22:[function(require,module,exports){
 var Loose, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, shape, show, typeclass;
 
 require('coffee-mate/global');
@@ -2615,7 +2520,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],24:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],23:[function(require,module,exports){
 var Map, constraints, genBlockBody, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -2728,7 +2633,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],25:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],24:[function(require,module,exports){
 var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, shape, show, typeclass;
 
 require('coffee-mate/global');
@@ -2871,7 +2776,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],26:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],25:[function(require,module,exports){
 var Nat, instance;
 
 require('coffee-mate/global');
@@ -2917,7 +2822,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":37,"coffee-mate/global":10}],27:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],26:[function(require,module,exports){
 var constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, shape, show, specdictChecked;
 
 require('coffee-mate/global');
@@ -3017,7 +2922,7 @@ instance('TypeSpec')(Object).where({
 });
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],28:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],27:[function(require,module,exports){
 var Choose, OneOf, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, shape, show;
 
 require('coffee-mate/global');
@@ -3028,7 +2933,7 @@ ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints 
 
 ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
 
-Choose = require('./Choose').Choose;
+Choose = require('./choose').Choose;
 
 OneOf = (function() {
   function OneOf(specs) {
@@ -3137,7 +3042,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"./Choose":14,"coffee-mate/global":10}],29:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"./choose":17,"coffee-mate/global":10}],28:[function(require,module,exports){
 var Optional, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, shape, show, typeclass;
 
 require('coffee-mate/global');
@@ -3224,7 +3129,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],30:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],29:[function(require,module,exports){
 var Promise, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3318,7 +3223,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],31:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],30:[function(require,module,exports){
 var Select, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3428,7 +3333,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],32:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],31:[function(require,module,exports){
 var Strict, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpecDict, match, ref, ref1, sample, samples, shape, show;
 
 require('coffee-mate/global');
@@ -3552,7 +3457,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],33:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],32:[function(require,module,exports){
 var Tree, constraints, expandBlockHead, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3657,7 +3562,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],34:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],33:[function(require,module,exports){
 var TreeMap, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, ref2, sample, samples, show, typeclass;
 
 require('coffee-mate/global');
@@ -3801,7 +3706,7 @@ module.exports = {
 };
 
 
-},{"../helpers":12,"../typeclass":37,"../typespec":38,"coffee-mate/global":10}],35:[function(require,module,exports){
+},{"../helpers":12,"../typeclass":36,"../typespec":37,"coffee-mate/global":10}],34:[function(require,module,exports){
 var Value, instance;
 
 require('coffee-mate/global');
@@ -3856,7 +3761,7 @@ module.exports = {
 };
 
 
-},{"../typeclass":37,"coffee-mate/global":10}],36:[function(require,module,exports){
+},{"../typeclass":36,"coffee-mate/global":10}],35:[function(require,module,exports){
 var Any, Bool, Choose, Comparator, ConditionExpr, Context, DimensionFilter, DimensionName, Enum, ExclusionCondition, FieldName, Fn, FooSpec, InclusionCondition, Int, Loose, Map, Measure, MeasureName, MemberName, NamedType, Nat, Number, Optional, Promise, Select, SortCondition, Strict, String, TableName, Tree, TreeMap, Value, ValueExpr, WideTable, bind, entries, fs, genRenderCode, htmlBlock, htmlInline, init, match, ref, ref1, sample, samples, show, showHtml, showPage, style;
 
 ref = require('./typespec'), match = ref.match, show = ref.show, sample = ref.sample, samples = ref.samples, showHtml = ref.showHtml, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
@@ -4078,7 +3983,7 @@ if (module.parent === null) {
 }
 
 
-},{"./index":13,"./typespec":38,"coffee-mate/global":10,"fs":1}],37:[function(require,module,exports){
+},{"./index":13,"./typespec":37,"coffee-mate/global":10,"fs":1}],36:[function(require,module,exports){
 var instance, ref, show, typeclass;
 
 require('coffee-mate/global');
@@ -4188,7 +4093,7 @@ if (module.parent === null) {
 }
 
 
-},{"coffee-mate/global":10}],38:[function(require,module,exports){
+},{"coffee-mate/global":10}],37:[function(require,module,exports){
 var Any, TypeSpec, constraints, typeclass, unmatchMessages;
 
 require('coffee-mate/global');
@@ -4286,7 +4191,7 @@ module.exports = extend({
 })(TypeSpec);
 
 
-},{"./prim/any":15,"./typeclass":37,"coffee-mate/global":10}]},{},[13])(13)
+},{"./prim/any":14,"./typeclass":36,"coffee-mate/global":10}]},{},[13])(13)
 });
 
 

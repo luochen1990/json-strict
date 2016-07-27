@@ -2,7 +2,7 @@ require 'coffee-mate/global'
 {instance} = require '../typeclass'
 {shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpec} = require '../helpers'
-{Choose} = require './Choose'
+{Choose} = require './choose'
 
 class OneOf
 	constructor: (specs) ->
