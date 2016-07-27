@@ -5,7 +5,7 @@
 
   typeclass = require('./typeclass').typeclass;
 
-  Any = require('./prim/Any').Any;
+  Any = require('./prim/any').Any;
 
   TypeSpec = typeclass('TypeSpec').where({
     match: null,

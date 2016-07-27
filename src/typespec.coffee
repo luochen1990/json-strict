@@ -1,7 +1,6 @@
 require 'coffee-mate/global'
 {typeclass} = require './typeclass'
-{Any} = require './prim/Any'
-#{Data} = require './index'
+{Any} = require './prim/any'
 
 TypeSpec = typeclass('TypeSpec').where
 	match: null
