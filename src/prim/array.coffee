@@ -1,8 +1,9 @@
 require 'coffee-mate/global'
 {instance} = require '../typeclass'
-{match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
+{shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 
 instance('TypeSpec')(Array).where
+	shape: ([spec]) -> Array
 	match: ([spec]) -> (v) ->
 		v? and v instanceof Array and (all(match spec) v)
 	constraints: ([spec]) -> (v) -> cons(

@@ -12,6 +12,9 @@
   })();
 
   instance('TypeSpec')(Nat).where({
+    shape: function() {
+      return Number;
+    },
     match: function() {
       return function(v) {
         return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && v === parseInt(v);

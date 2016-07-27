@@ -19,6 +19,7 @@ class Enum
 		}
 
 instance('TypeSpec')(Enum).where
+	shape: (t) -> t
 	match: ({enum: vs}) -> (v) ->
 		v in vs
 	constraints: (t) ->

@@ -1948,15 +1948,20 @@ module.exports = {
 
 
 },{"../typeclass":36,"coffee-mate/global":10}],15:[function(require,module,exports){
-var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
+var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, shape, show;
 
 require('coffee-mate/global');
 
 instance = require('../typeclass').instance;
 
-ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
 instance('TypeSpec')(Array).where({
+  shape: function(arg) {
+    var spec;
+    spec = arg[0];
+    return Array;
+  },
   match: function(arg) {
     var spec;
     spec = arg[0];
@@ -2221,6 +2226,9 @@ Enum = (function() {
 })();
 
 instance('TypeSpec')(Enum).where({
+  shape: function(t) {
+    return t;
+  },
   match: function(arg) {
     var vs;
     vs = arg["enum"];
@@ -2377,6 +2385,9 @@ Int = (function() {
 })();
 
 instance('TypeSpec')(Int).where({
+  shape: function() {
+    return Number;
+  },
   match: function() {
     return function(v) {
       return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
@@ -2790,6 +2801,9 @@ Nat = (function() {
 })();
 
 instance('TypeSpec')(Nat).where({
+  shape: function() {
+    return Number;
+  },
   match: function() {
     return function(v) {
       return (v != null) && v.constructor === Number && !isNaN(v) && v >= 0 && v === parseInt(v);

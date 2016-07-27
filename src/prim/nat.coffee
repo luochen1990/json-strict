@@ -6,6 +6,7 @@ Nat = do ->
 	return (r.constructor = r)
 
 instance('TypeSpec')(Nat).where
+	shape: () -> Number
 	match: () -> (v) ->
 		v? and v.constructor is Number and not isNaN(v) and v >= 0 and v == parseInt(v)
 	constraints: () -> (v) -> [

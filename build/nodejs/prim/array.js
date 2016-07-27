@@ -1,13 +1,18 @@
 (function() {
-  var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, show;
+  var constraints, htmlBlock, htmlInline, instance, match, ref, sample, samples, shape, show;
 
   require('coffee-mate/global');
 
   instance = require('../typeclass').instance;
 
-  ref = require('../typespec'), match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
+  ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   instance('TypeSpec')(Array).where({
+    shape: function(arg) {
+      var spec;
+      spec = arg[0];
+      return Array;
+    },
     match: function(arg) {
       var spec;
       spec = arg[0];

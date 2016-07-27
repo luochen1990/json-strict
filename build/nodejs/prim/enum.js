@@ -26,6 +26,9 @@
   })();
 
   instance('TypeSpec')(Enum).where({
+    shape: function(t) {
+      return t;
+    },
     match: function(arg) {
       var vs;
       vs = arg["enum"];

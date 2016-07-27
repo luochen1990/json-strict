@@ -12,6 +12,9 @@
   })();
 
   instance('TypeSpec')(Int).where({
+    shape: function() {
+      return Number;
+    },
     match: function() {
       return function(v) {
         return (v != null) && v.constructor === Number && !isNaN(v) && v === parseInt(v);
