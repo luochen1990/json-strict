@@ -1,6 +1,6 @@
 {
   "name": "json-scheme",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Format Specification for JSON & Dynamic Format Checking & Document Generation",
   "author": "luochen1990",
   "license": "MIT",
