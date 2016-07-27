@@ -1,5 +1,5 @@
 (function() {
-  var OneOf, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, shape, show;
+  var Choose, OneOf, constraints, genBlockBody, htmlBlock, htmlInline, instance, isTypeSpec, match, ref, ref1, sample, samples, shape, show;
 
   require('coffee-mate/global');
 
@@ -8,6 +8,8 @@
   ref = require('../typespec'), shape = ref.shape, match = ref.match, constraints = ref.constraints, show = ref.show, samples = ref.samples, sample = ref.sample, htmlInline = ref.htmlInline, htmlBlock = ref.htmlBlock;
 
   ref1 = require('../helpers'), genBlockBody = ref1.genBlockBody, isTypeSpec = ref1.isTypeSpec;
+
+  Choose = require('./Choose').Choose;
 
   OneOf = (function() {
     function OneOf(specs) {
@@ -31,6 +33,11 @@
   })();
 
   instance('TypeSpec')(OneOf).where({
+    shape: function(arg) {
+      var specs;
+      specs = arg.specs;
+      return Choose(map(shape)(specs));
+    },
     match: function(arg) {
       var shaped, specs;
       specs = arg.specs;

@@ -1,11 +1,11 @@
 (function() {
-  var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, show, typeclass;
+  var NamedType, constraints, expandBlockHead, htmlBlock, htmlInline, instance, match, ref, ref1, sample, samples, shape, show, typeclass;
 
   require('coffee-mate/global');
 
   ref = require('../typeclass'), typeclass = ref.typeclass, instance = ref.instance;
 
-  ref1 = require('../typespec'), match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
+  ref1 = require('../typespec'), shape = ref1.shape, match = ref1.match, constraints = ref1.constraints, show = ref1.show, samples = ref1.samples, sample = ref1.sample, htmlInline = ref1.htmlInline, htmlBlock = ref1.htmlBlock;
 
   expandBlockHead = require('../helpers').expandBlockHead;
 
@@ -37,6 +37,11 @@
   })();
 
   instance('TypeSpec')(NamedType).where({
+    shape: function(arg) {
+      var spec;
+      spec = arg.spec;
+      return shape(spec);
+    },
     match: function(arg) {
       var check, spec;
       spec = arg.spec, check = arg.check;

@@ -2,6 +2,7 @@ require 'coffee-mate/global'
 {instance} = require '../typeclass'
 {shape, match, constraints, show, samples, sample, htmlInline, htmlBlock} = require '../typespec'
 {genBlockBody, isTypeSpec} = require '../helpers'
+{Choose} = require './Choose'
 
 class OneOf
 	constructor: (specs) ->
@@ -17,6 +18,7 @@ class OneOf
 		}
 
 instance('TypeSpec')(OneOf).where
+	shape: ({specs}) -> Choose map(shape)(specs)
 	match: ({specs}) ->
 		shaped = zip(map(shape)(specs), specs)
 		(v) ->
