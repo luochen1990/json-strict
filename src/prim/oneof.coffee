@@ -18,7 +18,7 @@ class OneOf
 		}
 
 instance('TypeSpec')(OneOf).where
-	shape: ({specs}) -> Choose map(shape)(specs)
+	shape: ({specs}) -> Choose specs.map(shape)
 	match: ({specs}) ->
 		shaped = zip(map(shape)(specs), specs)
 		(v) ->

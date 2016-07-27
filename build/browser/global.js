@@ -3122,7 +3122,7 @@ instance('TypeSpec')(OneOf).where({
   shape: function(arg) {
     var specs;
     specs = arg.specs;
-    return Choose(map(shape)(specs));
+    return Choose(specs.map(shape));
   },
   match: function(arg) {
     var shaped, specs;
