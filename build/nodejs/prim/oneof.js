@@ -71,7 +71,7 @@
             }
           }, {
             label: function() {
-              return "Ambiguous Shape " + (list(map(show)(map(pluck(0))(matchedShapes))).join(' | ')) + " Matched, Got " + (json(v));
+              return "Ambiguous Shape " + (list(map(show)(map(pluck(0))(matchedShapes))).join(', ')) + " Matched, Got " + (json(v));
             },
             flag: function() {
               return matchedCount < 2;

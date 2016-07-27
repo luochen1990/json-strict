@@ -37,7 +37,7 @@ instance('TypeSpec')(OneOf).where
 					flag: -> matchedCount > 0
 				}
 				{
-					label: -> "Ambiguous Shape #{list(map(show) map(pluck 0) matchedShapes).join(' | ')} Matched, Got #{json v}"
+					label: -> "Ambiguous Shape #{list(map(show) map(pluck 0) matchedShapes).join(', ')} Matched, Got #{json v}"
 					flag: -> matchedCount < 2
 				}
 				{
