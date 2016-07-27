@@ -11,7 +11,7 @@ class OneOf
 		unless all(isTypeSpec)(specs)
 			throw Error "Bad OneOf Type Definition: Array of TypeSpec Expected, But Got #{specs}"
 
-		log -> specs.map(show)
+		#log -> specs.map(show)
 		return {
 			constructor: OneOf
 			specs: specs

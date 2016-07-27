@@ -19,9 +19,6 @@
       if (!all(isTypeSpec)(specs)) {
         throw Error("Bad OneOf Type Definition: Array of TypeSpec Expected, But Got " + specs);
       }
-      log(function() {
-        return specs.map(show);
-      });
       return {
         constructor: OneOf,
         specs: specs
