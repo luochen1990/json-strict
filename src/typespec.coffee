@@ -5,7 +5,12 @@ require 'coffee-mate/global'
 TypeSpec = typeclass('TypeSpec').where
 	match: null
 	shape: (t) -> Any
-	constraints: null
+	constraints: (t) -> (v) => [
+		{
+			label: => "#{@show(t)} Expected, But Got #{json v}"
+			flag: => @match(t)(v)
+		}
+	]
 	withSpec: (t) -> (v) ->
 		if not @match(t)(v)
 			throw TypeError {expected: @show(t), got: v}

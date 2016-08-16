@@ -12,7 +12,22 @@
     shape: function(t) {
       return Any;
     },
-    constraints: null,
+    constraints: function(t) {
+      return (function(_this) {
+        return function(v) {
+          return [
+            {
+              label: function() {
+                return (_this.show(t)) + " Expected, But Got " + (json(v));
+              },
+              flag: function() {
+                return _this.match(t)(v);
+              }
+            }
+          ];
+        };
+      })(this);
+    },
     withSpec: function(t) {
       return function(v) {
         if (!this.match(t)(v)) {
