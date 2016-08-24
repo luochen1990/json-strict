@@ -64,6 +64,8 @@
         };
       };
     };
+    typeclass.registered = reg;
+    instance.registered = instances;
     return {
       typeclass: typeclass,
       instance: instance

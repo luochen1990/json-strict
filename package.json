@@ -1,21 +1,26 @@
 {
-  "name": "json-scheme",
-  "version": "0.4.8",
-  "description": "Format Specification for JSON & Dynamic Format Checking & Document Generation",
+  "name": "json-strict",
+  "version": "0.5.0",
+  "description": "Json Specification & Validation & Document Generation",
   "author": "luochen1990",
   "license": "MIT",
-  "homepage": "http://github.com/luochen1990/TypeSpec",
+  "homepage": "http://github.com/luochen1990/json-strict",
   "repository": {
     "type": "git",
-    "url": "git@github.com:luochen1990/TypeSpec.git"
+    "url": "git@github.com:luochen1990/json-strict.git"
   },
   "keywords": [
     "json",
+    "strict",
+    "validate",
     "type",
     "specification",
-    "document generation",
+    "document",
     "haskell"
   ],
+  "bin": {
+    "json-doc": "./bin/json-doc"
+  },
   "main": "./build/nodejs/index.js",
   "scripts": {
     "build": "gulp build",
@@ -29,7 +34,9 @@
   },
   "dependencies": {
     "coffee-mate": "^0.14.3",
-    "shelljs": "^0.5.3"
+    "coffee-script": "^1.10.0",
+    "shelljs": "^0.5.3",
+    "yargs": "^5.0.0"
   },
   "devDependencies": {
     "browserify": "^11.0.1",

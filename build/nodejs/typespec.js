@@ -102,7 +102,7 @@
         return rst;
       };
       rec(constraints(spec)(v));
-      return r;
+      return r.reverse();
     };
   };
 

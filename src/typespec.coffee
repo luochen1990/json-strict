@@ -71,7 +71,7 @@ unmatchMessages = (spec) -> (v) ->
 					foreach.break
 		return rst
 	rec(constraints(spec)(v))
-	return r
+	return r.reverse()
 
 module.exports = extend({unmatchMessages})(TypeSpec)
 

@@ -1,14 +1,13 @@
-TypeSpec
-========
+Json Strict
+===========
 
 Features
 --------
 
-- API Specification via Coding (instead of document writing)
+- API specification via Coding (instead of document writing)
 - Automatic data sample generation
 - Automatic document generation
-- Better type specification for functions
-- Runtime format checking 
+- Runtime data validation checking
 
 Documents
 ---------

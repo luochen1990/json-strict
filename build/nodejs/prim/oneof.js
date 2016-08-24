@@ -64,14 +64,14 @@
         return [
           {
             label: function() {
-              return "Shape " + (list(map(show)(map(pluck(0))(shaped))).join(' | ')) + " Expected, But Got " + v;
+              return "Shape Not Matched";
             },
             flag: function() {
               return matchedCount > 0;
             }
           }, {
             label: function() {
-              return "Ambiguous Shape " + (list(map(show)(map(pluck(0))(matchedShapes))).join(', ')) + " Matched, Got " + (json(v));
+              return "Ambiguous Shape Matched";
             },
             flag: function() {
               return matchedCount < 2;

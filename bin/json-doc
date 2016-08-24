@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var fs   = require('fs');
+var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../build/nodejs');
+
+var genDocuments = require(lib + '/gen-doc').genDocuments;
+var arg = require('yargs').argv
+genDocuments({src: (arg.i || './spec'), dest: (arg.o || './doc')})

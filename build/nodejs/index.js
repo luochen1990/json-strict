@@ -1,5 +1,5 @@
 (function() {
-  var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, OneOf, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
+  var Any, Bool, Choose, Comparator, Enum, FieldName, Fn, Int, Loose, Map, NamedType, Nat, OneOf, Optional, Promise, Select, Strict, TableName, Tree, TreeMap, UserInfo, UserName, Value, WideTable, genDocuments, genRenderCode, htmlBlock, htmlInline, instance, match, ref, ref1, ref2, sample, samples, show, showHtml, showPage, typeclass, unmatchMessages;
 
   require('./prim/object');
 
@@ -49,6 +49,8 @@
 
   ref2 = require('./typeclass'), typeclass = ref2.typeclass, instance = ref2.instance;
 
+  genDocuments = require('./gen-doc').genDocuments;
+
   module.exports = {
     Number: Number,
     String: String,
@@ -77,7 +79,10 @@
     samples: samples,
     showHtml: showHtml,
     genRenderCode: genRenderCode,
-    showPage: showPage
+    showPage: showPage,
+    typeclass: typeclass,
+    instance: instance,
+    genDocuments: genDocuments
   };
 
   if (module.parent === null) {

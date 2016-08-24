@@ -36,6 +36,9 @@ require 'coffee-mate/global'
 				foreach (enumerate funcdict), ([funcname, funcbody]) ->
 					(cls[funcname] ?= []).push [type, funcbody]
 
+	typeclass.registered = reg
+	instance.registered = instances
+
 	return {typeclass, instance}
 
 module.exports = {typeclass, instance}

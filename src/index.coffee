@@ -22,14 +22,17 @@ require './prim/constructor'
 {match, unmatchMessages, show, sample, samples, showHtml, htmlInline, htmlBlock} = require './typespec'
 {genRenderCode, showPage} = require './render'
 {typeclass, instance} = require './typeclass'
+{genDocuments} = require './gen-doc'
 
 module.exports = {
 	Number, String,
 	Bool, Any, Int, Nat, Enum, Value,
 	Optional, Promise, Tree,
 	Map, TreeMap, Fn,
-	NamedType, Strict, Loose, Select, Choose, OneOf
+	NamedType, Strict, Loose, Select, Choose, OneOf,
 	match, unmatchMessages, show, sample, samples, showHtml, genRenderCode, showPage,
+	typeclass, instance,
+	genDocuments
 }
 
 if module.parent is null

@@ -33,11 +33,11 @@ instance('TypeSpec')(OneOf).where
 			matchedCount = length(take(2) matchedShapes)
 			return [
 				{
-					label: -> "Shape #{list(map(show) map(pluck 0) shaped).join(' | ')} Expected, But Got #{v}"
+					label: -> "Shape Not Matched"
 					flag: -> matchedCount > 0
 				}
 				{
-					label: -> "Ambiguous Shape #{list(map(show) map(pluck 0) matchedShapes).join(', ')} Matched, Got #{json v}"
+					label: -> "Ambiguous Shape Matched"
 					flag: -> matchedCount < 2
 				}
 				{
